@@ -8,54 +8,60 @@
     display: inline-flex;
 }
 
-#skin-head{
-    width: 50px;
-    height: 50px;
+#skin-head, #skin-body, #skin-left-hand, #skin-right-hand, #skin-left-leg, #skin-right-leg{
     border: 2px black solid;
-    border-bottom: none;
+    outline: 0 solid rgba(0,0,0,0.0);
     transition-duration: 0.2s;
+}
+
+#skin-head{
+    width: 80px;
+    height: 80px;
+    border-bottom: none;
 }
 
 #skin-body{
-    width: 50px;
-    height: 120px;
-    transition-duration: 0.2s;
+    width: 80px;
+    height: 140px;
+    border: none;
+}
+
+#skin-left-hand, #skin-right-hand{
+    width: 40px;
+    height: 140px;
 }
 
 #skin-left-hand{
-    width: 25px;
-    height: 120px;
     border: 2px black solid;
     border-right: none;
-    transition-duration: 0.2s;
 }
 
 #skin-right-hand{
-    width: 25px;
-    height: 120px;
     border: 2px black solid;
     border-left: none;
-    transition-duration: 0.2s;
+}
+
+#skin-left-leg, #skin-right-leg{
+    width: 40px;
+    height: 140px;
 }
 
 #skin-left-leg{
-    width: 25px;
-    height: 120px;
     border: 2px black solid;
     border-top: none;
     border-right: none;
-    transition-duration: 0.2s;
 }
 
 #skin-right-leg{
-    width: 25px;
-    height: 120px;
     border: 2px black solid;
     border-top: none;
     border-left: none;
-    transition-duration: 0.2s;
 }
 
 #skin-body:hover, #skin-head:hover, #skin-left-hand:hover, #skin-left-leg:hover, #skin-right-hand:hover, #skin-right-leg:hover{
-    outline: 3px solid rgba(0,0,0,0.5);
+    outline: 2px solid rgba(0,0,0,0.5);
+}
+
+.skin-part-active{
+    outline: 2px solid rgba(0,0,0,0.5);
 }
