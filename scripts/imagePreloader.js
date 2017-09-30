@@ -31,6 +31,19 @@ class Preloader extends React.Component{
     }
 }
 
+const showElements = () => {
+    let img = new Image();
+    img.src = "./img/leg3.png";
+    img.onload = function () {
+        console.log("Ok")
+    };
+    return(
+        <div>
+
+        </div>
+    )
+};
+
 ReactDOM.render(
     <Preloader/>,
     document.getElementById('misc')
