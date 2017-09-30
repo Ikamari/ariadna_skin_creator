@@ -33,11 +33,11 @@ class App extends React.Component{
         })
     }
 
-    changePartTexture(){
+    changePartTexture(name){
         let currentSkin = this.state.skin;
-        console.log(e);
-        // currentSkin[this.state.currentSelectedPart]
+        currentSkin[this.state.currentSelectedPart] = name;
         this.setState({
+            skin: currentSkin
         })
     }
 
@@ -49,6 +49,14 @@ class App extends React.Component{
             legTextures: textures.legs
         })
     }
+
+    skinElement(elementName, key) {
+        return(
+        <div key={key} className="skin-elements-element" onClick={() => this.changePartTexture(elementName)}>
+            <img className="skin-elements-element-icon" src={"./img/" + elementName + ".png"}/>
+        </div>
+        )
+    };
 
     componentDidMount(){
         //Trying to do everything without server
@@ -84,18 +92,12 @@ class App extends React.Component{
                     </div>
                 </div>
                 <div id="skin-elements">
-                    {this.state.currentLoadedTextures.map((element, key) => skinElement(element, key))}
+                    {this.state.currentLoadedTextures.map((element, key) => this.skinElement(element, key))}
                 </div>
             </div>
         );
     }
 }
-
-const skinElement = (elementName, key) => (
-    <div key={key} className="skin-elements-element" onClick={() => this.changePartTexture().bind(this)}>
-        <img className="skin-elements-element-icon" src={"./img/" + elementName + ".png"}/>
-    </div>
-);
 
 const getTextures = () => {
 
