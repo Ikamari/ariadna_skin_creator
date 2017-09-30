@@ -110,3 +110,7 @@
     max-height: 40px;
     image-rendering: pixelated;
 }
+
+.texture-mirrored{
+    transform: scaleX(-1);
+}

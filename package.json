@@ -1,0 +1,24 @@
+{
+  "name": "skin_creator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./scripts/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ikamari/skin_creator.git"
+  },
+  "author": "Ikamari",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ikamari/skin_creator/issues"
+  },
+  "homepage": "https://github.com/Ikamari/skin_creator#readme",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  }
+}

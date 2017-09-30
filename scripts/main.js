@@ -6,16 +6,25 @@ class App extends React.Component{
         this.state = {
             skin:{
                 head: "head1",
+                headArmor: "",
                 body: "body1",
-                hand: "hand1",
-                leg: "leg1"
+                bodyArmor: "",
+                leftHand: "hand1",
+                leftHandArmor: "",
+                rightHand: "hand1",
+                rightHandArmor: "",
+                leftLeg: "leg1",
+                leftLegArmor: "",
+                rightLeg: "leg1",
+                rightLegArmor: ""
             },
             headTextures: [],
             bodyTextures: [],
             handTextures: [],
             legTextures: [],
             currentLoadedTextures: [],
-            currentSelectedPart: "none"
+            currentSelectedPart: "none",
+            newVersion: false
         }
     };
 
@@ -24,13 +33,23 @@ class App extends React.Component{
         switch(partName){
             case "head": {needeedTextures = this.state.headTextures; break}
             case "body": {needeedTextures = this.state.bodyTextures; break}
-            case "hand": {needeedTextures = this.state.handTextures; break}
-            case "leg": {needeedTextures = this.state.legTextures; break}
+            case "leftHand": {needeedTextures = this.state.handTextures; break}
+            case "rightHand": {needeedTextures = this.state.handTextures; break}
+            case "leftLeg": {needeedTextures = this.state.legTextures; break}
+            case "rightLeg": {needeedTextures = this.state.legTextures; break}
         }
         this.setState({
             currentSelectedPart: partName,
             currentLoadedTextures: needeedTextures
         })
+    }
+
+    changeSkinVersion(){
+        if(this.state.newVersion){
+            this.setState({newVersion: false})
+        } else {
+            this.setState({newVersion: true})
+        }
     }
 
     changePartTexture(name){
@@ -67,27 +86,29 @@ class App extends React.Component{
         return(
             <div>
                 <p> Selected part: {this.state.currentSelectedPart}</p>
+                <p> Selected version: {this.state.newVersion ? "new" : "old"}</p>
+                <button onClick={() => this.changeSkinVersion()}>Change version</button>
                 <div id="skin-preview">
                     <div id="skin-head" onClick={() => this.changeSelectedPart("head")}>
                         <img className="skin-part-texture" src={"./img/" + this.state.skin.head + ".png"}/>
                     </div>
                     <div id="skin-middle">
-                        <div id="skin-left-hand" onClick={() => this.changeSelectedPart("hand")}>
-                            <img className="skin-part-texture" src={"./img/" + this.state.skin.hand + ".png"}/>
+                        <div id="skin-left-hand" onClick={() => this.changeSelectedPart("leftHand")}>
+                            <img className="skin-part-texture" src={"./img/" + this.state.skin.leftHand + ".png"}/>
                         </div>
                         <div id="skin-body" onClick={() => this.changeSelectedPart("body")}>
                             <img className="skin-part-texture" src={"./img/" + this.state.skin.body + ".png"}/>
                         </div>
-                        <div id="skin-right-hand" onClick={() => this.changeSelectedPart("hand")}>
-                            <img className="skin-part-texture" src={"./img/" + this.state.skin.hand + ".png"}/>
+                        <div id="skin-right-hand" onClick={() => this.changeSelectedPart(this.state.newVersion ? "rightHand" : "leftHand")}>
+                            <img className={"skin-part-texture texture-mirrored"} src={"./img/" + (this.state.newVersion ? this.state.skin.rightHand : this.state.skin.leftHand) + ".png"}/>
                         </div>
                     </div>
                     <div id="skin-bottom">
-                        <div id="skin-left-leg" onClick={() => this.changeSelectedPart("leg")}>
-                            <img className="skin-part-texture" src={"./img/" + this.state.skin.leg + ".png"}/>
+                        <div id="skin-left-leg" onClick={() => this.changeSelectedPart("leftLeg")}>
+                            <img className="skin-part-texture" src={"./img/" + this.state.skin.leftLeg + ".png"}/>
                         </div>
-                        <div id="skin-right-leg" onClick={() => this.changeSelectedPart("leg")}>
-                            <img className="skin-part-texture" src={"./img/" + this.state.skin.leg + ".png"}/>
+                        <div id="skin-right-leg" onClick={() => this.changeSelectedPart(this.state.newVersion ? "rightLeg" : "leftLeg")}>
+                            <img className={"skin-part-texture texture-mirrored"} src={"./img/" + (this.state.newVersion ? this.state.skin.rightLeg : this.state.skin.leftLeg) + ".png"}/>
                         </div>
                     </div>
                 </div>
@@ -99,16 +120,16 @@ class App extends React.Component{
     }
 }
 
-const getTextures = () => {
-
-};
+// const getTextures = () => {
+//
+// };
 
 const getLocalTextures = () => {
     return({
-        head: ["head1", "head2"],
-        body: ["body1", "body2"],
-        hands: ["hand1", "hand2"],
-        legs: ["leg1", "leg2"]
+        head: ["head1", "head2", "head3", "head4", "head5"],
+        body: ["body1", "body2", "body3", "body4", "body5"],
+        hands: ["hand1", "hand2", "hand3", "hand4", "hand5"],
+        legs: ["leg1", "leg2",  "leg3",  "leg4",  "leg5"]
     })
 };
 
