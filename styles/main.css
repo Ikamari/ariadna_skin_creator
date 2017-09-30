@@ -89,8 +89,13 @@
 }
 
 .skin-elements-element{
+    display: flex;
     width: 50px;
     height: 50px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
     transition-duration: 0.3s;
 }
 
@@ -99,9 +104,9 @@
 }
 
 .skin-elements-element-icon{
-    max-width: 20px;
+    height: inherit;
+    width: auto;
+    max-width: 40px;
     max-height: 40px;
-    width: 300%;
-    height: 300%;
     image-rendering: pixelated;
 }
