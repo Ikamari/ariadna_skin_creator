@@ -78,3 +78,30 @@
     height: inherit;
     image-rendering: pixelated;
 }
+
+#skin-elements{
+    width: 600px;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    border: 2px black solid;
+}
+
+.skin-elements-element{
+    width: 50px;
+    height: 50px;
+    transition-duration: 0.3s;
+}
+
+.skin-elements-element:hover{
+    background-color: lightskyblue;
+}
+
+.skin-elements-element-icon{
+    max-width: 20px;
+    max-height: 40px;
+    width: 300%;
+    height: 300%;
+    image-rendering: pixelated;
+}
