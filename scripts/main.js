@@ -1,5 +1,3 @@
-//TODO: UI, 2D skin preview, check skin-preview
-
 class App extends React.Component{
     constructor(props){
         super(props);
@@ -119,10 +117,6 @@ class App extends React.Component{
         );
     }
 }
-
-// const getTextures = () => {
-//
-// };
 
 const getLocalTextures = () => {
     return({
