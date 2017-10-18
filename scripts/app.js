@@ -6,55 +6,76 @@ import Preview from './skin-preview.js';
 class App extends React.Component{
     constructor(props){
         super(props);
+
         this.state = {
-            skin:{
-                head: "head1",
-                headArmor: "",
-                body: "body1",
-                bodyArmor: "",
-                leftHand: "hand1",
-                leftHandArmor: "",
-                rightHand: "hand1",
-                rightHandArmor: "",
-                leftLeg: "leg1",
-                leftLegArmor: "",
-                rightLeg: "leg1",
-                rightLegArmor: ""
-            },
+            head: "head1",
+            headArmor: "",
+            body: "body1",
+            bodyArmor: "",
+            leftHand: "hand1",
+            leftHandArmor: "",
+            rightHand: "hand1",
+            rightHandArmor: "",
+            leftLeg: "leg1",
+            leftLegArmor: "",
+            rightLeg: "leg1",
+            rightLegArmor: "",
+
             headTextures: [],
+            headArmorTextures: [],
             bodyTextures: [],
+            bodyArmorTextures: [],
             handTextures: [],
+            handArmorTextures: [],
             legTextures: [],
-            currentLoadedTextures: [],
-            currentSelectedPart: "none",
-            newVersion: false
+            legArmorTextures: [],
+            currentLoadedTextures: []
+
+            newVersion: false,
+            currentSelectedPart: "none"
         };
 
-        this.handlePart = this.handlePart.bind(this)
+        this.handleStateData = this.handlePreviewData.bind(this);
+        this.changeSelectedPart = this.changeSelectedPart.bind(this);
     }
 
-    handleSkinParts(){
+    handleStateData(){
         return(this.state);
     }
 
-    handleVersion(){
-
+    changeSkinVersion(){
+        if(this.state.globals.newVersion){
+            this.setState({globals: { newVersion: false }})
+        } else {
+            this.setState({globals: { newVersion: true }})
+        }
     }
 
-    changeSkinVersion(){
-        if(this.state.newVersion){
-            this.setState({newVersion: false})
-        } else {
-            this.setState({newVersion: true})
+    changeSelectedPart(partName){
+        let needeedTextures;
+        let newState =
+        switch(partName){
+            case "head": {needeedTextures = this.state.textures.headTextures; break}
+            case "body": {needeedTextures = this.state.textures.bodyTextures; break}
+            case "leftHand": {needeedTextures = this.state.textures.handTextures; break}
+            case "rightHand": {needeedTextures = this.state.textures.handTextures; break}
+            case "leftLeg": {needeedTextures = this.state.textures.legTextures; break}
+            case "rightLeg": {needeedTextures = this.state.textures.legTextures; break}
         }
+        this.setState({
+            textures: {currentLoadedTextures: needeedTextures},
+            globals: this.state.globals{currentSelectedPart = partName}
+        })
     }
 
     distributeTextureNames(textures){
         this.setState({
-            headTextures: textures.head,
-            bodyTextures: textures.body,
-            handTextures: textures.hands,
-            legTextures: textures.legs
+            textures: {
+                headTextures: textures.head,
+                bodyTextures: textures.body,
+                handTextures: textures.hands,
+                legTextures: textures.legs
+            }
         })
     }
 
@@ -66,12 +87,25 @@ class App extends React.Component{
     render(){
         return(
             <div>
-                <p> Selected part: {this.state.currentSelectedPart}</p>
-                <p> Selected version: {this.state.newVersion ? "new" : "old"}</p>
+                <p> Selected part: {this.state.globals.currentSelectedPart}</p>
+                <p> Selected version: {this.state.globals.newVersion ? "new" : "old"}</p>
                 <button onClick={() => this.changeSkinVersion()}>Change version</button>
-                <Preview handler = {this.handlePart}/>
-                <Preview handler = {this.handlePart}/>
-                <Menu/>
+                <Preview
+                    side = "front"
+                    skin = {this.handlePreviewData()}
+                    globals = {this.handleGlobalData()}
+                    changeSelectedPart = {this.changeSelectedPart}
+                />
+                <Preview
+                    side = "back"
+                    skin = {this.handlePreviewData()}
+                    globals = {this.handleGlobalData()}
+                    changeSelectedPart = {this.changeSelectedPart}
+                />
+                <Menu
+                    textures = {this.handlePreviewData()}
+                    globals = {this.handleGlobalData()}
+                />
             </div>
         )
     }
