@@ -29,7 +29,7 @@ class App extends React.Component{
             handArmorTextures: [],
             legTextures: [],
             legArmorTextures: [],
-            currentLoadedTextures: []
+            currentLoadedTextures: [],
 
             newVersion: false,
             currentSelectedPart: "none"
@@ -53,7 +53,7 @@ class App extends React.Component{
 
     changeSelectedPart(partName){
         let needeedTextures;
-        let newState =
+
         switch(partName){
             case "head": {needeedTextures = this.state.textures.headTextures; break}
             case "body": {needeedTextures = this.state.textures.bodyTextures; break}
@@ -64,7 +64,6 @@ class App extends React.Component{
         }
         this.setState({
             textures: {currentLoadedTextures: needeedTextures},
-            globals: this.state.globals{currentSelectedPart = partName}
         })
     }
 
