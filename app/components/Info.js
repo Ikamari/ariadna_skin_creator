@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 class Info extends Component {
     render() {
-        const { version } = this.props.other;
+        const { format } = this.props.other;
         const { skinVersion, selectedPart, armorLayer } = this.props.skin;
 
         //TODO: display more data from storage

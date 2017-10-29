@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 export default class Settings extends Component {
     render() {
         //TODO: normal styles, export button
+        console.log("Drew control panel component");
+
         return(
             <div className="control-panel">
                 <button className="control-panel-button">Формат</button>
