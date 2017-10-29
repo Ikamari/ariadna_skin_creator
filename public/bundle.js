@@ -21286,24 +21286,24 @@ var Preview = function (_Component) {
         value: function skin(side) {
             return _react2.default.createElement(
                 'div',
-                { className: 'skin-preview' },
+                { className: 'side-preview' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'skin-preview-top' },
+                    { className: 'preview-top-part' },
                     _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side })
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'skin-preview-middle' },
-                    _react2.default.createElement(_SkinPart2.default, { part: 'hand', side: side }),
+                    { className: 'preview-middle-part' },
+                    _react2.default.createElement(_SkinPart2.default, { pair: 'left', part: 'hand', side: side }),
                     _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side }),
-                    _react2.default.createElement(_SkinPart2.default, { part: 'hand', side: side })
+                    _react2.default.createElement(_SkinPart2.default, { pair: 'right', part: 'hand', side: side })
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'skin-preview-bottom' },
-                    _react2.default.createElement(_SkinPart2.default, { part: 'leg', side: side }),
-                    _react2.default.createElement(_SkinPart2.default, { part: 'leg', side: side })
+                    { className: 'preview-bottom-part' },
+                    _react2.default.createElement(_SkinPart2.default, { pair: 'left', part: 'leg', side: side }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: 'right', part: 'leg', side: side })
                 )
             );
         }
@@ -21341,6 +21341,22 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _HeadPart = __webpack_require__(38);
+
+var _HeadPart2 = _interopRequireDefault(_HeadPart);
+
+var _BodyPart = __webpack_require__(39);
+
+var _BodyPart2 = _interopRequireDefault(_BodyPart);
+
+var _HandPart = __webpack_require__(40);
+
+var _HandPart2 = _interopRequireDefault(_HandPart);
+
+var _LegPart = __webpack_require__(41);
+
+var _LegPart2 = _interopRequireDefault(_LegPart);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21348,14 +21364,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 //Skin parts
-// import HeadPart from './skin-parts/HeadPart'
-// import BodyPart from './skin-parts/BodyPart'
-// import HandPart from './skin-parts/HandPart'
-// import LegPart from './skin-parts/LegPart'
 
-//TODO: Back side support
 
 var Preview = function (_Component) {
     _inherits(Preview, _Component);
@@ -21367,14 +21377,23 @@ var Preview = function (_Component) {
     }
 
     _createClass(Preview, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             var requiredPart = this.props.part;
             var requiredSide = this.props.side;
+            var requiredPairPart = this.props.pair;
 
-            console.log("Drawed " + requiredPart + "." + requiredSide);
+            var className = this.props.pair ? "preview-" + requiredPairPart + '-' + requiredPart : "preview-" + requiredPart;
+            className += " preview-part";
 
-            return _react2.default.createElement("canvas", { className: "skin-" + requiredPart + "-part" });
+            console.log("Made div for " + requiredPart + "." + requiredSide);
+
+            //TODO: onClick event + redux
+            return _react2.default.createElement(
+                'div',
+                { className: className },
+                requiredPart === "head" ? _react2.default.createElement(_HeadPart2.default, { side: requiredSide }) : requiredPart === "body" ? _react2.default.createElement(_BodyPart2.default, { side: requiredSide }) : requiredPart === "hand" ? _react2.default.createElement(_HandPart2.default, { side: requiredSide }) : _react2.default.createElement(_LegPart2.default, { side: requiredSide })
+            );
         }
     }]);
 
@@ -21400,6 +21419,8 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _PalettePart = __webpack_require__(42);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21407,8 +21428,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import PalettePart from 'PalettePart'
 
 var Palette = function (_Component) {
     _inherits(Palette, _Component);
@@ -21534,6 +21553,132 @@ var Debug = function (_Component) {
 }(_react.Component);
 
 exports.default = Debug;
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+    return _react2.default.createElement(
+        'div',
+        null,
+        'head'
+    );
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+    return _react2.default.createElement(
+        'div',
+        null,
+        'body'
+    );
+};
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+    return _react2.default.createElement(
+        'div',
+        null,
+        'hand'
+    );
+};
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+    return _react2.default.createElement(
+        'div',
+        null,
+        'leg'
+    );
+};
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.PalettePart = undefined;
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PalettePart = exports.PalettePart = function PalettePart() {
+    return _react2.default.createElement(
+        'div',
+        null,
+        'Palette part'
+    );
+};
 
 /***/ })
 /******/ ]);

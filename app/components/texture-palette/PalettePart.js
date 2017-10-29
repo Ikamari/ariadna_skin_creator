@@ -1,3 +1,8 @@
-/**
- * Created by Ikamari on 23.10.2017.
- */
+import React from 'react';
+
+export const PalettePart = () => (
+    <div>
+        Palette part
+    </div>
+);
+

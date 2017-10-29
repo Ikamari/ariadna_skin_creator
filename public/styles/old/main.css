@@ -1,0 +1,117 @@
+#skin-preview-front, #skin-preview-back{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#skin-middle, #skin-bottom{
+    display: inline-flex;
+    align-items: center;
+}
+
+#skin-middle{
+    margin: -2px 0;
+}
+
+#skin-head, #skin-body, #skin-left-hand, #skin-right-hand, #skin-left-leg, #skin-right-leg{
+    border: 2px black solid;
+    outline: 0 solid rgba(0,0,0,0.0);
+    transition-duration: 0.2s;
+}
+
+#skin-head{
+    width: 80px;
+    height: 80px;
+    border-bottom: none;
+    margin: -2px 0;
+}
+
+#skin-body{
+    width: 80px;
+    height: 140px;
+    border: none;
+}
+
+#skin-left-hand, #skin-right-hand{
+    width: 40px;
+    height: 140px;
+}
+
+#skin-left-hand{
+    border: 2px black solid;
+    border-right: none;
+}
+
+#skin-right-hand{
+    border: 2px black solid;
+    border-left: none;
+}
+
+#skin-left-leg, #skin-right-leg{
+    width: 40px;
+    height: 140px;
+}
+
+#skin-left-leg{
+    border: 2px black solid;
+    border-top: none;
+    border-right: none;
+}
+
+#skin-right-leg{
+    border: 2px black solid;
+    border-top: none;
+    border-left: none;
+}
+
+#skin-body:hover, #skin-head:hover, #skin-left-hand:hover, #skin-left-leg:hover, #skin-right-hand:hover, #skin-right-leg:hover{
+    outline: 4px solid rgba(0,0,0,0.5);
+    z-index: 1;
+}
+
+.skin-part-active{
+    outline: 2px solid rgba(0,0,0,0.5);
+}
+
+.skin-part-texture{
+    width: inherit;
+    height: inherit;
+    image-rendering: pixelated;
+}
+
+#skin-elements{
+    width: 600px;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    border: 2px black solid;
+}
+
+.skin-elements-element{
+    display: flex;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    transition-duration: 0.3s;
+}
+
+.skin-elements-element:hover{
+    background-color: lightskyblue;
+}
+
+.skin-elements-element-icon{
+    height: inherit;
+    width: auto;
+    max-width: 40px;
+    max-height: 40px;
+    image-rendering: pixelated;
+}
+
+.texture-mirrored{
+    transform: scaleX(-1);
+}
+
