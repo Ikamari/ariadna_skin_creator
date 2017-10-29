@@ -5,16 +5,16 @@ import { connect } from 'react-redux';
 
 class Info extends Component {
     render() {
-        const { format } = this.props.other;
-        const { skinVersion, selectedPart, armorLayer } = this.props.skin;
+        const { version } = this.props.other;
+        const { isNewFormat, selectedPart, armorLayer } = this.props.skin;
 
         //TODO: display more data from storage
         console.log("Drew info component");
 
         return(
             <div className="app-data">
-                <span>Версия: {format}</span><br/>
-                <span>Формат: {format ? 'новый' : 'старый'}</span>
+                <span>Версия: {version}</span><br/>
+                <span>Формат: {isNewFormat ? 'новый' : 'старый'}</span>
                 <span>Текущий слой: {armorLayer ? 'верхний ("броня")' : 'основной'}</span>
                 <span>Текущая часть: {selectedPart}</span>
             </div>

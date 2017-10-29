@@ -113,7 +113,7 @@
 
 .control-panel-button {
     height: 30px;
-    width: 120px;
+    width: 165px;
     border: none;
     border-radius: 8px;
     outline: none;
@@ -124,15 +124,18 @@
     color: white;
     background-color: rebeccapurple;
     cursor: pointer;
-    transition-duration: 0.5s;
+    transition-duration: 0.4s;
 }
 
 .control-panel-button:hover {
-
+    box-shadow: 0 0 12px #dd43ff;
 }
 
 .control-panel-button:active {
-
+    box-shadow: 0 0 12px rebeccapurple;
+    color: black;
+    background-color: white;
+    transition-duration: 0.2s;
 }
 
 /*** Palette ***/
