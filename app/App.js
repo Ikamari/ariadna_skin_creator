@@ -1,22 +1,23 @@
 //React
 import React, { Component } from 'react';
-//App
+//Components
 import Preview from './components/skin-preview/Preview';
 import Palette from './components/texture-palette/Palette';
 import Settings from './components/ControlPanel';
-//Redux
-import { connect } from 'react-redux';
-//Other
-import Debug from './Debug';
+import Info from './components/Info';
 
 export default class App extends Component {
     render() {
+        console.log("Made div for all components");
+
         return(
-            <div>
-                <Debug/>
+            <div className="app">
                 <Preview/>
-                <Palette/>
-                <Settings/>
+                <div className="menu">
+                    <Palette/>
+                    <Settings/>
+                    <Info/>
+                </div>
             </div>
         )
     }

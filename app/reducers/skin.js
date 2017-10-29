@@ -1,19 +1,16 @@
 const initialState = {
-    isNewVersion: false,
+    isNewFormat: false,
     selectedPart: "none",
     armorLayer: false,
-    selectedTextures: {
-        head: ["default-head", null],
-        body: ["default-body", null],
-        leftHand: ["default-hand", null],
-        rightHand: ["default-hand", null],
-        leftLeg: ["default-leg", null],
-        rightLeg: ["default-leg", null]
-    }
 };
 
-const skin = (state = initialState) => (
-    state
-);
+const skin = (state = initialState, action) => {
+    switch(action.type) {
+        case "CHANGE_FORMAT":
+            return {...state, isNewFormat: action.payload};
+        default:
+            return state
+    }
+};
 
 export default skin
