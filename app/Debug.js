@@ -1,11 +1,24 @@
-import React, {Component, PropTypes} from 'react'
+//React
+import React, { Component } from 'react';
+//Redux
+import { connect } from 'react-redux';
 
-export default class Debug extends Component {
+class Debug extends Component {
     render() {
         return(
-            <div>
-                Debug
+            <div className="app-data">
+                <span>Версия: {this.props.version}</span>
+                <span>Выбранная часть: {this.props.selectedPart}</span>
+                <span>Выбранный слой: {this.props.armorLayer ? 'верхний ("броня")' : 'основной'}</span>
             </div>
         )
     }
 }
+
+const mapStateToProps = state => ({
+    version: state.version,
+    selectedPart: state.selectedPart,
+    armorLayer: state.armorLayer
+});
+
+export default connect(mapStateToProps)(Debug)
