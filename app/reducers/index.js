@@ -1,11 +1,10 @@
-const initialState = {
-    version: "0.1v",
-    selectedPart: "none",
-    armorLayer: false
-};
+//Redux
+import { combineReducers } from 'redux'
+//Reducers
+import skin from './skin'
+import other from './other'
 
-const userstate = (state = initialState) => (
-    state
-);
-
-export default userstate
+export default combineReducers({
+    skin,
+    other
+})

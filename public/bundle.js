@@ -21523,6 +21523,13 @@ var Debug = function (_Component) {
     _createClass(Debug, [{
         key: 'render',
         value: function render() {
+            var version = this.props.other.version;
+            var _props$skin = this.props.skin,
+                skinVersion = _props$skin.skinVersion,
+                selectedPart = _props$skin.selectedPart,
+                armorLayer = _props$skin.armorLayer;
+
+
             return _react2.default.createElement(
                 'div',
                 { className: 'app-data' },
@@ -21530,19 +21537,25 @@ var Debug = function (_Component) {
                     'span',
                     null,
                     '\u0412\u0435\u0440\u0441\u0438\u044F: ',
-                    this.props.version
+                    version
+                ),
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    '\u0412\u0435\u0440\u0441\u0438\u044F \u0441\u043A\u0438\u043D\u0430: ',
+                    skinVersion ? 'новая' : 'старая'
                 ),
                 _react2.default.createElement(
                     'span',
                     null,
                     '\u0412\u044B\u0431\u0440\u0430\u043D\u043D\u0430\u044F \u0447\u0430\u0441\u0442\u044C: ',
-                    this.props.selectedPart
+                    selectedPart
                 ),
                 _react2.default.createElement(
                     'span',
                     null,
                     '\u0412\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u0439 \u0441\u043B\u043E\u0439: ',
-                    this.props.armorLayer ? 'верхний ("броня")' : 'основной'
+                    armorLayer ? 'верхний ("броня")' : 'основной'
                 )
             );
         }
@@ -21553,9 +21566,8 @@ var Debug = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        version: state.version,
-        selectedPart: state.selectedPart,
-        armorLayer: state.armorLayer
+        other: state.other,
+        skin: state.skin
     };
 };
 
@@ -24010,18 +24022,76 @@ exports.default = configureStore;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _redux = __webpack_require__(45);
+
+var _skin = __webpack_require__(86);
+
+var _skin2 = _interopRequireDefault(_skin);
+
+var _other = __webpack_require__(87);
+
+var _other2 = _interopRequireDefault(_other);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//Reducers
+exports.default = (0, _redux.combineReducers)({
+    skin: _skin2.default,
+    other: _other2.default
+}); //Redux
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 var initialState = {
-    version: "0.1v",
+    isNewVersion: false,
     selectedPart: "none",
-    armorLayer: false
+    armorLayer: false,
+    selectedTextures: {
+        head: ["default-head", null],
+        body: ["default-body", null],
+        leftHand: ["default-hand", null],
+        rightHand: ["default-hand", null],
+        leftLeg: ["default-leg", null],
+        rightLeg: ["default-leg", null]
+    }
 };
 
-var userstate = function userstate() {
+var skin = function skin() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
     return state;
 };
 
-exports.default = userstate;
+exports.default = skin;
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var initialState = {
+    version: "0.1.1"
+};
+
+var other = function other() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+    return state;
+};
+
+exports.default = other;
 
 /***/ })
 /******/ ]);
