@@ -1,11 +1,11 @@
 const initialState = {
     selectedTextures: {
-        head: ["default-head", null],
-        body: ["default-body", null],
-        leftHand: ["default-hand", null],
-        rightHand: ["default-hand", null],
-        leftLeg: ["default-leg", null],
-        rightLeg: ["default-leg", null]
+        'head': ["default-head", null],
+        'body': ["default-body", null],
+        'left-hand': ["default-hand", null],
+        'right-hand': ["default-hand", null],
+        'left-leg': ["default-leg", null],
+        'right-leg': ["default-leg", null]
     }
 };
 

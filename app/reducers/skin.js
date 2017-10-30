@@ -10,6 +10,8 @@ const skin = (state = initialState, action) => {
             return {...state, isNewFormat: action.payload};
         case "CHANGE_LAYER":
             return {...state, armorLayer: action.payload};
+        case "SELECT_PART":
+            return {...state, selectedPart: action.payload};
         default:
             return state
     }

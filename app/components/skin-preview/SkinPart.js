@@ -1,28 +1,40 @@
-import React, {Component, PropTypes} from 'react';
+//React
+import React, { Component } from 'react';
+//Redux
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 //Skin parts
 import HeadPart from './skin-parts/HeadPart';
 import BodyPart from './skin-parts/BodyPart';
 import HandPart from './skin-parts/HandPart';
 import LegPart from './skin-parts/LegPart';
+//Actions
+import * as skinActions from '../../actions/skinActions'
 
-export default class Preview extends Component {
+class Preview extends Component {
     render() {
-        let requiredPart = this.props.part;
-        let requiredSide = this.props.side;
-        let requiredPairPart = this.props.pair;
+        const { part, side }  = this.props;
+        const { selectSkinPart } = this.props.skinActions;
+        const pairPart  = this.props.pair;
 
-        let className = this.props.pair ? "preview-" + requiredPairPart + '-' + requiredPart : "preview-" + requiredPart;
-        className += " preview-part";
+        const partName = (pairPart ? (side === "front" ? pairPart + "-" : (pairPart === "left" ? "right-" : "left-")) : "") + part;
+        const partClassName = "preview-" + (this.props.pair ? pairPart + '-' + part : part) + " preview-part";
 
-        console.log("Made div for " + requiredPart + "." + requiredSide);
+        console.log("Made div for " + part + "." + side);
 
         //TODO: onClick event + redux
         return(
-            <div className={className}>{
-                (requiredPart === "head") ? <HeadPart side={requiredSide}/> :
-                    (requiredPart === "body") ? <BodyPart side={requiredSide}/> :
-                        (requiredPart === "hand") ? <HandPart side={requiredSide}/> : <LegPart side={requiredSide}/>
+            <div className={partClassName} onClick={() => selectSkinPart(partName)}>{
+                (part=== "head") ? <HeadPart side={side}/> :
+                    (part=== "body") ? <BodyPart side={side}/> :
+                        (part=== "hand") ? <HandPart side={side}/> : <LegPart side={side}/>
             }</div>
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+    skinActions: bindActionCreators(skinActions, dispatch)
+});
+
+export default connect(null , mapDispatchToProps)(Preview)
