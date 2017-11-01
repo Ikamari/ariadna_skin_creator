@@ -3,12 +3,15 @@ import React, { Component } from 'react';
 //Redux
 import { connect } from 'react-redux';
 
+const PartInfo = (partName, array) => (
+    <span key={partName}>{partName + ': [' + array[partName][0] + ', ' + array[partName][1] + ']'}</span>
+);
+
 class Info extends Component {
     render() {
         const { version } = this.props.other;
         const { isNewFormat, selectedPart, armorLayer } = this.props.skin;
-
-        //TODO: display more data from storage
+        const selectedTextures = this.props.selectedTextures.selectedTextures;
         console.log("Drew info component");
 
         return(
@@ -16,7 +19,8 @@ class Info extends Component {
                 <span>Версия: {version}</span><br/>
                 <span>Формат: {isNewFormat ? 'новый' : 'старый'}</span>
                 <span>Текущий слой: {armorLayer ? 'верхний ("броня")' : 'основной'}</span>
-                <span>Текущая часть: {selectedPart}</span>
+                <span>Текущая часть: {selectedPart}</span><br/>
+                {Object.keys(selectedTextures).map((key) => PartInfo(key, selectedTextures))}
             </div>
         )
     }
@@ -24,7 +28,8 @@ class Info extends Component {
 
 const mapStateToProps = state => ({
     other: state.other,
-    skin: state.skin
+    skin: state.skin,
+    selectedTextures: state.selectedTextures
 });
 
 export default connect(mapStateToProps)(Info)
