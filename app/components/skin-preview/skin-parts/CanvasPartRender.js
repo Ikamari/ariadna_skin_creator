@@ -23,11 +23,13 @@ class CanvasRender extends Component {
         }
     }
 
-    componentDidMount() {
+    drawElement() {
         const { partName, layer, side } = this.props;
         const folderName = this.getFolderName(partName);
-        const selectedTextures = this.props.selectedTextures.selectedTextures;
+        const selectedTextures = this.props.selectedTextures;
         const canvasProps = this.getCanvasProps(folderName, side);
+
+        console.log("Drew " + partName + " using canvas");
 
         if(selectedTextures[partName][layer] !== null) {
             let canvasElement = this.refs.renderedPart;
@@ -48,9 +50,29 @@ class CanvasRender extends Component {
                     canvasProps.dHeight
                 );
             };
-            partTexture.src = 'img/' + folderName + '/' + selectedTextures[partName][layer] + '.png';
+            console.log(selectedTextures[partName][layer]);
+            partTexture.src = 'img/' + folderName + '/' + selectedTextures[partName][layer];
+            context.setTransform(1, 0, 0, 1, 0, 0);
+        } else {
+            let canvasElement = this.refs.renderedPart;
+            let context = canvasElement.getContext('2d');
+            context.imageSmoothingEnabled = false;
+            context.clearRect(
+                    0,
+                    0,
+                    canvasProps.dWidth,
+                    canvasProps.dHeight,
+            );
             context.setTransform(1, 0, 0, 1, 0, 0);
         }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        this.drawElement();
+    }
+
+    componentDidMount() {
+        this.drawElement();
     }
 
     render() {
@@ -60,7 +82,7 @@ class CanvasRender extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     selectedTextures: state.selectedTextures
 });
 

@@ -58,9 +58,14 @@
     z-index: 1;
 }
 
+.preview-part:hover {
+    z-index: 3;
+    opacity: 0.75;
+}
+
 .preview-part:active {
     z-index: 3;
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 .preview-head {
@@ -146,7 +151,10 @@
 
 /*** Palette ***/
 
-/*** Canvas ***/
+/*** Test ***/
 
-.renderedPart {
+.test {
+    height: 100px;
+    width: 100px;
+    margin: 0 -200px;
 }

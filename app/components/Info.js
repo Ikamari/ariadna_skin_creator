@@ -11,7 +11,7 @@ class Info extends Component {
     render() {
         const { version } = this.props.other;
         const { isNewFormat, selectedPart, armorLayer } = this.props.skin;
-        const selectedTextures = this.props.selectedTextures.selectedTextures;
+        const selectedTextures = this.props.selectedTextures;
         console.log("Drew info component");
 
         return(

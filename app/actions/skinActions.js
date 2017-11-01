@@ -12,4 +12,3 @@ export const selectSkinPart = (part) => ({
     type: "SELECT_PART",
     payload: part
 });
-
