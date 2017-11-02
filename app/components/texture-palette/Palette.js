@@ -25,6 +25,7 @@ class Palette extends Component {
                 key={textureName + "Preview"}
                 textureName={textureName}
                 partName={partName}
+                simplifiedPartName={simplifiedPartName}
                 onClick={() => {
                     let partLayerToChange = selectedTextures[partName];
                     partLayerToChange[Number(layer)] = textureName;

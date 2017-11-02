@@ -18,9 +18,9 @@ export default class CanvasRender extends Component {
     }
 
     drawElement() {
-        const { partName, textureName } = this.props;
+        const { partName, textureName, simplifiedPartName } = this.props;
         const selectedTextures = this.props.selectedTextures;
-        const canvasProps = this.getCanvasProps(partName);
+        const canvasProps = this.getCanvasProps(simplifiedPartName);
         
         let canvasElement = this.refs.renderedElement;
         let context = canvasElement.getContext('2d');
@@ -41,7 +41,7 @@ export default class CanvasRender extends Component {
             );
         };
         
-        elementTexture.src = 'img/' + partName + '/' + textureName;
+        elementTexture.src = 'img/' + simplifiedPartName + '/' + textureName;
         context.setTransform(1, 0, 0, 1, 0, 0);
     }
 
