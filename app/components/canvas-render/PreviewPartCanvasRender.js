@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 //Redux
 import { connect } from 'react-redux';
 //Skin parts
-import { headPart } from './HeadPart'
-import { bodyPart } from './BodyPart'
-import { handPart } from './HandPart'
-import { legPart } from './LegPart'
+import { headPart } from './parts/HeadPart'
+import { bodyPart } from './parts/BodyPart'
+import { handPart } from './parts/HandPart'
+import { legPart } from './parts/LegPart'
 
 class CanvasRender extends Component {
     getFolderName(partName) {

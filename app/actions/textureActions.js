@@ -1,4 +1,4 @@
 export const getTexturesFromServer = (textures) => ({
-    type: "GET_TEXTURES",
+    type: "LOAD_TEXTURES",
     payload: textures
 });

@@ -18,6 +18,8 @@ const selectedTextures = (state = initialState, action) => {
     switch(action.type){
         case "REMOVE_LAYER_TEXTURE":
             return {...state, [action.payload.part]: action.payload.layer};
+        case "SELECT_LAYER_TEXTURE":
+            return {...state, [action.payload.part]: action.payload.layer};
         default:
             return state;
     }

@@ -6,11 +6,11 @@ export const removeLayerTexture = (part, layer) => ({
     }
 });
 
-export const selectLayerTexture = (part, name) => ({
+export const selectLayerTexture = (part, layer) => ({
     type: "SELECT_LAYER_TEXTURE",
     payload: {
         "part": part,
-        "textureName": name
+        "textureName": layer
     }
 });
 

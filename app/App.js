@@ -18,8 +18,9 @@ class App extends Component {
         const { getTexturesFromServer } = this.props.textureActions;
         axios("http://ariadna.skins.back/handleTextures.php")
             .then((response) => {
-                getTexturesFromServer(response.data);
                 console.log("Successfully loaded texture names");
+                console.log(response.data);
+                getTexturesFromServer(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -29,6 +30,7 @@ class App extends Component {
     render() {
         console.log("Made div for all components");
         this.loadTextures();
+        console.log(axios.onUploadProgress);
 
         return(
             <div className="app">

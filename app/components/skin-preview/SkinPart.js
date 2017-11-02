@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //Skin parts
-import RenderPart from './skin-parts/CanvasPartRender';
+import RenderPart from '../canvas-render/PreviewPartCanvasRender';
 //Actions
 import * as skinActions from '../../actions/skinActions'
 
