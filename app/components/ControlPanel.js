@@ -1,17 +1,17 @@
 //React
 import React, { Component } from 'react';
 //Redux
-import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //Actions
-import * as skinActions from '../actions/skinActions'
-import * as selectedTexturesActions from '../actions/selectedTexturesActions'
+import * as skinActions from '../actions/skinActions';
+import * as selectedTexturesActions from '../actions/selectedTexturesActions';
 
 class Settings extends Component {
     render() {
         const { selectedPart, isNewFormat, armorLayer } = this.props.skin;
         const { changeSkinFormat, changeSkinLayer } = this.props.skinActions;
-        const { removeSkinPart } = this.props.selectedTexturesActions;
+        const { removeLayerTexture } = this.props.selectedTexturesActions;
 
         //TODO: export and delete part button
         console.log("Drew control panel component");
@@ -24,7 +24,7 @@ class Settings extends Component {
                     let partLayerToRemove = this.props.selectedTextures[selectedPart];
                     partLayerToRemove[Number(armorLayer)] = null;
                     console.log(partLayerToRemove);
-                    removeSkinPart(selectedPart, partLayerToRemove);
+                    removeLayerTexture(selectedPart, partLayerToRemove);
                 }}>Убрать текстуру</button>
                 <button className="control-panel-button" >Экспорт скина</button>
             </div>
