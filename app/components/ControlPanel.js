@@ -20,15 +20,21 @@ class Settings extends Component {
             <div className="control-panel">
                 <button className="control-panel-button" onClick = {() => changeSkinFormat(isNewFormat)}>Переключить формат</button>
                 <button className="control-panel-button" onClick = {() => changeSkinLayer(armorLayer)}>Переключить слой</button>
-                <button className="control-panel-button" onClick = {() => removeSkinPart(selectedPart, armorLayer)}>Убрать текстуру</button>
-                <button className="control-panel-button" >Экспорт</button>
+                <button className="control-panel-button" onClick = {() => {
+                    let partLayerToRemove = this.props.selectedTextures[selectedPart];
+                    partLayerToRemove[Number(armorLayer)] = null;
+                    console.log(partLayerToRemove);
+                    removeSkinPart(selectedPart, partLayerToRemove);
+                }}>Убрать текстуру</button>
+                <button className="control-panel-button" >Экспорт скина</button>
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    skin: state.skin
+    skin: state.skin,
+    selectedTextures: state.selectedTextures
 });
 
 const mapDispatchToProps = (dispatch) => ({

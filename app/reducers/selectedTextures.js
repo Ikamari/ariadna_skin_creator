@@ -1,5 +1,5 @@
 const initialState = {
-        'head': ["default-head.png", null],
+        'head': ["default-head.png", "test.png"],
         'body': ["default-body.png", null],
         'left-hand': ["default-hand.png", null],
         'right-hand': ["default-hand.png", null],
@@ -16,8 +16,8 @@ const initialState = {
 
 const selectedTextures = (state = initialState, action) => {
     switch(action.type){
-        case "REMOVE_TEXTURE":
-            return {...state, [action.payload.part]: [null, null]};
+        case "REMOVE_LAYER_TEXTURE":
+            return {...state, [action.payload.part]: action.payload.layer};
         default:
             return state;
     }

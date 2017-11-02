@@ -1,5 +1,5 @@
 export const removeSkinPart = (part, layer) => ({
-    type: "REMOVE_TEXTURE",
+    type: "REMOVE_LAYER_TEXTURE",
     payload: {
         "part": part,
         "layer": layer
