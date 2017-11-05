@@ -24,9 +24,11 @@ export default class CanvasRender extends Component {
         
         let canvasElement = this.refs.renderedElement;
         let context = canvasElement.getContext('2d');
-        context.imageSmoothingEnabled = false;
         let elementTexture = new Image();
-        context.scale(-1, 1);
+        context.canvas.width  = canvasProps.dWidth;
+        context.canvas.height = canvasProps.dHeight;
+        context.imageSmoothingEnabled = false;
+
         elementTexture.onload = function () {
             context.drawImage(
                 elementTexture,
@@ -42,7 +44,6 @@ export default class CanvasRender extends Component {
         };
         
         elementTexture.src = 'img/' + simplifiedPartName + '/' + textureName;
-        context.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     componentDidUpdate(prevProps, prevState) {

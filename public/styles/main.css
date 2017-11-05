@@ -43,17 +43,16 @@
     align-items: center;
 }
 
-.preview-middle-part {
-    /*margin: -2px 0;*/
-}
-
 /*** Preview parts ***/
 
 .preview-part {
-    /*border: 2px black solid;*/
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /*overflow: hidden;*/
     background-image: url('../img/no-texture.png');
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 1);
     transition-duration: 0.2s;
     z-index: 1;
 }
@@ -72,7 +71,7 @@
     width: 80px;
     height: 80px;
     border-bottom: none;
-    /*margin: -2px 0;*/
+    z-index: 3;
 }
 
 .preview-body {
@@ -87,28 +86,10 @@
     height: 140px;
 }
 
-/*.preview-left-hand {*/
-    /*border-right: none;*/
-/*}*/
-
-/*.preview-right-hand {*/
-    /*border-left: none;*/
-/*}*/
-
 .preview-left-leg, .preview-right-leg{
     width: 40px;
     height: 140px;
 }
-
-/*.preview-left-leg {*/
-    /*border-top: none;*/
-    /*border-right: none;*/
-/*}*/
-
-/*.preview-right-leg {*/
-    /*border-top: none;*/
-    /*border-left: none;*/
-/*}*/
 
 .mirrored {
     transform: scaleX(-1);
@@ -166,4 +147,10 @@
     margin: 10px;
     border: 1px solid rebeccapurple;
     box-shadow: 0 0 12px rebeccapurple;
+}
+
+/*** Canvas ***/
+
+.renderedPart {
+    position: absolute;
 }

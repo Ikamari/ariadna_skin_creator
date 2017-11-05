@@ -6,24 +6,23 @@ import { connect } from 'react-redux';
 //Skin parts
 import RenderPart from '../canvas-render/PreviewPartCanvasRender';
 //Actions
-import * as skinActions from '../../actions/skinActions'
+import * as skinActions from '../../actions/skinActions';
 
 class Preview extends Component {
-
     render() {
-        const { part, side }  = this.props;
+        const { part, side, partName }  = this.props;
         const { selectSkinPart } = this.props.skinActions;
-        const pairPart  = this.props.pair;
+        const pairPart = this.props.pair;
 
-        const partName = (pairPart ? (side === "front" ? pairPart + "-" : (pairPart === "left" ? "right-" : "left-")) : "") + part;
-        let partClassName = "preview-" + (this.props.pair ? pairPart + '-' + part : part) + " preview-part ";
-        partClassName += this.props.pair ? ((pairPart === "right" && side === "front") || (pairPart === "left" && side === "back")) ? "mirrored" : "" : "";
+        let partClassName = "preview-" + partName + " preview-part";
+        partClassName += pairPart ? (pairPart === "right" ? " mirrored" : "" ) : "";
 
         console.log("Made div for " + part + "." + side);
 
         return(
             <div className={partClassName} onClick={() => selectSkinPart(partName)}>
                 <RenderPart side = {side} partName = {partName} layer={0}/>
+                <RenderPart side = {side} partName = {partName} layer={1} pairPart={pairPart ? pairPart : ""}/>
             </div>
         )
     }

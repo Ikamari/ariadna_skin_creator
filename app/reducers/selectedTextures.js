@@ -1,10 +1,10 @@
 const initialState = {
-        'head': ["default-head.png", "test.png"],
-        'body': ["default-body.png", null],
-        'left-hand': ["default-hand.png", null],
-        'right-hand': ["default-hand.png", null],
-        'left-leg': ["default-leg.png", null],
-        'right-leg': ["default-leg.png", null]
+        'head': ["layer_test_head1.png", "layer_test_head2.png"],
+        'body': ["layer_test_body1.png", "layer_test_body2.png"],
+        'left-hand': ["layer_test_hand1.png", "layer_test_hand2.png"],
+        'right-hand': ["layer_test_hand1.png", "layer_test_hand2.png"],
+        'left-leg': ["layer_test_leg1.png", "layer_test_leg2.png"],
+        'right-leg': ["layer_test_leg1.png", "layer_test_leg2.png"]
 
         // 'head': [null, null],
         // 'body': [null, null],
