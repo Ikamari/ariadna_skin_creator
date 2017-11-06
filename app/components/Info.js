@@ -4,7 +4,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 const PartInfo = (partName, array) => (
-    <span key={partName}>{partName + ': [' + array[partName][0] + ', ' + array[partName][1] + ']'}</span>
+    <span key={partName}>
+        {partName + ': [' + array[partName][0] + ', ' + array[partName][1] + ']'}
+    </span>
 );
 
 class Info extends Component {
@@ -14,6 +16,7 @@ class Info extends Component {
         const selectedTextures = this.props.selectedTextures;
         console.log("Drew info component");
 
+        console.log(selectedTextures);
         return(
             <div className="app-data">
                 <span>Версия: {version}</span><br/>

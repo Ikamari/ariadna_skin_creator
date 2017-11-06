@@ -14,16 +14,15 @@ class CanvasRender extends Component {
     }
 
     getCanvasProps(folderName, side, layer) {
-        const { pairPart } = this.props;
         switch(folderName) {
             case "head":
                 return headPart(side, false, layer);
             case "body":
                 return bodyPart(side, false, layer);
             case "hand":
-                return handPart(side, false, layer, pairPart);
+                return handPart(side, false, layer);
             case "leg":
-                return legPart(side, false, layer, pairPart);
+                return legPart(side, false, layer);
             default:
                 console.log("Woops! You're broke canvas render!")
         }

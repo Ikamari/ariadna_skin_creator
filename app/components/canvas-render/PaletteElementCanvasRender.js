@@ -17,21 +17,11 @@ export default class CanvasRender extends Component {
         }
     }
 
-    drawElement() {
-        const { partName, textureName, simplifiedPartName } = this.props;
-        const selectedTextures = this.props.selectedTextures;
-        const canvasProps = this.getCanvasProps(simplifiedPartName);
-        
-        let canvasElement = this.refs.renderedElement;
-        let context = canvasElement.getContext('2d');
-        let elementTexture = new Image();
-        context.canvas.width  = canvasProps.dWidth;
-        context.canvas.height = canvasProps.dHeight;
-        context.imageSmoothingEnabled = false;
-
-        elementTexture.onload = function () {
+    drawTexture(context, canvasProps, simplifiedPartName, textureName) {
+        let partTexture = new Image();
+        partTexture.onload = () => {
             context.drawImage(
-                elementTexture,
+                partTexture,
                 canvasProps.posX,
                 canvasProps.posY,
                 canvasProps.sWidth,
@@ -42,23 +32,36 @@ export default class CanvasRender extends Component {
                 canvasProps.dHeight
             );
         };
+
+        partTexture.src = 'img/' + simplifiedPartName + '/' + textureName;
+    }
+
+
+    renderCanvas() {
+        const { partName, textureName, simplifiedPartName } = this.props;
+        const canvasProps = this.getCanvasProps(simplifiedPartName);
         
-        elementTexture.src = 'img/' + simplifiedPartName + '/' + textureName;
+        let canvasElement = this.refs.renderedElement;
+        let context = canvasElement.getContext('2d');
+
+        context.canvas.width  = canvasProps.dWidth;
+        context.canvas.height = canvasProps.dHeight;
+        context.imageSmoothingEnabled = false;
+
+        this.drawTexture(context, canvasProps, simplifiedPartName, textureName);
     }
 
     componentDidUpdate(prevProps, prevState) {
-        this.drawElement();
+        this.renderCanvas();
     }
 
     componentDidMount() {
-        this.drawElement();
+        this.renderCanvas();
     }
 
     render() {
         return(
-            <div className="paletteElement">
-                <canvas ref="renderedElement"/>
-            </div>
+            <canvas ref="renderedElement"/>
         )
     }
 }

@@ -10,7 +10,7 @@ export const selectLayerTexture = (part, layer) => ({
     type: "SELECT_LAYER_TEXTURE",
     payload: {
         "part": part,
-        "textureName": layer
+        "layer": layer
     }
 });
 

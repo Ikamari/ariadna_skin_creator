@@ -20,18 +20,24 @@ class Palette extends Component {
         const { selectLayerTexture } = this.props.selectedTexturesActions;
 
         return(
+            <div
+                key = {textureName + simplifiedPartName}
+                className="paletteElement"
+                onClick={() => {
+                    let partLayerToChange = selectedTextures[partName];
+                    partLayerToChange[Number(layer)] = textureName;
+                    console.log(partName, partLayerToChange);
+                    selectLayerTexture(partName, partLayerToChange);
+                }}
+            >
             <RenderElement
                 className="paletteElement"
                 key={textureName + "Preview"}
                 textureName={textureName}
                 partName={partName}
                 simplifiedPartName={simplifiedPartName}
-                onClick={() => {
-                    let partLayerToChange = selectedTextures[partName];
-                    partLayerToChange[Number(layer)] = textureName;
-                    selectLayerTexture(partName, partLayerToChange);
-                }}
             />
+            </div>
         );
     }
 

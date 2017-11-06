@@ -1,7 +1,7 @@
 //React
 import React from 'react';
 
-export const bodyPart = (side, isPaletteElement = false, isArmor = false) => ({
+export const bodyPart = (side, isPaletteElement = false, isArmor = false, pairPart = null) => ({
     posX: side === "front" ? 4 : 16,
     posY: 4,
     sWidth: 8,

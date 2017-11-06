@@ -13,7 +13,7 @@ export default class Preview extends Component {
                 <div className="preview-middle-part">
                     <SkinPart pair={side === "front" ? "left" : "right"} part="hand" side={side} partName={side === "front" ? "left-hand" : "right-hand"}/>
                     <SkinPart part="body" side={side} partName="body"/>
-                    <SkinPart pair={side === "front" ? "right" : "left"} part="hand" side={side} partName={side === "front" ? "right-hand" : "left-hand"}/>
+                    <SkinPart pair={side === "front" ? "right" : "left"}     part="hand" side={side} partName={side === "front" ? "right-hand" : "left-hand"}/>
                 </div>
                 <div className="preview-bottom-part">
                     <SkinPart pair={side === "front" ? "left" : "right"} part="leg" side={side}  partName={side === "front" ? "left-leg" : "right-leg"}/>
