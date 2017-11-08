@@ -276,7 +276,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 var bind = __webpack_require__(37);
-var isBuffer = __webpack_require__(100);
+var isBuffer = __webpack_require__(101);
 
 /*global toString:true*/
 
@@ -1194,7 +1194,7 @@ function isPlainObject(value) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var normalizeHeaderName = __webpack_require__(102);
+var normalizeHeaderName = __webpack_require__(103);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -2564,12 +2564,12 @@ module.exports = function bind(fn, thisArg) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var settle = __webpack_require__(103);
-var buildURL = __webpack_require__(105);
-var parseHeaders = __webpack_require__(106);
-var isURLSameOrigin = __webpack_require__(107);
+var settle = __webpack_require__(104);
+var buildURL = __webpack_require__(106);
+var parseHeaders = __webpack_require__(107);
+var isURLSameOrigin = __webpack_require__(108);
 var createError = __webpack_require__(39);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(108);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(109);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -2667,7 +2667,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(109);
+      var cookies = __webpack_require__(110);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -2752,7 +2752,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(104);
+var enhanceError = __webpack_require__(105);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -24356,15 +24356,21 @@ var _textures = __webpack_require__(89);
 
 var _textures2 = _interopRequireDefault(_textures);
 
+var _skinExport = __webpack_require__(119);
+
+var _skinExport2 = _interopRequireDefault(_skinExport);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//Reducers
+//Redux
 exports.default = (0, _redux.combineReducers)({
     skin: _skin2.default,
     other: _other2.default,
     selectedTextures: _selectedTextures2.default,
-    textures: _textures2.default
-}); //Redux
+    textures: _textures2.default,
+    skinExport: _skinExport2.default
+});
+//Reducers
 
 /***/ }),
 /* 86 */
@@ -24414,7 +24420,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var initialState = {
-    version: "0.3"
+    version: "0.3.1"
 };
 
 var other = function other() {
@@ -24542,9 +24548,13 @@ var _Info = __webpack_require__(97);
 
 var _Info2 = _interopRequireDefault(_Info);
 
-var _TextureLoader = __webpack_require__(118);
+var _SkinExport = __webpack_require__(122);
 
-var _textureActions = __webpack_require__(117);
+var _SkinExport2 = _interopRequireDefault(_SkinExport);
+
+var _TextureLoader = __webpack_require__(98);
+
+var _textureActions = __webpack_require__(118);
 
 var textureActions = _interopRequireWildcard(_textureActions);
 
@@ -24588,7 +24598,8 @@ var App = function (_Component) {
                     _react2.default.createElement(_Palette2.default, null),
                     _react2.default.createElement(_ControlPanel2.default, null),
                     _react2.default.createElement(_Info2.default, null)
-                )
+                ),
+                _react2.default.createElement(_SkinExport2.default, null)
             );
         }
     }]);
@@ -25191,6 +25202,10 @@ var _selectedTexturesActions = __webpack_require__(36);
 
 var selectedTexturesActions = _interopRequireWildcard(_selectedTexturesActions);
 
+var _exportActions = __webpack_require__(120);
+
+var exportActions = _interopRequireWildcard(_exportActions);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -25228,6 +25243,7 @@ var Settings = function (_Component) {
                 changeSkinFormat = _props$skinActions.changeSkinFormat,
                 changeSkinLayer = _props$skinActions.changeSkinLayer;
             var removeLayerTexture = this.props.selectedTexturesActions.removeLayerTexture;
+            var doSkinExport = this.props.exportActions.doSkinExport;
 
             //TODO: export and delete part button
 
@@ -25262,7 +25278,9 @@ var Settings = function (_Component) {
                 ),
                 _react2.default.createElement(
                     'button',
-                    { className: 'control-panel-button' },
+                    { className: 'control-panel-button', onClick: function onClick() {
+                            return doSkinExport();
+                        } },
                     '\u042D\u043A\u0441\u043F\u043E\u0440\u0442 \u0441\u043A\u0438\u043D\u0430'
                 )
             );
@@ -25282,7 +25300,8 @@ var mapStateToProps = function mapStateToProps(state) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch),
-        selectedTexturesActions: (0, _redux.bindActionCreators)(selectedTexturesActions, dispatch)
+        selectedTexturesActions: (0, _redux.bindActionCreators)(selectedTexturesActions, dispatch),
+        exportActions: (0, _redux.bindActionCreators)(exportActions, dispatch)
     };
 };
 
@@ -25401,10 +25420,47 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps)(Info);
 /* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(99);
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.loadTextures = undefined;
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _axios = __webpack_require__(99);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//React
+var loadTextures = exports.loadTextures = function loadTextures(props) {
+    var getTexturesFromServer = props.getTexturesFromServer;
+
+    (0, _axios2.default)("http://ariadna.skins.back/handleTextures.php").then(function (response) {
+        console.log("Successfully loaded texture names from server");
+        console.log(response.data);
+        getTexturesFromServer(response.data);
+    }).catch(function (error) {
+        console.log("Can't load texture names from server");
+        console.log(error);
+    });
+};
+//Axios
 
 /***/ }),
 /* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(100);
+
+/***/ }),
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25412,7 +25468,7 @@ module.exports = __webpack_require__(99);
 
 var utils = __webpack_require__(2);
 var bind = __webpack_require__(37);
-var Axios = __webpack_require__(101);
+var Axios = __webpack_require__(102);
 var defaults = __webpack_require__(16);
 
 /**
@@ -25447,14 +25503,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(41);
-axios.CancelToken = __webpack_require__(115);
+axios.CancelToken = __webpack_require__(116);
 axios.isCancel = __webpack_require__(40);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(116);
+axios.spread = __webpack_require__(117);
 
 module.exports = axios;
 
@@ -25463,7 +25519,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports) {
 
 /*!
@@ -25490,7 +25546,7 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25498,8 +25554,8 @@ function isSlowBuffer (obj) {
 
 var defaults = __webpack_require__(16);
 var utils = __webpack_require__(2);
-var InterceptorManager = __webpack_require__(110);
-var dispatchRequest = __webpack_require__(111);
+var InterceptorManager = __webpack_require__(111);
+var dispatchRequest = __webpack_require__(112);
 
 /**
  * Create a new instance of Axios
@@ -25576,7 +25632,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25595,7 +25651,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25628,7 +25684,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25656,7 +25712,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25731,7 +25787,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25791,7 +25847,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25866,7 +25922,7 @@ module.exports = (
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25909,7 +25965,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25969,7 +26025,7 @@ module.exports = (
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26028,18 +26084,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var transformData = __webpack_require__(112);
+var transformData = __webpack_require__(113);
 var isCancel = __webpack_require__(40);
 var defaults = __webpack_require__(16);
-var isAbsoluteURL = __webpack_require__(113);
-var combineURLs = __webpack_require__(114);
+var isAbsoluteURL = __webpack_require__(114);
+var combineURLs = __webpack_require__(115);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -26121,7 +26177,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26148,7 +26204,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26169,7 +26225,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26190,7 +26246,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26254,7 +26310,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26288,7 +26344,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26305,7 +26361,7 @@ var getTexturesFromServer = exports.getTexturesFromServer = function getTextures
 };
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26314,32 +26370,263 @@ var getTexturesFromServer = exports.getTexturesFromServer = function getTextures
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.loadTextures = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var initialState = {
+    exportNeeded: false
+};
+
+var skinExport = function skinExport() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case "DO_EXPORT":
+            return _extends({}, state, { exportNeeded: true });
+        case "EXPORTED":
+            return _extends({}, state, { exportNeeded: false });
+        default:
+            return state;
+    }
+};
+
+exports.default = skinExport;
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var doSkinExport = exports.doSkinExport = function doSkinExport() {
+    return {
+        type: "DO_EXPORT"
+    };
+};
+
+var skinExportCompleted = exports.skinExportCompleted = function skinExportCompleted() {
+    return {
+        type: "EXPORTED"
+    };
+};
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.coordinates = undefined;
 
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _axios = __webpack_require__(98);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _axios2 = _interopRequireDefault(_axios);
+var coordinates = exports.coordinates = {
+    "head": [0, 0], // x and y on canvas (and skin too)
+    "head-armor": [32, 0],
+    "left-hand": [32, 48],
+    "left-hand-armor": [48, 48],
+    "body": [16, 16],
+    "body-armor": [16, 32],
+    "right-hand": [36, 16],
+    "right-hand-armor": [36, 32],
+    "left-leg": [16, 48],
+    "left-leg-armor": [0, 48],
+    "right-leg": [0, 16],
+    "right-leg-armor": [0, 32]
+}; //React
+
+/***/ }),
+/* 122 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _redux = __webpack_require__(6);
+
+var _reactRedux = __webpack_require__(5);
+
+var _OldLayout = __webpack_require__(123);
+
+var _NewLayout = __webpack_require__(124);
+
+var _exportActions = __webpack_require__(120);
+
+var exportActions = _interopRequireWildcard(_exportActions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
+
+//Layouts
+
+//Actions
+
+
+var SkinExport = function (_Component) {
+    _inherits(SkinExport, _Component);
+
+    function SkinExport() {
+        _classCallCheck(this, SkinExport);
+
+        return _possibleConstructorReturn(this, (SkinExport.__proto__ || Object.getPrototypeOf(SkinExport)).apply(this, arguments));
+    }
+
+    _createClass(SkinExport, [{
+        key: "drawSkinLayout",
+        value: function drawSkinLayout() {
+            var isNewFormat = this.props.skin.isNewFormat;
+            var skinExportCompleted = this.props.exportActions.skinExportCompleted;
+
+            var textures = this.props.selectedTextures;
+            var canvasElement = this.refs.layout;
+
+            console.log("Starting export...");
+
+            isNewFormat ? (0, _NewLayout.drawNewLayout)(canvasElement, textures) : (0, _OldLayout.drawOldLayout)(canvasElement, textures);
+            skinExportCompleted();
+        }
+    }, {
+        key: "componentDidUpdate",
+        value: function componentDidUpdate(prevProps, prevState) {
+            var exportNeeded = this.props.skinExport.exportNeeded;
+
+            exportNeeded ? this.drawSkinLayout() : null;
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var exportNeeded = this.props.skinExport.exportNeeded;
+
+
+            return _react2.default.createElement(
+                "div",
+                { className: "skin-layout" },
+                _react2.default.createElement("canvas", { ref: "layout" })
+            );
+        }
+    }]);
+
+    return SkinExport;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        skin: state.skin,
+        skinExport: state.skinExport,
+        selectedTextures: state.selectedTextures
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        exportActions: (0, _redux.bindActionCreators)(exportActions, dispatch)
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SkinExport);
+
+/***/ }),
+/* 123 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.drawOldLayout = undefined;
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _PartCoordinates = __webpack_require__(121);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //React
-var loadTextures = exports.loadTextures = function loadTextures(props) {
-    var getTexturesFromServer = props.getTexturesFromServer;
+var drawOldLayout = exports.drawOldLayout = function drawOldLayout(props) {};
+//Coordinates
 
-    (0, _axios2.default)("http://ariadna.skins.back/handleTextures.php").then(function (response) {
-        console.log("Successfully loaded texture names from server");
-        console.log(response.data);
-        getTexturesFromServer(response.data);
-    }).catch(function (error) {
-        console.log("Can't load texture names from server");
-        console.log(error);
+/***/ }),
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.drawNewLayout = undefined;
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _PartCoordinates = __webpack_require__(121);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//React
+var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement, textures) {
+    var context = canvasElement.getContext('2d');
+
+    var simplifyPartName = function simplifyPartName(partName) {
+        return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
+    };
+
+    var drawTexture = function drawTexture(simplifiedPartName, textureName, skinPart) {
+        var partTexture = new Image();
+        partTexture.onload = function () {
+            context.drawImage(partTexture, _PartCoordinates.coordinates[skinPart][0], _PartCoordinates.coordinates[skinPart][1]);
+        };
+        partTexture.src = 'img/' + simplifiedPartName + '/' + textureName;
+    };
+
+    context.canvas.width = 64;
+    context.canvas.height = 64;
+    context.imageSmoothingEnabled = false;
+
+    Object.keys(textures).map(function (key) {
+        drawTexture(simplifyPartName(key), textures[key][0], key);
+        drawTexture(simplifyPartName(key), textures[key][1], key + "-armor");
     });
 };
-//Axios
+//Coordinates
 
 /***/ })
 /******/ ]);

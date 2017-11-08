@@ -8,7 +8,8 @@ import Preview from './components/skin-preview/Preview';
 import Palette from './components/texture-palette/Palette';
 import Settings from './components/ControlPanel';
 import Info from './components/Info';
-import { loadTextures } from './TextureLoader'
+import SkinExport from  './components/skin-export/SkinExport';
+import { loadTextures } from './TextureLoader';
 //Actions
 import * as textureActions from './actions/textureActions';
 
@@ -23,6 +24,7 @@ class App extends Component {
                     <Settings/>
                     <Info/>
                 </div>
+                <SkinExport/>
             </div>
         )
     }
