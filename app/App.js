@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 //Components
 import Preview from './components/skin-preview/Preview';
-import Palette from './components/gui/Palette';
 import Settings from './components/ControlPanel';
-import Info from './components/gui/Info';
 import SkinExport from  './components/skin-export/SkinExport';
-import SkinPartSelectionButtons from './components/gui/SkinPartSelectionButtons';
-import SideControlButtons from './components/gui/SideControlButtons';
-import BottomControlButtons from './components/gui/BottomControlButtons';
+import Info from './components/controls/Info';
+import Palette from './components/controls/Palette';
+import SkinPartSelectionButtons from './components/controls/SkinPartSelectionButtons';
+import SideControlButtons from './components/controls/SideControlButtons';
+import BottomControlButtons from './components/controls/BottomControlButtons';
 import { loadTextures } from './TextureLoader';
 //Actions
 import * as textureActions from './actions/textureActions';
@@ -22,14 +22,15 @@ class App extends Component {
         return(
             <div className="app">
                 <Preview/>
-                <div className="menu">
-                    <Palette/>
-                    <Settings/>
+                <div className="controls">
+                    <SideControlButtons/>
+                    <div className="controls-middle">
+                        <SkinPartSelectionButtons/>
+                        <Palette/>
+                        <BottomControlButtons/>
+                    </div>
                     <Info/>
                 </div>
-                <SideControlButtons/>
-                <SkinPartSelectionButtons/>
-                <BottomControlButtons/>
                 <SkinExport/>
             </div>
         )

@@ -19,10 +19,10 @@ class Info extends Component {
         console.log(selectedTextures);
         return(
             <div className="app-data">
-                <span>Версия: {version}</span><br/>
-                <span>Формат: {isNewFormat ? 'новый' : 'старый'}</span>
-                <span>Текущий слой: {armorLayer ? 'верхний ("броня")' : 'основной'}</span>
-                <span>Текущая часть: {selectedPart}</span><br/>
+                {/*<span>Версия: {version}</span><br/>*/}
+                {/*<span>Формат: {isNewFormat ? 'новый' : 'старый'}</span>*/}
+                {/*<span>Текущий слой: {armorLayer ? 'верхний ("броня")' : 'основной'}</span>*/}
+                {/*<span>Текущая часть: {selectedPart}</span><br/>*/}
                 {Object.keys(selectedTextures).map((key) => PartInfo(key, selectedTextures))}
             </div>
         )

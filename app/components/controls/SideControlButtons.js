@@ -19,18 +19,21 @@ class SideControlButtons extends Component {
             <div className = "side-control-buttons">
                 <ControlButton
                     content = "Слой: Основной"
+                    style = "side-control-button"
                     activeContent = "Слой: Верхний"
                     activeEvent = {armorLayer}
                     onClickAction = {() => changeSkinLayer(armorLayer)}
                 />
                 <ControlButton
                     content = "Разметка: Старая"
+                    style = "side-control-button"
                     activeContent = "Разметка: Новая"
                     activeEvent = {isNewFormat}
                     onClickAction = {() => changeSkinFormat(isNewFormat)}
                 />
                 <ControlButton
                     content = "Убрать текстуру"
+                    style = "side-control-button"
                     onClickAction = {() => {
                         let partLayerToRemove = this.props.selectedTextures[selectedPart];
                         partLayerToRemove[Number(armorLayer)] = null;

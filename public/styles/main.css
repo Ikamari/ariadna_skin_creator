@@ -4,14 +4,6 @@
     width: 100%;
 }
 
-.app-data {
-    display: flex;
-    flex-direction: column;
-    font-size: 18px;
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    color: rebeccapurple;
-}
-
 .menu {
     display: flex;
     flex-direction: row;
@@ -97,20 +89,65 @@
 
 /*** Control panel ***/
 
-.control-panel {
+/*.control-panel {*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*margin: 50px;*/
+/*}*/
+
+/*.control-panel-button {*/
+    /*height: 30px;*/
+    /*width: 165px;*/
+    /*border: none;*/
+    /*border-radius: 8px;*/
+    /*outline: none;*/
+    /*margin: 4px 0;*/
+    /*font-size: 14px;*/
+    /*font-family: "Comic Sans MS", cursive, sans-serif;*/
+    /*text-align: center;*/
+    /*color: white;*/
+    /*background-color: rebeccapurple;*/
+    /*cursor: pointer;*/
+    /*transition-duration: 0.4s;*/
+/*}*/
+
+/*.control-panel-button:hover {*/
+    /*box-shadow: 0 0 12px #dd43ff;*/
+/*}*/
+
+/*.control-panel-button:active {*/
+    /*box-shadow: 0 0 12px rebeccapurple;*/
+    /*color: black;*/
+    /*background-color: white;*/
+    /*transition-duration: 0.2s;*/
+/*}*/
+
+/*** Controls ***/
+
+.controls {
     display: flex;
-    flex-direction: column;
-    margin: 50px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.control-panel-button {
+.controls-middle {
+    display: flex;
+    flex-direction: column;
+    width: 630px;
+}
+
+/*** Control buttons ***/
+
+.control-button {
     height: 30px;
     width: 165px;
-    border: none;
-    border-radius: 8px;
-    outline: none;
-    margin: 4px 0;
     font-size: 14px;
+    line-height: 30px;
     font-family: "Comic Sans MS", cursive, sans-serif;
     text-align: center;
     color: white;
@@ -119,29 +156,77 @@
     transition-duration: 0.4s;
 }
 
-.control-panel-button:hover {
-    box-shadow: 0 0 12px #dd43ff;
+.skin-part-selection-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 630px;
 }
 
-.control-panel-button:active {
-    box-shadow: 0 0 12px rebeccapurple;
-    color: black;
-    background-color: white;
-    transition-duration: 0.2s;
+.skin-part-selection-button {
+    width: 105px;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+}
+
+.skin-part-selection-button:first-child {
+    border: none;
+    border-right: 1px solid white;
+}
+
+.skin-part-selection-button:last-child {
+    border: none;
+    border-left: 1px solid white;
+}
+
+.bottom-control-buttons {
+    display: flex;
+    flex-direction: row;
+    width: 630px;
+}
+
+.bottom-control-button {
+    width: 210px;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+}
+
+.bottom-control-button:first-child {
+    border: none;
+    border-right: 1px solid white;
+}
+
+.bottom-control-button:last-child {
+    border: none;
+    border-left: 1px solid white;
+}
+
+.side-control-buttons {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 260px;
+}
+
+.side-control-button {
+    margin-right: 10px;
+    margin-bottom: 15px;
 }
 
 /*** Palette ***/
 
 .palette {
-    display: flex;
+    display: inline-flex;
+    flex-wrap: wrap;
     flex-direction: row;
     height: 250px;
-    width: 500px;
     border: 1px solid rebeccapurple;
-    box-shadow: 0 0 12px rebeccapurple;
+    /*box-shadow: 0 0 12px rebeccapurple;*/
 }
 
 .paletteElement {
+    display: inline-block;
     height: 80px;
     width: 80px;
     margin: 10px;
@@ -153,4 +238,16 @@
 
 .renderedPart {
     position: absolute;
+}
+
+/*** Other ***/
+
+.app-data {
+    display: inline-flex;
+    flex-direction: column;
+    width: 200px;
+    font-size: 18px;
+    margin-left: 10px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: rebeccapurple;
 }

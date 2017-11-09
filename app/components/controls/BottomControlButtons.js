@@ -16,14 +16,17 @@ class BottomControlButtons extends Component {
             <div className = "bottom-control-buttons">
                 <ControlButton
                     content = "Экспортировать"
+                    style = "bottom-control-button"
                     onClickAction = {() => doSkinExport()}
                 />
                 <ControlButton
                     content = "Подсказки"
+                    style = "bottom-control-button"
                     onClickAction = {() => {}}
                 />
                 <ControlButton
                     content = "Отладка (Куча текста)"
+                    style = "bottom-control-button"
                     onClickAction = {() => {}}
                 />
             </div>
