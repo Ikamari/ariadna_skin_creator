@@ -33,7 +33,7 @@ export default class CanvasRender extends Component {
             );
         };
 
-        partTexture.src = 'img/' + simplifiedPartName + '/' + textureName;
+        partTexture.src = 'img/' + (this.props.isArmor ? "armor/" : "main/") + simplifiedPartName + '/' + textureName;
     }
 
 

@@ -156,6 +156,10 @@
     transition-duration: 0.4s;
 }
 
+.control-button:hover {
+    background-color: mediumpurple;
+}
+
 .skin-part-selection-buttons {
     display: flex;
     flex-direction: row;
@@ -164,18 +168,7 @@
 
 .skin-part-selection-button {
     width: 105px;
-    border-right: 1px solid white;
-    border-left: 1px solid white;
-}
-
-.skin-part-selection-button:first-child {
-    border: none;
-    border-right: 1px solid white;
-}
-
-.skin-part-selection-button:last-child {
-    border: none;
-    border-left: 1px solid white;
+    outline: 2px solid white;
 }
 
 .bottom-control-buttons {
@@ -186,18 +179,7 @@
 
 .bottom-control-button {
     width: 210px;
-    border-right: 1px solid white;
-    border-left: 1px solid white;
-}
-
-.bottom-control-button:first-child {
-    border: none;
-    border-right: 1px solid white;
-}
-
-.bottom-control-button:last-child {
-    border: none;
-    border-left: 1px solid white;
+    outline: 2px solid white;
 }
 
 .side-control-buttons {
@@ -214,6 +196,20 @@
     margin-bottom: 15px;
 }
 
+/*** Control buttons - Special ***/
+
+.skin-part-selection-button-active {
+    background-color: darkviolet;
+}
+
+.skin-part-selection-button-active:hover {
+    background-color: darkviolet;
+}
+
+.delete-texture-button:hover {
+    background-color: darkred;
+}
+
 /*** Palette ***/
 
 .palette {
@@ -226,7 +222,10 @@
 }
 
 .paletteElement {
-    display: inline-block;
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
     height: 80px;
     width: 80px;
     margin: 10px;

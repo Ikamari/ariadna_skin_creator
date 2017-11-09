@@ -16,6 +16,7 @@ class Palette extends Component {
     showPaletteElement(textureName, simplifiedPartName) {
         const partName = this.props.skin.selectedPart;
         const layer = this.props.skin.armorLayer;
+        const isArmor = this.props.skin.armorLayer;
         const { selectedTextures } = this.props;
         const { selectLayerTexture } = this.props.selectedTexturesActions;
 
@@ -36,6 +37,7 @@ class Palette extends Component {
                 textureName={textureName}
                 partName={partName}
                 simplifiedPartName={simplifiedPartName}
+                isArmor={isArmor}
             />
             </div>
         );
@@ -43,11 +45,12 @@ class Palette extends Component {
 
     render() {
         const simplifiedPartName = this.simplifyPartName(this.props.skin.selectedPart);
+        const isArmor = this.props.skin.armorLayer;
         const textures = this.props.textures;
-
+        simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map((value) => console.log(Number(isArmor), value)) : null;
         return(
             <div className="palette">
-                {simplifiedPartName !== "none" ? textures[simplifiedPartName].map((value) => this.showPaletteElement(value, simplifiedPartName)) : null}
+                {simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map((value) => this.showPaletteElement(value, simplifiedPartName)) : null}
             </div>
         )
     }

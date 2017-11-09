@@ -33,7 +33,7 @@ class SideControlButtons extends Component {
                 />
                 <ControlButton
                     content = "Убрать текстуру"
-                    style = "side-control-button"
+                    style = "side-control-button delete-texture-button"
                     onClickAction = {() => {
                         let partLayerToRemove = this.props.selectedTextures[selectedPart];
                         partLayerToRemove[Number(armorLayer)] = null;

@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 
 const PartInfo = (partName, array) => (
     <span key={partName}>
-        {partName + ': [' + array[partName][0] + ', ' + array[partName][1] + ']'}
+        {partName + ':'}<br/>
+        {array[partName][0] ? array[partName][0] : ""}<br/>
+        {array[partName][1] ? array[partName][1] : ""}
     </span>
 );
 
