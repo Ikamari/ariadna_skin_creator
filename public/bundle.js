@@ -24771,8 +24771,7 @@ var App = function (_Component) {
                         _react2.default.createElement(_SkinPartSelectionButtons2.default, null),
                         _react2.default.createElement(_Palette2.default, null),
                         _react2.default.createElement(_BottomControlButtons2.default, null)
-                    ),
-                    _react2.default.createElement(_Info2.default, null)
+                    )
                 ),
                 _react2.default.createElement(_SkinExport2.default, null)
             );

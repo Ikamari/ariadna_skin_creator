@@ -127,9 +127,7 @@
 .controls {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
-    height: 400px;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -249,4 +247,31 @@
     margin-left: 10px;
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: rebeccapurple;
+}
+
+/*** Media ***/
+
+@media screen and (max-width: 1024px) {
+    .controls {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .side-control-buttons {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 630px;
+        height: 30px;
+        margin-bottom: 20px;
+    }
+
+    .side-control-button {
+        margin: 0;
+        outline: 2px solid white;
+        width: 210px;
+    }
 }

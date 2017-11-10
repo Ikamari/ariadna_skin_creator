@@ -29,8 +29,8 @@ class App extends Component {
                         <Palette/>
                         <BottomControlButtons/>
                     </div>
-                    <Info/>
                 </div>
+                {/*<Info/>*/}
                 <SkinExport/>
             </div>
         )
