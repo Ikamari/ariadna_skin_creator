@@ -11,7 +11,8 @@ import ControlButton from "./ControlButton";
 class SkinPartSelectionButtons extends Component {
     render() {
         const { selectSkinPart } = this.props.skinActions;
-        const { selectedPart } = this.props.skin;
+        const { selectedPart, isNewFormat, armorLayer } = this.props.skin;
+        const needToDisable = (!isNewFormat && armorLayer);
 
         return(
             <div className = "skin-part-selection-buttons">
@@ -24,38 +25,38 @@ class SkinPartSelectionButtons extends Component {
                 />
                 <ControlButton
                     content = "Торс"
-                    style = "skin-part-selection-button"
+                    style = {(needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button"}
                     activeEvent = {selectedPart === "body"}
                     activeStyle = "skin-part-selection-button-active"
-                    onClickAction = {() => selectSkinPart("body")}
+                    onClickAction = {!needToDisable ? () => selectSkinPart("body") : undefined}
                 />
                 <ControlButton
-                    content = "Л.Рука"
-                    style = "skin-part-selection-button"
+                    content = {isNewFormat ? "Л.Рука" : "-"}
+                    style = {(!isNewFormat ? "control-button-disabled" : " ") + " skin-part-selection-button"}
                     activeEvent = {selectedPart === "left-hand"}
                     activeStyle = "skin-part-selection-button-active"
-                    onClickAction = {() => selectSkinPart("left-hand")}
+                    onClickAction = {isNewFormat ? () => selectSkinPart("left-hand") : undefined}
                 />
                 <ControlButton
-                    content = "П.Рука"
-                    style = "skin-part-selection-button"
+                    content = {isNewFormat ? "П.Рука" : "Руки"}
+                    style = {(needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button"}
                     activeEvent = {selectedPart === "right-hand"}
                     activeStyle = "skin-part-selection-button-active"
-                    onClickAction = {() => selectSkinPart("right-hand")}
+                    onClickAction = {!needToDisable ? () => selectSkinPart("right-hand") : undefined}
                 />
                 <ControlButton
-                    content = "Л.Нога"
-                    style = "skin-part-selection-button"
+                    content = {isNewFormat ? "Л.Нога" : "-"}
+                    style = {(!isNewFormat ? "control-button-disabled" : " ") + " skin-part-selection-button"}
                     activeEvent = {selectedPart === "left-leg"}
                     activeStyle = "skin-part-selection-button-active"
-                    onClickAction = {() => selectSkinPart("left-leg")}
+                    onClickAction = {isNewFormat ? () => selectSkinPart("left-leg") : undefined}
                 />
                 <ControlButton
-                    content = "П.Нога"
-                    style = "skin-part-selection-button"
+                    content = {isNewFormat ? "П.Нога" : "Ноги"}
+                    style = {(needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button"}
                     activeEvent = {selectedPart === "right-leg"}
                     activeStyle = "skin-part-selection-button-active"
-                    onClickAction = {() => selectSkinPart("right-leg")}
+                    onClickAction = {!needToDisable ? () => selectSkinPart("right-leg") : undefined}
                 />
             </div>
         )

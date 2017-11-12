@@ -21,12 +21,12 @@ class BottomControlButtons extends Component {
                 />
                 <ControlButton
                     content = "Подсказки"
-                    style = "bottom-control-button"
+                    style = "bottom-control-button control-button-disabled"
                     onClickAction = {() => {}}
                 />
                 <ControlButton
                     content = "Отладка (Куча текста)"
-                    style = "bottom-control-button"
+                    style = "bottom-control-button control-button-disabled"
                     onClickAction = {() => {}}
                 />
             </div>

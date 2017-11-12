@@ -1,5 +1,5 @@
 const initialState = {
-    isNewFormat: false,
+    isNewFormat: true,
     selectedPart: "none",
     armorLayer: false,
 };

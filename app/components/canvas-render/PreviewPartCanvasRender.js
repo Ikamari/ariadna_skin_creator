@@ -45,7 +45,7 @@ class CanvasRender extends Component {
                 canvasProps.dHeight + (layer ? 20 : 0)
             );
         };
-        partTexture.src = 'img/' + folderName + '/' + selectedTextures[partName][layer];
+        partTexture.src = selectedTextures[partName][layer];
     }
 
     eraseTexture(context) {

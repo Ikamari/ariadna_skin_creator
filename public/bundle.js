@@ -24510,7 +24510,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
-    isNewFormat: false,
+    isNewFormat: true,
     selectedPart: "none",
     armorLayer: false
 };
@@ -24544,7 +24544,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var initialState = {
-    version: "0.3.3"
+    version: "0.4 - Alpha"
 };
 
 var other = function other() {
@@ -24713,9 +24713,9 @@ var _SkinPartSelectionButtons = __webpack_require__(105);
 
 var _SkinPartSelectionButtons2 = _interopRequireDefault(_SkinPartSelectionButtons);
 
-var _SideControlButtons = __webpack_require__(106);
+var _TopControlButtons = __webpack_require__(129);
 
-var _SideControlButtons2 = _interopRequireDefault(_SideControlButtons);
+var _TopControlButtons2 = _interopRequireDefault(_TopControlButtons);
 
 var _BottomControlButtons = __webpack_require__(107);
 
@@ -24764,7 +24764,7 @@ var App = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'controls' },
-                    _react2.default.createElement(_SideControlButtons2.default, null),
+                    _react2.default.createElement(_TopControlButtons2.default, null),
                     _react2.default.createElement(
                         'div',
                         { className: 'controls-middle' },
@@ -24806,6 +24806,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(3);
+
 var _SkinPart = __webpack_require__(96);
 
 var _SkinPart2 = _interopRequireDefault(_SkinPart);
@@ -24817,6 +24819,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
 
 //Components
 
@@ -24831,8 +24835,8 @@ var Preview = function (_Component) {
     }
 
     _createClass(Preview, [{
-        key: 'skin',
-        value: function skin(side) {
+        key: 'newFormatSkin',
+        value: function newFormatSkin(side) {
             return _react2.default.createElement(
                 'div',
                 { className: 'side-preview' },
@@ -24857,13 +24861,39 @@ var Preview = function (_Component) {
             );
         }
     }, {
+        key: 'oldFormatSkin',
+        value: function oldFormatSkin(side) {
+            return _react2.default.createElement(
+                'div',
+                { className: 'side-preview' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'preview-top-part' },
+                    _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side, partName: 'head' })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'preview-middle-part' },
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'hand', side: side, partName: 'right-hand' }),
+                    _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side, isOld: true, partName: 'body' }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'hand', side: side, partName: 'right-hand' })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'preview-bottom-part' },
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'leg', side: side, partName: 'right-leg' }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'leg', side: side, partName: 'right-leg' })
+                )
+            );
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 { className: 'preview' },
-                this.skin("front"),
-                this.skin("back")
+                this.props.format ? this.newFormatSkin("front") : this.oldFormatSkin("front"),
+                this.props.format ? this.newFormatSkin("back") : this.oldFormatSkin("back")
             );
         }
     }]);
@@ -24871,7 +24901,13 @@ var Preview = function (_Component) {
     return Preview;
 }(_react.Component);
 
-exports.default = Preview;
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        format: state.skin.isNewFormat
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Preview);
 
 /***/ }),
 /* 96 */
@@ -24950,7 +24986,7 @@ var Preview = function (_Component) {
                         return selectSkinPart(partName);
                     } },
                 _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 0 }),
-                _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 1, pairPart: pairPart ? pairPart : null })
+                this.props.isOld ? null : _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 1, pairPart: pairPart ? pairPart : null })
             );
         }
     }]);
@@ -25045,7 +25081,7 @@ var CanvasRender = function (_Component) {
             partTexture.onload = function () {
                 context.drawImage(partTexture, canvasProps.posX, canvasProps.posY, canvasProps.sWidth, canvasProps.sHeight, canvasProps.sliceX, canvasProps.sliceY, canvasProps.dWidth + (layer ? 20 : 0), canvasProps.dHeight + (layer ? 20 : 0));
             };
-            partTexture.src = 'img/' + folderName + '/' + selectedTextures[partName][layer];
+            partTexture.src = selectedTextures[partName][layer];
         }
     }, {
         key: 'eraseTexture',
@@ -25301,22 +25337,36 @@ var SkinExport = function (_Component) {
         key: "drawSkinLayout",
         value: function drawSkinLayout() {
             var isNewFormat = this.props.skin.isNewFormat;
-            var skinExportCompleted = this.props.exportActions.skinExportCompleted;
 
             var textures = this.props.selectedTextures;
             var canvasElement = this.refs.layout;
 
+            isNewFormat ? (0, _NewLayout.drawNewLayout)(canvasElement, textures) : (0, _OldLayout.drawOldLayout)(canvasElement, textures);
+        }
+    }, {
+        key: "exportSkinLayout",
+        value: function exportSkinLayout() {
+            var skinExportCompleted = this.props.exportActions.skinExportCompleted;
+
+            var canvasElement = this.refs.layout;
+
             console.log("Starting export...");
 
-            isNewFormat ? (0, _NewLayout.drawNewLayout)(canvasElement, textures) : (0, _OldLayout.drawOldLayout)(canvasElement, textures);
+            var link = this.refs.link;
+            link.href = canvasElement.toDataURL("image/png");
+            link.download = "skin.png";
+            link.click();
+
             skinExportCompleted();
+            console.log("Export completed...");
         }
     }, {
         key: "componentDidUpdate",
         value: function componentDidUpdate(prevProps, prevState) {
+            // this.refs.test.src = this.refs.layout.toDataURL("image/png");
             var exportNeeded = this.props.skinExport.exportNeeded;
 
-            exportNeeded ? this.drawSkinLayout() : null;
+            exportNeeded ? this.exportSkinLayout() : this.drawSkinLayout();
         }
     }, {
         key: "render",
@@ -25326,8 +25376,9 @@ var SkinExport = function (_Component) {
 
             return _react2.default.createElement(
                 "div",
-                { className: "skin-layout" },
-                _react2.default.createElement("canvas", { ref: "layout" })
+                { className: "skin-layout", style: { display: "none" } },
+                _react2.default.createElement("canvas", { ref: "layout" }),
+                _react2.default.createElement("a", { ref: "link" })
             );
         }
     }]);
@@ -25359,7 +25410,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 exports.drawOldLayout = undefined;
 
@@ -25372,7 +25423,32 @@ var _PartCoordinates = __webpack_require__(39);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //React
-var drawOldLayout = exports.drawOldLayout = function drawOldLayout(props) {};
+var drawOldLayout = exports.drawOldLayout = function drawOldLayout(canvasElement, textures) {
+    var context = canvasElement.getContext('2d');
+
+    var simplifyPartName = function simplifyPartName(partName) {
+        return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
+    };
+
+    var drawTexture = function drawTexture(simplifiedPartName, texturePath, skinPart) {
+        console.log(simplifiedPartName, texturePath, skinPart);
+        var partTexture = new Image();
+        partTexture.onload = function () {
+            context.drawImage(partTexture, _PartCoordinates.coordinates[skinPart][0], _PartCoordinates.coordinates[skinPart][1]);
+        };
+        partTexture.src = texturePath;
+    };
+
+    context.canvas.width = 64;
+    context.canvas.height = 32;
+    context.imageSmoothingEnabled = false;
+
+    Object.keys(textures).map(function (key) {
+        textures[key][0] ? drawTexture(simplifyPartName(key), textures[key][0], key) : undefined;
+    });
+
+    textures["head"][1] ? drawTexture("head", textures["head"][1], "head-armor") : undefined;
+};
 //Coordinates
 
 /***/ }),
@@ -25403,12 +25479,13 @@ var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement
         return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
     };
 
-    var drawTexture = function drawTexture(simplifiedPartName, textureName, skinPart) {
+    var drawTexture = function drawTexture(simplifiedPartName, texturePath, skinPart) {
+        console.log(simplifiedPartName, texturePath, skinPart);
         var partTexture = new Image();
         partTexture.onload = function () {
             context.drawImage(partTexture, _PartCoordinates.coordinates[skinPart][0], _PartCoordinates.coordinates[skinPart][1]);
         };
-        partTexture.src = 'img/' + simplifiedPartName + '/' + textureName;
+        partTexture.src = texturePath;
     };
 
     context.canvas.width = 64;
@@ -25416,8 +25493,8 @@ var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement
     context.imageSmoothingEnabled = false;
 
     Object.keys(textures).map(function (key) {
-        drawTexture(simplifyPartName(key), textures[key][0], key);
-        drawTexture(simplifyPartName(key), textures[key][1], key + "-armor");
+        textures[key][0] ? drawTexture(simplifyPartName(key), textures[key][0], key) : undefined;
+        textures[key][1] ? drawTexture(simplifyPartName(key), textures[key][1], key + "-armor") : undefined;
     });
 };
 //Coordinates
@@ -25578,6 +25655,7 @@ var Palette = function (_Component) {
             var selectedTextures = this.props.selectedTextures;
             var selectLayerTexture = this.props.selectedTexturesActions.selectLayerTexture;
 
+            var texturePath = './img/' + (isArmor ? 'armor/' : 'main/') + (simplifiedPartName + '/' + textureName);
 
             return _react2.default.createElement(
                 'div',
@@ -25586,7 +25664,7 @@ var Palette = function (_Component) {
                     className: 'paletteElement',
                     onClick: function onClick() {
                         var partLayerToChange = selectedTextures[partName];
-                        partLayerToChange[Number(layer)] = textureName;
+                        partLayerToChange[Number(layer)] = texturePath;
                         console.log(partName, partLayerToChange);
                         selectLayerTexture(partName, partLayerToChange);
                     }
@@ -25609,9 +25687,7 @@ var Palette = function (_Component) {
             var simplifiedPartName = this.simplifyPartName(this.props.skin.selectedPart);
             var isArmor = this.props.skin.armorLayer;
             var textures = this.props.textures;
-            simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map(function (value) {
-                return console.log(Number(isArmor), value);
-            }) : null;
+            // simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map((value) => console.log(Number(isArmor), value)) : null;
             return _react2.default.createElement(
                 'div',
                 { className: 'palette' },
@@ -25812,8 +25888,12 @@ var SkinPartSelectionButtons = function (_Component) {
         key: 'render',
         value: function render() {
             var selectSkinPart = this.props.skinActions.selectSkinPart;
-            var selectedPart = this.props.skin.selectedPart;
+            var _props$skin = this.props.skin,
+                selectedPart = _props$skin.selectedPart,
+                isNewFormat = _props$skin.isNewFormat,
+                armorLayer = _props$skin.armorLayer;
 
+            var needToDisable = !isNewFormat && armorLayer;
 
             return _react2.default.createElement(
                 'div',
@@ -25829,48 +25909,48 @@ var SkinPartSelectionButtons = function (_Component) {
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
                     content: '\u0422\u043E\u0440\u0441',
-                    style: 'skin-part-selection-button',
+                    style: (needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button",
                     activeEvent: selectedPart === "body",
                     activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: function onClickAction() {
+                    onClickAction: !needToDisable ? function () {
                         return selectSkinPart("body");
-                    }
+                    } : undefined
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u041B.\u0420\u0443\u043A\u0430',
-                    style: 'skin-part-selection-button',
+                    content: isNewFormat ? "Л.Рука" : "-",
+                    style: (!isNewFormat ? "control-button-disabled" : " ") + " skin-part-selection-button",
                     activeEvent: selectedPart === "left-hand",
                     activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: function onClickAction() {
+                    onClickAction: isNewFormat ? function () {
                         return selectSkinPart("left-hand");
-                    }
+                    } : undefined
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u041F.\u0420\u0443\u043A\u0430',
-                    style: 'skin-part-selection-button',
+                    content: isNewFormat ? "П.Рука" : "Руки",
+                    style: (needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button",
                     activeEvent: selectedPart === "right-hand",
                     activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: function onClickAction() {
+                    onClickAction: !needToDisable ? function () {
                         return selectSkinPart("right-hand");
-                    }
+                    } : undefined
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u041B.\u041D\u043E\u0433\u0430',
-                    style: 'skin-part-selection-button',
+                    content: isNewFormat ? "Л.Нога" : "-",
+                    style: (!isNewFormat ? "control-button-disabled" : " ") + " skin-part-selection-button",
                     activeEvent: selectedPart === "left-leg",
                     activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: function onClickAction() {
+                    onClickAction: isNewFormat ? function () {
                         return selectSkinPart("left-leg");
-                    }
+                    } : undefined
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u041F.\u041D\u043E\u0433\u0430',
-                    style: 'skin-part-selection-button',
+                    content: isNewFormat ? "П.Нога" : "Ноги",
+                    style: (needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button",
                     activeEvent: selectedPart === "right-leg",
                     activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: function onClickAction() {
+                    onClickAction: !needToDisable ? function () {
                         return selectSkinPart("right-leg");
-                    }
+                    } : undefined
                 })
             );
         }
@@ -25894,132 +25974,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SkinPartSelectionButtons);
 
 /***/ }),
-/* 106 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _redux = __webpack_require__(4);
-
-var _reactRedux = __webpack_require__(3);
-
-var _skinActions = __webpack_require__(10);
-
-var skinActions = _interopRequireWildcard(_skinActions);
-
-var _selectedTexturesActions = __webpack_require__(17);
-
-var selectedTexturesActions = _interopRequireWildcard(_selectedTexturesActions);
-
-var _ControlButton = __webpack_require__(19);
-
-var _ControlButton2 = _interopRequireDefault(_ControlButton);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
-
-//Redux
-
-//Actions
-
-//Button
-
-
-var SideControlButtons = function (_Component) {
-    _inherits(SideControlButtons, _Component);
-
-    function SideControlButtons() {
-        _classCallCheck(this, SideControlButtons);
-
-        return _possibleConstructorReturn(this, (SideControlButtons.__proto__ || Object.getPrototypeOf(SideControlButtons)).apply(this, arguments));
-    }
-
-    _createClass(SideControlButtons, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var _props$skin = this.props.skin,
-                selectedPart = _props$skin.selectedPart,
-                isNewFormat = _props$skin.isNewFormat,
-                armorLayer = _props$skin.armorLayer;
-            var _props$skinActions = this.props.skinActions,
-                changeSkinFormat = _props$skinActions.changeSkinFormat,
-                changeSkinLayer = _props$skinActions.changeSkinLayer;
-            var removeLayerTexture = this.props.selectedTexturesActions.removeLayerTexture;
-
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'side-control-buttons' },
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u0421\u043B\u043E\u0439: \u041E\u0441\u043D\u043E\u0432\u043D\u043E\u0439',
-                    style: 'side-control-button',
-                    activeContent: '\u0421\u043B\u043E\u0439: \u0412\u0435\u0440\u0445\u043D\u0438\u0439',
-                    activeEvent: armorLayer,
-                    onClickAction: function onClickAction() {
-                        return changeSkinLayer(armorLayer);
-                    }
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u0420\u0430\u0437\u043C\u0435\u0442\u043A\u0430: \u0421\u0442\u0430\u0440\u0430\u044F',
-                    style: 'side-control-button',
-                    activeContent: '\u0420\u0430\u0437\u043C\u0435\u0442\u043A\u0430: \u041D\u043E\u0432\u0430\u044F',
-                    activeEvent: isNewFormat,
-                    onClickAction: function onClickAction() {
-                        return changeSkinFormat(isNewFormat);
-                    }
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u0423\u0431\u0440\u0430\u0442\u044C \u0442\u0435\u043A\u0441\u0442\u0443\u0440\u0443',
-                    style: 'side-control-button delete-texture-button',
-                    onClickAction: function onClickAction() {
-                        var partLayerToRemove = _this2.props.selectedTextures[selectedPart];
-                        partLayerToRemove[Number(armorLayer)] = null;
-                        removeLayerTexture(selectedPart, partLayerToRemove);
-                    }
-                })
-            );
-        }
-    }]);
-
-    return SideControlButtons;
-}(_react.Component);
-
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        skin: state.skin
-    };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {
-        selectedTexturesActions: (0, _redux.bindActionCreators)(selectedTexturesActions, dispatch),
-        skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch)
-    };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SideControlButtons);
-
-/***/ }),
+/* 106 */,
 /* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26092,12 +26047,12 @@ var BottomControlButtons = function (_Component) {
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
                     content: '\u041F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0438',
-                    style: 'bottom-control-button',
+                    style: 'bottom-control-button control-button-disabled',
                     onClickAction: function onClickAction() {}
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
                     content: '\u041E\u0442\u043B\u0430\u0434\u043A\u0430 (\u041A\u0443\u0447\u0430 \u0442\u0435\u043A\u0441\u0442\u0430)',
-                    style: 'bottom-control-button',
+                    style: 'bottom-control-button control-button-disabled',
                     onClickAction: function onClickAction() {}
                 })
             );
@@ -27058,6 +27013,138 @@ var getTexturesFromServer = exports.getTexturesFromServer = function getTextures
         payload: textures
     };
 };
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _redux = __webpack_require__(4);
+
+var _reactRedux = __webpack_require__(3);
+
+var _skinActions = __webpack_require__(10);
+
+var skinActions = _interopRequireWildcard(_skinActions);
+
+var _selectedTexturesActions = __webpack_require__(17);
+
+var selectedTexturesActions = _interopRequireWildcard(_selectedTexturesActions);
+
+var _ControlButton = __webpack_require__(19);
+
+var _ControlButton2 = _interopRequireDefault(_ControlButton);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
+
+//Actions
+
+//Button
+
+
+var TopControlButtons = function (_Component) {
+    _inherits(TopControlButtons, _Component);
+
+    function TopControlButtons() {
+        _classCallCheck(this, TopControlButtons);
+
+        return _possibleConstructorReturn(this, (TopControlButtons.__proto__ || Object.getPrototypeOf(TopControlButtons)).apply(this, arguments));
+    }
+
+    _createClass(TopControlButtons, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var _props$skin = this.props.skin,
+                selectedPart = _props$skin.selectedPart,
+                isNewFormat = _props$skin.isNewFormat,
+                armorLayer = _props$skin.armorLayer;
+            var _props$skinActions = this.props.skinActions,
+                changeSkinFormat = _props$skinActions.changeSkinFormat,
+                changeSkinLayer = _props$skinActions.changeSkinLayer,
+                selectSkinPart = _props$skinActions.selectSkinPart;
+            var removeLayerTexture = this.props.selectedTexturesActions.removeLayerTexture;
+
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'top-control-buttons' },
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u0421\u043B\u043E\u0439: \u041E\u0441\u043D\u043E\u0432\u043D\u043E\u0439',
+                    style: 'top-control-button',
+                    activeContent: '\u0421\u043B\u043E\u0439: \u0412\u0435\u0440\u0445\u043D\u0438\u0439',
+                    activeEvent: armorLayer,
+                    onClickAction: function onClickAction() {
+                        !isNewFormat ? selectSkinPart("head") : undefined;
+                        changeSkinLayer(armorLayer);
+                    }
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u0420\u0430\u0437\u043C\u0435\u0442\u043A\u0430: \u0421\u0442\u0430\u0440\u0430\u044F',
+                    style: 'top-control-button',
+                    activeContent: '\u0420\u0430\u0437\u043C\u0435\u0442\u043A\u0430: \u041D\u043E\u0432\u0430\u044F',
+                    activeEvent: isNewFormat,
+                    onClickAction: function onClickAction() {
+                        isNewFormat && armorLayer ? selectSkinPart("head") : undefined;
+                        isNewFormat && selectedPart === "left-hand" ? selectSkinPart("right-hand") : undefined;
+                        isNewFormat && selectedPart === "left-leg" ? selectSkinPart("right-leg") : undefined;
+                        changeSkinFormat(isNewFormat);
+                    }
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u0423\u0431\u0440\u0430\u0442\u044C \u0442\u0435\u043A\u0441\u0442\u0443\u0440\u0443',
+                    style: 'top-control-button delete-texture-button',
+                    onClickAction: function onClickAction() {
+                        var partLayerToRemove = _this2.props.selectedTextures[selectedPart];
+                        partLayerToRemove[Number(armorLayer)] = null;
+                        removeLayerTexture(selectedPart, partLayerToRemove);
+                    }
+                })
+            );
+        }
+    }]);
+
+    return TopControlButtons;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        skin: state.skin,
+        selectedTextures: state.selectedTextures
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        selectedTexturesActions: (0, _redux.bindActionCreators)(selectedTexturesActions, dispatch),
+        skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch)
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TopControlButtons);
 
 /***/ })
 /******/ ]);

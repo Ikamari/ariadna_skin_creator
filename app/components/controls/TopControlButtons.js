@@ -9,31 +9,39 @@ import * as selectedTexturesActions from '../../actions/selectedTexturesActions'
 //Button
 import ControlButton from "./ControlButton";
 
-class SideControlButtons extends Component {
+class TopControlButtons extends Component {
     render() {
         const { selectedPart, isNewFormat, armorLayer } = this.props.skin;
-        const { changeSkinFormat, changeSkinLayer } = this.props.skinActions;
+        const { changeSkinFormat, changeSkinLayer, selectSkinPart } = this.props.skinActions;
         const { removeLayerTexture } = this.props.selectedTexturesActions;
 
         return(
-            <div className = "side-control-buttons">
+            <div className = "top-control-buttons">
                 <ControlButton
                     content = "Слой: Основной"
-                    style = "side-control-button"
+                    style = "top-control-button"
                     activeContent = "Слой: Верхний"
                     activeEvent = {armorLayer}
-                    onClickAction = {() => changeSkinLayer(armorLayer)}
+                    onClickAction = {() => {
+                        !isNewFormat ? selectSkinPart("head") : undefined;
+                        changeSkinLayer(armorLayer);
+                    }}
                 />
                 <ControlButton
                     content = "Разметка: Старая"
-                    style = "side-control-button"
+                    style = "top-control-button"
                     activeContent = "Разметка: Новая"
                     activeEvent = {isNewFormat}
-                    onClickAction = {() => changeSkinFormat(isNewFormat)}
+                    onClickAction = {() => {
+                        isNewFormat && armorLayer ? selectSkinPart("head") : undefined;
+                        isNewFormat &&  selectedPart === "left-hand" ? selectSkinPart("right-hand") : undefined;
+                        isNewFormat &&  selectedPart === "left-leg" ? selectSkinPart("right-leg") : undefined;
+                        changeSkinFormat(isNewFormat);
+                    }}
                 />
                 <ControlButton
                     content = "Убрать текстуру"
-                    style = "side-control-button delete-texture-button"
+                    style = "top-control-button delete-texture-button"
                     onClickAction = {() => {
                         let partLayerToRemove = this.props.selectedTextures[selectedPart];
                         partLayerToRemove[Number(armorLayer)] = null;
@@ -46,7 +54,8 @@ class SideControlButtons extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    skin: state.skin
+    skin: state.skin,
+    selectedTextures: state.selectedTextures
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -54,4 +63,4 @@ const mapDispatchToProps = (dispatch) => ({
     skinActions: bindActionCreators(skinActions, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SideControlButtons)
+export default connect(mapStateToProps, mapDispatchToProps)(TopControlButtons)

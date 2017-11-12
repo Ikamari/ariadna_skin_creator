@@ -19,6 +19,7 @@ class Palette extends Component {
         const isArmor = this.props.skin.armorLayer;
         const { selectedTextures } = this.props;
         const { selectLayerTexture } = this.props.selectedTexturesActions;
+        const texturePath = `./img/${isArmor? 'armor/' : 'main/'}${simplifiedPartName + '/' + textureName}`;
 
         return(
             <div
@@ -26,7 +27,7 @@ class Palette extends Component {
                 className="paletteElement"
                 onClick={() => {
                     let partLayerToChange = selectedTextures[partName];
-                    partLayerToChange[Number(layer)] = textureName;
+                    partLayerToChange[Number(layer)] = texturePath;
                     console.log(partName, partLayerToChange);
                     selectLayerTexture(partName, partLayerToChange);
                 }}
@@ -47,7 +48,7 @@ class Palette extends Component {
         const simplifiedPartName = this.simplifyPartName(this.props.skin.selectedPart);
         const isArmor = this.props.skin.armorLayer;
         const textures = this.props.textures;
-        simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map((value) => console.log(Number(isArmor), value)) : null;
+        // simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map((value) => console.log(Number(isArmor), value)) : null;
         return(
             <div className="palette">
                 {simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map((value) => this.showPaletteElement(value, simplifiedPartName)) : null}

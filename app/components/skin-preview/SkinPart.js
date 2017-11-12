@@ -22,7 +22,7 @@ class Preview extends Component {
         return(
             <div className={partClassName} onClick={() => selectSkinPart(partName)}>
                 <RenderPart side = {side} partName = {partName} layer={0}/>
-                <RenderPart side = {side} partName = {partName} layer={1} pairPart={pairPart ? pairPart : null}/>
+                {this.props.isOld ? null : <RenderPart side = {side} partName = {partName} layer={1} pairPart={pairPart ? pairPart : null}/>}
             </div>
         )
     }

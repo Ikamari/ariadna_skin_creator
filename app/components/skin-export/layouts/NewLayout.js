@@ -10,7 +10,8 @@ export const drawNewLayout = (canvasElement, textures) => {
         return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
     };
 
-    const drawTexture = (simplifiedPartName, textureName, skinPart) => {
+    const drawTexture = (simplifiedPartName, texturePath, skinPart) => {
+        console.log(simplifiedPartName, texturePath, skinPart);
         let partTexture = new Image();
         partTexture.onload = () => {
             context.drawImage(
@@ -19,7 +20,7 @@ export const drawNewLayout = (canvasElement, textures) => {
                 coordinates[skinPart][1]
             );
         };
-        partTexture.src = 'img/' + simplifiedPartName + '/' + textureName;
+        partTexture.src = texturePath;
     };
 
     context.canvas.width  = 64;
@@ -27,15 +28,17 @@ export const drawNewLayout = (canvasElement, textures) => {
     context.imageSmoothingEnabled = false;
 
     Object.keys(textures).map((key) => {
-        drawTexture(
+        textures[key][0] ?
+            drawTexture(
             simplifyPartName(key),
             textures[key][0],
             key
-        );
+        ) : undefined;
+        textures[key][1] ?
         drawTexture(
             simplifyPartName(key),
             textures[key][1],
             key + "-armor"
-        );
+        ) : undefined;
     })
 };

@@ -10,7 +10,7 @@ import SkinExport from  './components/skin-export/SkinExport';
 import Info from './components/controls/Info';
 import Palette from './components/controls/Palette';
 import SkinPartSelectionButtons from './components/controls/SkinPartSelectionButtons';
-import SideControlButtons from './components/controls/SideControlButtons';
+import TopControlButtons from './components/controls/TopControlButtons';
 import BottomControlButtons from './components/controls/BottomControlButtons';
 import { loadTextures } from './TextureLoader';
 //Actions
@@ -23,7 +23,7 @@ class App extends Component {
             <div className="app">
                 <Preview/>
                 <div className="controls">
-                    <SideControlButtons/>
+                    <TopControlButtons/>
                     <div className="controls-middle">
                         <SkinPartSelectionButtons/>
                         <Palette/>

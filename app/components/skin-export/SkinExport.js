@@ -12,27 +12,41 @@ import * as exportActions from "../../actions/exportActions";
 class SkinExport extends Component {
     drawSkinLayout() {
         const { isNewFormat } = this.props.skin;
-        const { skinExportCompleted } = this.props.exportActions;
         const textures = this.props.selectedTextures;
+        const canvasElement = this.refs.layout;
+
+        isNewFormat ? drawNewLayout(canvasElement, textures) : drawOldLayout(canvasElement, textures);
+    }
+
+    exportSkinLayout() {
+        const { skinExportCompleted } = this.props.exportActions;
         const canvasElement = this.refs.layout;
 
         console.log("Starting export...");
 
-        isNewFormat ? drawNewLayout(canvasElement, textures) : drawOldLayout(canvasElement, textures);
+        let link = this.refs.link;
+        link.href = canvasElement.toDataURL("image/png");
+        link.download = "skin.png";
+        link.click();
+
         skinExportCompleted();
+        console.log("Export completed...");
     }
 
     componentDidUpdate(prevProps, prevState) {
+        // this.refs.test.src = this.refs.layout.toDataURL("image/png");
         const { exportNeeded } = this.props.skinExport;
-        exportNeeded ? this.drawSkinLayout() : null;
+        exportNeeded ? this.exportSkinLayout() : this.drawSkinLayout();
     }
+
 
     render() {
         const { exportNeeded } = this.props.skinExport;
 
         return(
-            <div className="skin-layout">
+            <div className="skin-layout" style={{display: "none"}}>
                 <canvas ref="layout"/>
+                <a ref="link"/>
             </div>
         )
     }
