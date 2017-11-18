@@ -60,7 +60,7 @@ class Palette extends Component {
 const mapStateToProps = (state) => ({
     skin: state.skin,
     textures: state.textures,
-    selectedTextures: state.selectedTextures
+    selectedTextures: state.selectedTextures,
 });
 
 const mapDispatchToProps = (dispatch) => ({

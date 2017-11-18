@@ -1,5 +1,6 @@
 const initialState = {
-    version: "0.4 - Alpha",
+    version: "0.5 - Alpha",
+    isDev: true
 };
 
 const other = (state = initialState) => (

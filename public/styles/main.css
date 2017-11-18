@@ -165,15 +165,6 @@
     background-color: mediumpurple;
 }
 
-.control-button-disabled {
-    opacity: 0.25;
-    cursor: not-allowed;
-}
-
-.control-button-disabled:hover {
-    background-color: rebeccapurple;
-}
-
 .skin-part-selection-buttons, .bottom-control-buttons{
     display: flex;
     flex-direction: row;
@@ -204,6 +195,7 @@
 .skin-part-selection-button-active:hover {
     background-color: darkviolet;
 }
+
 
 .delete-texture-button:hover {
     background-color: darkred;

@@ -1,12 +1,14 @@
 //React
 import React, { Component } from 'react';
+//Redux
+import { connect } from "react-redux"
 //Skin parts
 import { headPart } from './parts/HeadPart'
 import { bodyPart } from './parts/BodyPart'
 import { handPart } from './parts/HandPart'
 import { legPart } from './parts/LegPart'
 
-export default class CanvasRender extends Component {
+class CanvasRender extends Component {
     getCanvasProps(partName) {
         switch(partName) {
             case "head": return headPart("front", true);
@@ -33,7 +35,7 @@ export default class CanvasRender extends Component {
             );
         };
 
-        partTexture.src = 'img/' + (this.props.isArmor ? "armor/" : "main/") + simplifiedPartName + '/' + textureName;
+        partTexture.src = (this.props.isDev ? './img/' : '../skin-creator/img/') + (this.props.isArmor ? "armor/" : "main/") + simplifiedPartName + '/' + textureName;
     }
 
 
@@ -65,3 +67,9 @@ export default class CanvasRender extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    isDev: state.other.isDev
+});
+
+export default connect(mapStateToProps)(CanvasRender);

@@ -5,20 +5,24 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 //Components
 import Preview from './components/skin-preview/Preview';
-import Settings from './components/ControlPanel';
-import SkinExport from  './components/skin-export/SkinExport';
-import Info from './components/controls/Info';
 import Palette from './components/controls/Palette';
-import SkinPartSelectionButtons from './components/controls/SkinPartSelectionButtons';
+//Controls
 import TopControlButtons from './components/controls/TopControlButtons';
+import SkinPartSelectionButtons from './components/controls/SkinPartSelectionButtons';
 import BottomControlButtons from './components/controls/BottomControlButtons';
+//Other
+import Info from './components/controls/Info';
+import SkinExport from  './components/skin-export/SkinExport';
 import { loadTextures } from './TextureLoader';
 //Actions
 import * as textureActions from './actions/textureActions';
 
 class App extends Component {
     render() {
-        loadTextures(this.props.textureActions);
+        const isDev = this.props.isDev;
+
+        loadTextures(this.props.textureActions, isDev);
+
         return(
             <div className="app">
                 <Preview/>
@@ -26,7 +30,7 @@ class App extends Component {
                     <TopControlButtons/>
                     <div className="controls-middle">
                         <SkinPartSelectionButtons/>
-                        <Palette/>
+                        <Palette isDev={isDev}/>
                         <BottomControlButtons/>
                     </div>
                 </div>
@@ -37,8 +41,12 @@ class App extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+    isDev: state.other.isDev
+});
+
 const mapDispatchToProps = (dispatch) => ({
     textureActions: bindActionCreators(textureActions, dispatch)
 });
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)
