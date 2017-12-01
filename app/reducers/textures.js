@@ -1,8 +1,4 @@
 const initialState = {
-    'head': [null],
-    'body': [null],
-    'hand': [null],
-    'leg': [null],
 };
 
 const textures = (state = initialState, action) => {
