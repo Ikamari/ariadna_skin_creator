@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export const loadTextures = (props, isDev) => {
     const { getTexturesFromServer } = props;
-    axios(isDev ? "http://skins.back.ariadna.loc/handleTextures.php" : "../skin-creator/handleTextures.php")
+    axios(isDev ? "http://skins.back.ariadna.loc/handleTextures.php" : "http://ariadna-rp.ru/skin-creator/handleTextures.php")
         .then((response) => {
             console.log("Successfully loaded texture names from server");
             console.log(response.data);

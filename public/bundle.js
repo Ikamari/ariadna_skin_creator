@@ -24545,7 +24545,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var initialState = {
     version: "0.5.2",
-    isDev: true
+    isDev: false
 };
 
 var other = function other() {
@@ -25218,7 +25218,7 @@ var Palette = function (_Component) {
             var selectedTextures = this.props.selectedTextures;
             var selectLayerTexture = this.props.selectedTexturesActions.selectLayerTexture;
 
-            var texturePath = './img/' + (isArmor ? 'armor/' : 'main/') + (simplifiedPartName + '/' + textureName);
+            var texturePath = '' + (this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + (isArmor ? 'armor/' : 'main/') + (simplifiedPartName + '/' + textureName);
 
             return _react2.default.createElement(
                 'div',
@@ -25255,8 +25255,10 @@ var Palette = function (_Component) {
                 return _react2.default.createElement(
                     'div',
                     { className: 'palette' },
-                    textures[Number(isArmor)][simplifiedPartName].map(function (value) {
+                    Array.isArray(textures[Number(isArmor)][simplifiedPartName]) ? textures[Number(isArmor)][simplifiedPartName].map(function (value) {
                         return _this2.showPaletteElement(value, simplifiedPartName);
+                    }) : Object.keys(textures[Number(isArmor)][simplifiedPartName]).map(function (key) {
+                        return _this2.showPaletteElement(textures[Number(isArmor)][simplifiedPartName][key], simplifiedPartName);
                     })
                 );
             } else {
@@ -25272,6 +25274,7 @@ var mapStateToProps = function mapStateToProps(state) {
     return {
         skin: state.skin,
         textures: state.textures,
+        isDev: state.other.isDev,
         selectedTextures: state.selectedTextures
     };
 };
@@ -25357,7 +25360,7 @@ var CanvasRender = function (_Component) {
                 context.drawImage(partTexture, canvasProps.posX, canvasProps.posY, canvasProps.sWidth, canvasProps.sHeight, canvasProps.sliceX, canvasProps.sliceY, canvasProps.dWidth, canvasProps.dHeight);
             };
 
-            partTexture.src = (this.props.isDev ? './img/' : '../skin-creator/img/') + (this.props.isArmor ? "armor/" : "main/") + simplifiedPartName + '/' + textureName;
+            partTexture.src = (this.props.isDev ? './img/' : 'http://ariadna-rp.ru/skin-creator/img/') + (this.props.isArmor ? "armor/" : "main/") + simplifiedPartName + '/' + textureName;
         }
     }, {
         key: 'renderCanvas',
@@ -26112,7 +26115,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var loadTextures = exports.loadTextures = function loadTextures(props, isDev) {
     var getTexturesFromServer = props.getTexturesFromServer;
 
-    (0, _axios2.default)(isDev ? "http://skins.back.ariadna.loc/handleTextures.php" : "../skin-creator/handleTextures.php").then(function (response) {
+    (0, _axios2.default)(isDev ? "http://skins.back.ariadna.loc/handleTextures.php" : "http://ariadna-rp.ru/skin-creator/handleTextures.php").then(function (response) {
         console.log("Successfully loaded texture names from server");
         console.log(response.data);
         getTexturesFromServer(response.data);

@@ -19,7 +19,7 @@ class Palette extends Component {
         const isArmor = this.props.skin.armorLayer;
         const { selectedTextures } = this.props;
         const { selectLayerTexture } = this.props.selectedTexturesActions;
-        const texturePath = `./img/${isArmor? 'armor/' : 'main/'}${simplifiedPartName + '/' + textureName}`;
+        const texturePath = `${this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/"}${isArmor? 'armor/' : 'main/'}${simplifiedPartName + '/' + textureName}`;
 
         return(
             <div
@@ -52,14 +52,14 @@ class Palette extends Component {
         if (simplifiedPartName !== "none") {
             return (
                 <div className="palette">
-                    {textures[Number(isArmor)][simplifiedPartName].map((value) => this.showPaletteElement(value, simplifiedPartName))}
+                    {Array.isArray(textures[Number(isArmor)][simplifiedPartName]) ?
+                        textures[Number(isArmor)][simplifiedPartName].map((value) => this.showPaletteElement(value, simplifiedPartName)) :
+                        Object.keys(textures[Number(isArmor)][simplifiedPartName]).map((key) => this.showPaletteElement(textures[Number(isArmor)][simplifiedPartName][key], simplifiedPartName))
+                    }
                 </div>
             )
         } else {
-            return (
-                <div className="palette">
-                </div>
-            )
+            return <div className="palette"/>
         }
     }
 }
@@ -67,6 +67,7 @@ class Palette extends Component {
 const mapStateToProps = (state) => ({
     skin: state.skin,
     textures: state.textures,
+    isDev: state.other.isDev,
     selectedTextures: state.selectedTextures,
 });
 

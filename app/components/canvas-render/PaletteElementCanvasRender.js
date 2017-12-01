@@ -35,7 +35,7 @@ class CanvasRender extends Component {
             );
         };
 
-        partTexture.src = (this.props.isDev ? './img/' : '../skin-creator/img/') + (this.props.isArmor ? "armor/" : "main/") + simplifiedPartName + '/' + textureName;
+        partTexture.src = (this.props.isDev ? './img/' : 'http://ariadna-rp.ru/skin-creator/img/') + (this.props.isArmor ? "armor/" : "main/") + simplifiedPartName + '/' + textureName;
     }
 
 
