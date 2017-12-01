@@ -48,12 +48,19 @@ class Palette extends Component {
         const simplifiedPartName = this.simplifyPartName(this.props.skin.selectedPart);
         const isArmor = this.props.skin.armorLayer;
         const textures = this.props.textures;
-        // simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map((value) => console.log(Number(isArmor), value)) : null;
-        return(
-            <div className="palette">
-                {simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map((value) => this.showPaletteElement(value, simplifiedPartName)) : null}
-            </div>
-        )
+
+        if (simplifiedPartName !== "none") {
+            return (
+                <div className="palette">
+                    {textures[Number(isArmor)][simplifiedPartName].map((value) => this.showPaletteElement(value, simplifiedPartName))}
+                </div>
+            )
+        } else {
+            return (
+                <div className="palette">
+                </div>
+            )
+        }
     }
 }
 

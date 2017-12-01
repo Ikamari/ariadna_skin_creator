@@ -24544,7 +24544,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var initialState = {
-    version: "0.5 - Alpha",
+    version: "0.5.2",
     isDev: true
 };
 
@@ -25250,14 +25250,18 @@ var Palette = function (_Component) {
             var simplifiedPartName = this.simplifyPartName(this.props.skin.selectedPart);
             var isArmor = this.props.skin.armorLayer;
             var textures = this.props.textures;
-            // simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map((value) => console.log(Number(isArmor), value)) : null;
-            return _react2.default.createElement(
-                'div',
-                { className: 'palette' },
-                simplifiedPartName !== "none" ? textures[Number(isArmor)][simplifiedPartName].map(function (value) {
-                    return _this2.showPaletteElement(value, simplifiedPartName);
-                }) : null
-            );
+
+            if (simplifiedPartName !== "none") {
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'palette' },
+                    textures[Number(isArmor)][simplifiedPartName].map(function (value) {
+                        return _this2.showPaletteElement(value, simplifiedPartName);
+                    })
+                );
+            } else {
+                return _react2.default.createElement('div', { className: 'palette' });
+            }
         }
     }]);
 
