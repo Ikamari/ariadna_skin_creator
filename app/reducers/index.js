@@ -4,13 +4,13 @@ import { combineReducers } from 'redux'
 import skin from './skin'
 import other from './other'
 import selectedTextures from './selectedTextures'
-import textures from './textures'
+import loadedTextures from './loadedTextures'
 import skinExport from './skinExport'
 
 export default combineReducers({
     skin,
     other,
     selectedTextures,
-    textures,
+    loadedTextures,
     skinExport
 })

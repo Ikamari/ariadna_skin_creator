@@ -4,15 +4,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 //Components
-import Preview from './components/skin-preview/Preview';
-import Palette from './components/controls/Palette';
+import Preview from './components/GUI/preview/SkinPreview';
+import Palette from './components/GUI/PartPalette';
 //Controls
-import TopControlButtons from './components/controls/TopControlButtons';
-import SkinPartSelectionButtons from './components/controls/SkinPartSelectionButtons';
-import BottomControlButtons from './components/controls/BottomControlButtons';
+import SkinSettings from './components/GUI/buttons/SkinSettings';
+import PartSelection from './components/GUI/buttons/PartSelection';
+import ControlPanel from './components/GUI/buttons/ControlPanel';
 //Other
-import Info from './components/controls/Info';
-import SkinExport from  './components/skin-export/SkinExport';
+import Other from './components/GUI/Other';
+
 import { loadTextures } from './TextureLoader';
 //Actions
 import * as textureActions from './actions/textureActions';
@@ -20,29 +20,27 @@ import * as textureActions from './actions/textureActions';
 class App extends Component {
     render() {
         const isDev = this.props.isDev;
-
         loadTextures(this.props.textureActions, isDev);
 
         return(
             <div className="app">
                 <Preview/>
                 <div className="controls">
-                    <TopControlButtons/>
+                    <SkinSettings/>
                     <div className="controls-middle">
-                        <SkinPartSelectionButtons/>
+                        <PartSelection/>
                         <Palette isDev={isDev}/>
-                        <BottomControlButtons/>
+                        <ControlPanel/>
                     </div>
                 </div>
-                {/*<Info/>*/}
-                <SkinExport/>
+                <Other/>
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    isDev: state.other.isDev
+    isDev: state.other.isDev,
 });
 
 const mapDispatchToProps = (dispatch) => ({

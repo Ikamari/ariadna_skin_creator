@@ -4,8 +4,8 @@ import React, { Component } from "react"
 import { bindActionCreators } from 'redux';
 import { connect } from "react-redux";
 //Layouts
-import { drawOldLayout } from "./layouts/OldLayout";
-import { drawNewLayout } from "./layouts/NewLayout";
+import { drawOldLayout } from "./layout/OldLayout";
+import { drawNewLayout } from "./layout/NewLayout";
 //Actions
 import * as exportActions from "../../actions/exportActions";
 
@@ -39,12 +39,11 @@ class SkinExport extends Component {
         exportNeeded ? this.exportSkinLayout() : this.drawSkinLayout();
     }
 
-
     render() {
         const { exportNeeded } = this.props.skinExport;
 
         return(
-            <div className="skin-layout" style={{display: "none"}}>
+            <div className="skin-layout">
                 <canvas ref="layout"/>
                 <a ref="link"/>
             </div>

@@ -87,41 +87,6 @@
     transform: scaleX(-1);
 }
 
-/*** Control panel ***/
-
-/*.control-panel {*/
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*margin: 50px;*/
-/*}*/
-
-/*.control-panel-button {*/
-    /*height: 30px;*/
-    /*width: 165px;*/
-    /*border: none;*/
-    /*border-radius: 8px;*/
-    /*outline: none;*/
-    /*margin: 4px 0;*/
-    /*font-size: 14px;*/
-    /*font-family: "Comic Sans MS", cursive, sans-serif;*/
-    /*text-align: center;*/
-    /*color: white;*/
-    /*background-color: rebeccapurple;*/
-    /*cursor: pointer;*/
-    /*transition-duration: 0.4s;*/
-/*}*/
-
-/*.control-panel-button:hover {*/
-    /*box-shadow: 0 0 12px #dd43ff;*/
-/*}*/
-
-/*.control-panel-button:active {*/
-    /*box-shadow: 0 0 12px rebeccapurple;*/
-    /*color: black;*/
-    /*background-color: white;*/
-    /*transition-duration: 0.2s;*/
-/*}*/
-
 /*** Controls ***/
 
 .controls {
@@ -159,6 +124,10 @@
     background-color: rebeccapurple;
     cursor: pointer;
     transition-duration: 0.4s;
+}
+
+.control-button-disabled {
+    opacity: 0.5;
 }
 
 .control-button:hover {
@@ -269,11 +238,40 @@
 /*** Other ***/
 
 .app-data {
-    display: inline-flex;
-    flex-direction: column;
-    width: 200px;
+    display: block;
+    width: 624px;
     font-size: 18px;
-    margin-left: 10px;
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: rebeccapurple;
+    margin: 10px auto;
 }
+
+.app-data .column {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.app-data .data {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    color: black;
+}
+
+.app-data .data span {
+    color: rebeccapurple;
+}
+
+.app-data .selected-textures {
+    color: black;
+}
+
+.app-data .selected-textures .data {
+    color: rebeccapurple;
+}
+
+.hidden {
+    display: none;
+}
+

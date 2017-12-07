@@ -4,13 +4,15 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //Actions
-import * as exportActions from "../../actions/exportActions";
+import * as exportActions from "../../../actions/exportActions";
+import * as otherActions from "../../../actions/otherActions";
 //Button
 import ControlButton from "./ControlButton";
 
 class BottomControlButtons extends Component {
     render() {
         const { doSkinExport } = this.props.exportActions;
+        const { switchDebugMode } = this.props.otherActions;
 
         return(
             <div className = "bottom-control-buttons">
@@ -20,14 +22,14 @@ class BottomControlButtons extends Component {
                     onClickAction = {() => doSkinExport()}
                 />
                 <ControlButton
-                    content = "Подсказки"
+                    content = "???"
                     style = "bottom-control-button control-button-disabled"
                     onClickAction = {() => {}}
                 />
                 <ControlButton
                     content = "Отладка (Куча текста)"
-                    style = "bottom-control-button control-button-disabled"
-                    onClickAction = {() => {}}
+                    style = "bottom-control-button"
+                    onClickAction = {() => switchDebugMode()}
                 />
             </div>
         )
@@ -35,7 +37,8 @@ class BottomControlButtons extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    exportActions: bindActionCreators(exportActions, dispatch)
+    exportActions: bindActionCreators(exportActions, dispatch),
+    otherActions: bindActionCreators(otherActions, dispatch)
 });
 
 export default connect(null, mapDispatchToProps)(BottomControlButtons)

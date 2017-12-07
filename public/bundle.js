@@ -1218,75 +1218,7 @@ var selectSkinPart = exports.selectSkinPart = function selectSkinPart(part) {
 };
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
-
-
-var ControlButton = function (_Component) {
-    _inherits(ControlButton, _Component);
-
-    function ControlButton() {
-        _classCallCheck(this, ControlButton);
-
-        return _possibleConstructorReturn(this, (ControlButton.__proto__ || Object.getPrototypeOf(ControlButton)).apply(this, arguments));
-    }
-
-    _createClass(ControlButton, [{
-        key: "render",
-        value: function render() {
-            var _props = this.props,
-                onClickAction = _props.onClickAction,
-                style = _props.style,
-                content = _props.content,
-                activeEvent = _props.activeEvent,
-                activeStyle = _props.activeStyle;
-
-            var activeContent = this.props.activeContent ? this.props.activeContent : content;
-
-            return _react2.default.createElement(
-                "div",
-                { className: "control-button " + style + (activeEvent ? " " + activeStyle : ""), onClick: onClickAction },
-                activeEvent ? activeContent : content
-            );
-        }
-    }]);
-
-    return ControlButton;
-}(_react.Component);
-
-exports.default = ControlButton;
-;
-
-ControlButton.defaultProps = {
-    style: "",
-    activeStyle: "",
-    content: "",
-    activeContent: "",
-    activeEvent: false
-};
-
-/***/ }),
+/* 17 */,
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24476,9 +24408,9 @@ var _selectedTextures = __webpack_require__(91);
 
 var _selectedTextures2 = _interopRequireDefault(_selectedTextures);
 
-var _textures = __webpack_require__(92);
+var _loadedTextures = __webpack_require__(128);
 
-var _textures2 = _interopRequireDefault(_textures);
+var _loadedTextures2 = _interopRequireDefault(_loadedTextures);
 
 var _skinExport = __webpack_require__(93);
 
@@ -24491,7 +24423,7 @@ exports.default = (0, _redux.combineReducers)({
     skin: _skin2.default,
     other: _other2.default,
     selectedTextures: _selectedTextures2.default,
-    textures: _textures2.default,
+    loadedTextures: _loadedTextures2.default,
     skinExport: _skinExport2.default
 });
 //Reducers
@@ -24543,14 +24475,25 @@ exports.default = skin;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var initialState = {
-    version: "0.5.2",
-    isDev: false
+    version: "0.6",
+    isDev: true,
+    debug: true
 };
 
 var other = function other() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-    return state;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case "SWITCH_DEBUG":
+            return _extends({}, state, { debug: !state.debug });
+        default:
+            return state;
+    }
 };
 
 exports.default = other;
@@ -24571,13 +24514,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var initialState = {
-    // 'head': ["layer_test_head1.png", "layer_test_head2.png"],
-    // 'body': ["layer_test_body1.png", "layer_test_body2.png"],
-    // 'left-hand': ["layer_test_hand1.png", "layer_test_hand2.png"],
-    // 'right-hand': ["layer_test_hand1.png", "layer_test_hand2.png"],
-    // 'left-leg': ["layer_test_leg1.png", "layer_test_leg2.png"],
-    // 'right-leg': ["layer_test_leg1.png", "layer_test_leg2.png"]
-
     'head': [null, null],
     'body': [null, null],
     'left-hand': [null, null],
@@ -24603,35 +24539,7 @@ var selectedTextures = function selectedTextures() {
 exports.default = selectedTextures;
 
 /***/ }),
-/* 92 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var initialState = {};
-
-var textures = function textures() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-    var action = arguments[1];
-
-    switch (action.type) {
-        case "LOAD_TEXTURES":
-            return _extends({}, action.payload);
-        default:
-            return state;
-    }
-};
-
-exports.default = textures;
-
-/***/ }),
+/* 92 */,
 /* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24685,33 +24593,29 @@ var _reactRedux = __webpack_require__(2);
 
 var _redux = __webpack_require__(4);
 
-var _Preview = __webpack_require__(95);
+var _SkinPreview = __webpack_require__(130);
 
-var _Preview2 = _interopRequireDefault(_Preview);
+var _SkinPreview2 = _interopRequireDefault(_SkinPreview);
 
-var _Palette = __webpack_require__(98);
+var _PartPalette = __webpack_require__(132);
 
-var _Palette2 = _interopRequireDefault(_Palette);
+var _PartPalette2 = _interopRequireDefault(_PartPalette);
 
-var _TopControlButtons = __webpack_require__(100);
+var _SkinSettings = __webpack_require__(133);
 
-var _TopControlButtons2 = _interopRequireDefault(_TopControlButtons);
+var _SkinSettings2 = _interopRequireDefault(_SkinSettings);
 
-var _SkinPartSelectionButtons = __webpack_require__(101);
+var _PartSelection = __webpack_require__(134);
 
-var _SkinPartSelectionButtons2 = _interopRequireDefault(_SkinPartSelectionButtons);
+var _PartSelection2 = _interopRequireDefault(_PartSelection);
 
-var _BottomControlButtons = __webpack_require__(102);
+var _ControlPanel = __webpack_require__(135);
 
-var _BottomControlButtons2 = _interopRequireDefault(_BottomControlButtons);
+var _ControlPanel2 = _interopRequireDefault(_ControlPanel);
 
-var _Info = __webpack_require__(103);
+var _Other = __webpack_require__(136);
 
-var _Info2 = _interopRequireDefault(_Info);
-
-var _SkinExport = __webpack_require__(104);
-
-var _SkinExport2 = _interopRequireDefault(_SkinExport);
+var _Other2 = _interopRequireDefault(_Other);
 
 var _TextureLoader = __webpack_require__(107);
 
@@ -24753,26 +24657,25 @@ var App = function (_Component) {
         key: 'render',
         value: function render() {
             var isDev = this.props.isDev;
-
             (0, _TextureLoader.loadTextures)(this.props.textureActions, isDev);
 
             return _react2.default.createElement(
                 'div',
                 { className: 'app' },
-                _react2.default.createElement(_Preview2.default, null),
+                _react2.default.createElement(_SkinPreview2.default, null),
                 _react2.default.createElement(
                     'div',
                     { className: 'controls' },
-                    _react2.default.createElement(_TopControlButtons2.default, null),
+                    _react2.default.createElement(_SkinSettings2.default, null),
                     _react2.default.createElement(
                         'div',
                         { className: 'controls-middle' },
-                        _react2.default.createElement(_SkinPartSelectionButtons2.default, null),
-                        _react2.default.createElement(_Palette2.default, { isDev: isDev }),
-                        _react2.default.createElement(_BottomControlButtons2.default, null)
+                        _react2.default.createElement(_PartSelection2.default, null),
+                        _react2.default.createElement(_PartPalette2.default, { isDev: isDev }),
+                        _react2.default.createElement(_ControlPanel2.default, null)
                     )
                 ),
-                _react2.default.createElement(_SkinExport2.default, null)
+                _react2.default.createElement(_Other2.default, null)
             );
         }
     }]);
@@ -24795,219 +24698,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(App);
 
 /***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(2);
-
-var _SkinPart = __webpack_require__(96);
-
-var _SkinPart2 = _interopRequireDefault(_SkinPart);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
-
-//Redux
-
-//Components
-
-
-var Preview = function (_Component) {
-    _inherits(Preview, _Component);
-
-    function Preview() {
-        _classCallCheck(this, Preview);
-
-        return _possibleConstructorReturn(this, (Preview.__proto__ || Object.getPrototypeOf(Preview)).apply(this, arguments));
-    }
-
-    _createClass(Preview, [{
-        key: 'newFormatSkin',
-        value: function newFormatSkin(side) {
-            return _react2.default.createElement(
-                'div',
-                { className: 'side-preview' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'preview-top-part' },
-                    _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side, partName: 'head' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'preview-middle-part' },
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", part: 'hand', side: side, partName: side === "front" ? "left-hand" : "right-hand" }),
-                    _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side, partName: 'body' }),
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", part: 'hand', side: side, partName: side === "front" ? "right-hand" : "left-hand" })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'preview-bottom-part' },
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", part: 'leg', side: side, partName: side === "front" ? "left-leg" : "right-leg" }),
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", part: 'leg', side: side, partName: side === "front" ? "right-leg" : "left-leg" })
-                )
-            );
-        }
-    }, {
-        key: 'oldFormatSkin',
-        value: function oldFormatSkin(side) {
-            return _react2.default.createElement(
-                'div',
-                { className: 'side-preview' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'preview-top-part' },
-                    _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side, partName: 'head' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'preview-middle-part' },
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'hand', side: side, partName: 'right-hand' }),
-                    _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side, isOld: true, partName: 'body' }),
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'hand', side: side, partName: 'right-hand' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'preview-bottom-part' },
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'leg', side: side, partName: 'right-leg' }),
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'leg', side: side, partName: 'right-leg' })
-                )
-            );
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { className: 'preview' },
-                this.props.format ? this.newFormatSkin("front") : this.oldFormatSkin("front"),
-                this.props.format ? this.newFormatSkin("back") : this.oldFormatSkin("back")
-            );
-        }
-    }]);
-
-    return Preview;
-}(_react.Component);
-
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        format: state.skin.isNewFormat
-    };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Preview);
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _redux = __webpack_require__(4);
-
-var _reactRedux = __webpack_require__(2);
-
-var _PreviewPartCanvasRender = __webpack_require__(97);
-
-var _PreviewPartCanvasRender2 = _interopRequireDefault(_PreviewPartCanvasRender);
-
-var _skinActions = __webpack_require__(16);
-
-var skinActions = _interopRequireWildcard(_skinActions);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
-
-//Redux
-
-//Skin parts
-
-//Actions
-
-
-var Preview = function (_Component) {
-    _inherits(Preview, _Component);
-
-    function Preview() {
-        _classCallCheck(this, Preview);
-
-        return _possibleConstructorReturn(this, (Preview.__proto__ || Object.getPrototypeOf(Preview)).apply(this, arguments));
-    }
-
-    _createClass(Preview, [{
-        key: 'render',
-        value: function render() {
-            var _props = this.props,
-                part = _props.part,
-                side = _props.side,
-                partName = _props.partName;
-            var selectSkinPart = this.props.skinActions.selectSkinPart;
-
-            var pairPart = this.props.pair;
-
-            var partClassName = "preview-" + partName + " preview-part";
-            partClassName += pairPart ? pairPart === "right" ? " mirrored" : "" : "";
-
-            console.log("Made div for " + part + "." + side);
-
-            return _react2.default.createElement(
-                'div',
-                { className: partClassName, onClick: function onClick() {
-                        return selectSkinPart(partName);
-                    } },
-                _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 0 }),
-                this.props.isOld ? null : _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 1, pairPart: pairPart ? pairPart : null })
-            );
-        }
-    }]);
-
-    return Preview;
-}(_react.Component);
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {
-        skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch)
-    };
-};
-
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Preview);
-
-/***/ }),
+/* 95 */,
+/* 96 */,
 /* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25150,144 +24842,7 @@ var mapStateToProps = function mapStateToProps(state) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(CanvasRender);
 
 /***/ }),
-/* 98 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(2);
-
-var _redux = __webpack_require__(4);
-
-var _PaletteElementCanvasRender = __webpack_require__(99);
-
-var _PaletteElementCanvasRender2 = _interopRequireDefault(_PaletteElementCanvasRender);
-
-var _selectedTexturesActions = __webpack_require__(37);
-
-var selectedTexturesActions = _interopRequireWildcard(_selectedTexturesActions);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
-
-//Redux
-
-//Components
-
-//Actions
-
-
-var Palette = function (_Component) {
-    _inherits(Palette, _Component);
-
-    function Palette() {
-        _classCallCheck(this, Palette);
-
-        return _possibleConstructorReturn(this, (Palette.__proto__ || Object.getPrototypeOf(Palette)).apply(this, arguments));
-    }
-
-    _createClass(Palette, [{
-        key: 'simplifyPartName',
-        value: function simplifyPartName(partName) {
-            return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
-        }
-    }, {
-        key: 'showPaletteElement',
-        value: function showPaletteElement(textureName, simplifiedPartName) {
-            var partName = this.props.skin.selectedPart;
-            var layer = this.props.skin.armorLayer;
-            var isArmor = this.props.skin.armorLayer;
-            var selectedTextures = this.props.selectedTextures;
-            var selectLayerTexture = this.props.selectedTexturesActions.selectLayerTexture;
-
-            var texturePath = '' + (this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + (isArmor ? 'armor/' : 'main/') + (simplifiedPartName + '/' + textureName);
-
-            return _react2.default.createElement(
-                'div',
-                {
-                    key: textureName + simplifiedPartName,
-                    className: 'paletteElement',
-                    onClick: function onClick() {
-                        var partLayerToChange = selectedTextures[partName];
-                        partLayerToChange[Number(layer)] = texturePath;
-                        console.log(partName, partLayerToChange);
-                        selectLayerTexture(partName, partLayerToChange);
-                    }
-                },
-                _react2.default.createElement(_PaletteElementCanvasRender2.default, {
-                    className: 'paletteElement',
-                    key: textureName + "Preview",
-                    textureName: textureName,
-                    partName: partName,
-                    simplifiedPartName: simplifiedPartName,
-                    isArmor: isArmor
-                })
-            );
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var simplifiedPartName = this.simplifyPartName(this.props.skin.selectedPart);
-            var isArmor = this.props.skin.armorLayer;
-            var textures = this.props.textures;
-
-            if (simplifiedPartName !== "none") {
-                return _react2.default.createElement(
-                    'div',
-                    { className: 'palette' },
-                    Array.isArray(textures[Number(isArmor)][simplifiedPartName]) ? textures[Number(isArmor)][simplifiedPartName].map(function (value) {
-                        return _this2.showPaletteElement(value, simplifiedPartName);
-                    }) : Object.keys(textures[Number(isArmor)][simplifiedPartName]).map(function (key) {
-                        return _this2.showPaletteElement(textures[Number(isArmor)][simplifiedPartName][key], simplifiedPartName);
-                    })
-                );
-            } else {
-                return _react2.default.createElement('div', { className: 'palette' });
-            }
-        }
-    }]);
-
-    return Palette;
-}(_react.Component);
-
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        skin: state.skin,
-        textures: state.textures,
-        isDev: state.other.isDev,
-        selectedTextures: state.selectedTextures
-    };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {
-        selectedTexturesActions: (0, _redux.bindActionCreators)(selectedTexturesActions, dispatch)
-    };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Palette);
-
-/***/ }),
+/* 98 */,
 /* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25410,465 +24965,10 @@ var mapStateToProps = function mapStateToProps(state) {
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(CanvasRender);
 
 /***/ }),
-/* 100 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _redux = __webpack_require__(4);
-
-var _reactRedux = __webpack_require__(2);
-
-var _skinActions = __webpack_require__(16);
-
-var skinActions = _interopRequireWildcard(_skinActions);
-
-var _selectedTexturesActions = __webpack_require__(37);
-
-var selectedTexturesActions = _interopRequireWildcard(_selectedTexturesActions);
-
-var _ControlButton = __webpack_require__(17);
-
-var _ControlButton2 = _interopRequireDefault(_ControlButton);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
-
-//Redux
-
-//Actions
-
-//Button
-
-
-var TopControlButtons = function (_Component) {
-    _inherits(TopControlButtons, _Component);
-
-    function TopControlButtons() {
-        _classCallCheck(this, TopControlButtons);
-
-        return _possibleConstructorReturn(this, (TopControlButtons.__proto__ || Object.getPrototypeOf(TopControlButtons)).apply(this, arguments));
-    }
-
-    _createClass(TopControlButtons, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var _props$skin = this.props.skin,
-                selectedPart = _props$skin.selectedPart,
-                isNewFormat = _props$skin.isNewFormat,
-                armorLayer = _props$skin.armorLayer;
-            var _props$skinActions = this.props.skinActions,
-                changeSkinFormat = _props$skinActions.changeSkinFormat,
-                changeSkinLayer = _props$skinActions.changeSkinLayer,
-                selectSkinPart = _props$skinActions.selectSkinPart;
-            var removeLayerTexture = this.props.selectedTexturesActions.removeLayerTexture;
-
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'top-control-buttons' },
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u0421\u043B\u043E\u0439: \u041E\u0441\u043D\u043E\u0432\u043D\u043E\u0439',
-                    style: 'top-control-button',
-                    activeContent: '\u0421\u043B\u043E\u0439: \u0412\u0435\u0440\u0445\u043D\u0438\u0439',
-                    activeEvent: armorLayer,
-                    onClickAction: function onClickAction() {
-                        !isNewFormat ? selectSkinPart("head") : undefined;
-                        changeSkinLayer(armorLayer);
-                    }
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u0420\u0430\u0437\u043C\u0435\u0442\u043A\u0430: \u0421\u0442\u0430\u0440\u0430\u044F',
-                    style: 'top-control-button',
-                    activeContent: '\u0420\u0430\u0437\u043C\u0435\u0442\u043A\u0430: \u041D\u043E\u0432\u0430\u044F',
-                    activeEvent: isNewFormat,
-                    onClickAction: function onClickAction() {
-                        isNewFormat && armorLayer ? selectSkinPart("head") : undefined;
-                        isNewFormat && selectedPart === "left-hand" ? selectSkinPart("right-hand") : undefined;
-                        isNewFormat && selectedPart === "left-leg" ? selectSkinPart("right-leg") : undefined;
-                        changeSkinFormat(isNewFormat);
-                    }
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u0423\u0431\u0440\u0430\u0442\u044C \u0442\u0435\u043A\u0441\u0442\u0443\u0440\u0443',
-                    style: 'top-control-button delete-texture-button',
-                    onClickAction: function onClickAction() {
-                        var partLayerToRemove = _this2.props.selectedTextures[selectedPart];
-                        partLayerToRemove[Number(armorLayer)] = null;
-                        removeLayerTexture(selectedPart, partLayerToRemove);
-                    }
-                })
-            );
-        }
-    }]);
-
-    return TopControlButtons;
-}(_react.Component);
-
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        skin: state.skin,
-        selectedTextures: state.selectedTextures
-    };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {
-        selectedTexturesActions: (0, _redux.bindActionCreators)(selectedTexturesActions, dispatch),
-        skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch)
-    };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TopControlButtons);
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _redux = __webpack_require__(4);
-
-var _reactRedux = __webpack_require__(2);
-
-var _skinActions = __webpack_require__(16);
-
-var skinActions = _interopRequireWildcard(_skinActions);
-
-var _ControlButton = __webpack_require__(17);
-
-var _ControlButton2 = _interopRequireDefault(_ControlButton);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
-
-//Redux
-
-//Actions
-
-//Button
-
-
-var SkinPartSelectionButtons = function (_Component) {
-    _inherits(SkinPartSelectionButtons, _Component);
-
-    function SkinPartSelectionButtons() {
-        _classCallCheck(this, SkinPartSelectionButtons);
-
-        return _possibleConstructorReturn(this, (SkinPartSelectionButtons.__proto__ || Object.getPrototypeOf(SkinPartSelectionButtons)).apply(this, arguments));
-    }
-
-    _createClass(SkinPartSelectionButtons, [{
-        key: 'render',
-        value: function render() {
-            var selectSkinPart = this.props.skinActions.selectSkinPart;
-            var _props$skin = this.props.skin,
-                selectedPart = _props$skin.selectedPart,
-                isNewFormat = _props$skin.isNewFormat,
-                armorLayer = _props$skin.armorLayer;
-
-            var needToDisable = !isNewFormat && armorLayer;
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'skin-part-selection-buttons' },
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u0413\u043E\u043B\u043E\u0432\u0430',
-                    style: 'skin-part-selection-button',
-                    activeEvent: selectedPart === "head",
-                    activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: function onClickAction() {
-                        return selectSkinPart("head");
-                    }
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u0422\u043E\u0440\u0441',
-                    style: (needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button",
-                    activeEvent: selectedPart === "body",
-                    activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: !needToDisable ? function () {
-                        return selectSkinPart("body");
-                    } : undefined
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: isNewFormat ? "Л.Рука" : "-",
-                    style: (!isNewFormat ? "control-button-disabled" : " ") + " skin-part-selection-button",
-                    activeEvent: selectedPart === "left-hand",
-                    activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: isNewFormat ? function () {
-                        return selectSkinPart("left-hand");
-                    } : undefined
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: isNewFormat ? "П.Рука" : "Руки",
-                    style: (needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button",
-                    activeEvent: selectedPart === "right-hand",
-                    activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: !needToDisable ? function () {
-                        return selectSkinPart("right-hand");
-                    } : undefined
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: isNewFormat ? "Л.Нога" : "-",
-                    style: (!isNewFormat ? "control-button-disabled" : " ") + " skin-part-selection-button",
-                    activeEvent: selectedPart === "left-leg",
-                    activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: isNewFormat ? function () {
-                        return selectSkinPart("left-leg");
-                    } : undefined
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: isNewFormat ? "П.Нога" : "Ноги",
-                    style: (needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button",
-                    activeEvent: selectedPart === "right-leg",
-                    activeStyle: 'skin-part-selection-button-active',
-                    onClickAction: !needToDisable ? function () {
-                        return selectSkinPart("right-leg");
-                    } : undefined
-                })
-            );
-        }
-    }]);
-
-    return SkinPartSelectionButtons;
-}(_react.Component);
-
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        skin: state.skin
-    };
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {
-        skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch)
-    };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SkinPartSelectionButtons);
-
-/***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _redux = __webpack_require__(4);
-
-var _reactRedux = __webpack_require__(2);
-
-var _exportActions = __webpack_require__(38);
-
-var exportActions = _interopRequireWildcard(_exportActions);
-
-var _ControlButton = __webpack_require__(17);
-
-var _ControlButton2 = _interopRequireDefault(_ControlButton);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
-
-//Redux
-
-//Actions
-
-//Button
-
-
-var BottomControlButtons = function (_Component) {
-    _inherits(BottomControlButtons, _Component);
-
-    function BottomControlButtons() {
-        _classCallCheck(this, BottomControlButtons);
-
-        return _possibleConstructorReturn(this, (BottomControlButtons.__proto__ || Object.getPrototypeOf(BottomControlButtons)).apply(this, arguments));
-    }
-
-    _createClass(BottomControlButtons, [{
-        key: 'render',
-        value: function render() {
-            var doSkinExport = this.props.exportActions.doSkinExport;
-
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'bottom-control-buttons' },
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u042D\u043A\u0441\u043F\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C',
-                    style: 'bottom-control-button',
-                    onClickAction: function onClickAction() {
-                        return doSkinExport();
-                    }
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u041F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0438',
-                    style: 'bottom-control-button control-button-disabled',
-                    onClickAction: function onClickAction() {}
-                }),
-                _react2.default.createElement(_ControlButton2.default, {
-                    content: '\u041E\u0442\u043B\u0430\u0434\u043A\u0430 (\u041A\u0443\u0447\u0430 \u0442\u0435\u043A\u0441\u0442\u0430)',
-                    style: 'bottom-control-button control-button-disabled',
-                    onClickAction: function onClickAction() {}
-                })
-            );
-        }
-    }]);
-
-    return BottomControlButtons;
-}(_react.Component);
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {
-        exportActions: (0, _redux.bindActionCreators)(exportActions, dispatch)
-    };
-};
-
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(BottomControlButtons);
-
-/***/ }),
-/* 103 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
-
-//Redux
-
-
-var PartInfo = function PartInfo(partName, array) {
-    return _react2.default.createElement(
-        'span',
-        { key: partName },
-        partName + ':',
-        _react2.default.createElement('br', null),
-        array[partName][0] ? array[partName][0] : "",
-        _react2.default.createElement('br', null),
-        array[partName][1] ? array[partName][1] : ""
-    );
-};
-
-var Info = function (_Component) {
-    _inherits(Info, _Component);
-
-    function Info() {
-        _classCallCheck(this, Info);
-
-        return _possibleConstructorReturn(this, (Info.__proto__ || Object.getPrototypeOf(Info)).apply(this, arguments));
-    }
-
-    _createClass(Info, [{
-        key: 'render',
-        value: function render() {
-            var version = this.props.other.version;
-            var _props$skin = this.props.skin,
-                isNewFormat = _props$skin.isNewFormat,
-                selectedPart = _props$skin.selectedPart,
-                armorLayer = _props$skin.armorLayer;
-
-            var selectedTextures = this.props.selectedTextures;
-            console.log("Drew info component");
-
-            console.log(selectedTextures);
-            return _react2.default.createElement(
-                'div',
-                { className: 'app-data' },
-                Object.keys(selectedTextures).map(function (key) {
-                    return PartInfo(key, selectedTextures);
-                })
-            );
-        }
-    }]);
-
-    return Info;
-}(_react.Component);
-
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        other: state.other,
-        skin: state.skin,
-        selectedTextures: state.selectedTextures
-    };
-};
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps)(Info);
-
-/***/ }),
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
 /* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25966,7 +25066,7 @@ var SkinExport = function (_Component) {
 
             return _react2.default.createElement(
                 "div",
-                { className: "skin-layout", style: { display: "none" } },
+                { className: "skin-layout" },
                 _react2.default.createElement("canvas", { ref: "layout" }),
                 _react2.default.createElement("a", { ref: "link" })
             );
@@ -27031,6 +26131,994 @@ var getTexturesFromServer = exports.getTexturesFromServer = function getTextures
     return {
         type: "LOAD_TEXTURES",
         payload: textures
+    };
+};
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var initialState = {};
+
+var textures = function textures() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case "LOAD_TEXTURES":
+            return _extends({}, action.payload);
+        default:
+            return state;
+    }
+};
+
+exports.default = textures;
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+
+var ControlButton = function (_Component) {
+    _inherits(ControlButton, _Component);
+
+    function ControlButton() {
+        _classCallCheck(this, ControlButton);
+
+        return _possibleConstructorReturn(this, (ControlButton.__proto__ || Object.getPrototypeOf(ControlButton)).apply(this, arguments));
+    }
+
+    _createClass(ControlButton, [{
+        key: "render",
+        value: function render() {
+            var _props = this.props,
+                onClickAction = _props.onClickAction,
+                style = _props.style,
+                content = _props.content,
+                activeEvent = _props.activeEvent,
+                activeStyle = _props.activeStyle;
+
+            var activeContent = this.props.activeContent ? this.props.activeContent : content;
+
+            return _react2.default.createElement(
+                "div",
+                { className: "control-button " + style + (activeEvent ? " " + activeStyle : ""), onClick: onClickAction },
+                activeEvent ? activeContent : content
+            );
+        }
+    }]);
+
+    return ControlButton;
+}(_react.Component);
+
+exports.default = ControlButton;
+;
+
+ControlButton.defaultProps = {
+    style: "",
+    activeStyle: "",
+    content: "",
+    activeContent: "",
+    activeEvent: false
+};
+
+/***/ }),
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(2);
+
+var _SkinPart = __webpack_require__(131);
+
+var _SkinPart2 = _interopRequireDefault(_SkinPart);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
+
+//Components
+
+
+var Preview = function (_Component) {
+    _inherits(Preview, _Component);
+
+    function Preview() {
+        _classCallCheck(this, Preview);
+
+        return _possibleConstructorReturn(this, (Preview.__proto__ || Object.getPrototypeOf(Preview)).apply(this, arguments));
+    }
+
+    _createClass(Preview, [{
+        key: 'newFormatSkin',
+        value: function newFormatSkin(side) {
+            return _react2.default.createElement(
+                'div',
+                { className: 'side-preview' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'preview-top-part' },
+                    _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side, partName: 'head' })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'preview-middle-part' },
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", part: 'hand', side: side, partName: side === "front" ? "left-hand" : "right-hand" }),
+                    _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side, partName: 'body' }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", part: 'hand', side: side, partName: side === "front" ? "right-hand" : "left-hand" })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'preview-bottom-part' },
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", part: 'leg', side: side, partName: side === "front" ? "left-leg" : "right-leg" }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", part: 'leg', side: side, partName: side === "front" ? "right-leg" : "left-leg" })
+                )
+            );
+        }
+    }, {
+        key: 'oldFormatSkin',
+        value: function oldFormatSkin(side) {
+            return _react2.default.createElement(
+                'div',
+                { className: 'side-preview' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'preview-top-part' },
+                    _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side, partName: 'head' })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'preview-middle-part' },
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'hand', side: side, partName: 'right-hand' }),
+                    _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side, isOld: true, partName: 'body' }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'hand', side: side, partName: 'right-hand' })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'preview-bottom-part' },
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'leg', side: side, partName: 'right-leg' }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'leg', side: side, partName: 'right-leg' })
+                )
+            );
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'preview' },
+                this.props.format ? this.newFormatSkin("front") : this.oldFormatSkin("front"),
+                this.props.format ? this.newFormatSkin("back") : this.oldFormatSkin("back")
+            );
+        }
+    }]);
+
+    return Preview;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        format: state.skin.isNewFormat
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Preview);
+
+/***/ }),
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _redux = __webpack_require__(4);
+
+var _reactRedux = __webpack_require__(2);
+
+var _PreviewPartCanvasRender = __webpack_require__(97);
+
+var _PreviewPartCanvasRender2 = _interopRequireDefault(_PreviewPartCanvasRender);
+
+var _skinActions = __webpack_require__(16);
+
+var skinActions = _interopRequireWildcard(_skinActions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
+
+//Skin parts
+
+//Actions
+
+
+var Preview = function (_Component) {
+    _inherits(Preview, _Component);
+
+    function Preview() {
+        _classCallCheck(this, Preview);
+
+        return _possibleConstructorReturn(this, (Preview.__proto__ || Object.getPrototypeOf(Preview)).apply(this, arguments));
+    }
+
+    _createClass(Preview, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                part = _props.part,
+                side = _props.side,
+                partName = _props.partName;
+            var selectSkinPart = this.props.skinActions.selectSkinPart;
+
+            var pairPart = this.props.pair;
+
+            var partClassName = "preview-" + partName + " preview-part";
+            partClassName += pairPart ? pairPart === "right" ? " mirrored" : "" : "";
+
+            console.log("Made div for " + part + "." + side);
+
+            return _react2.default.createElement(
+                'div',
+                { className: partClassName, onClick: function onClick() {
+                        return selectSkinPart(partName);
+                    } },
+                _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 0 }),
+                this.props.isOld ? null : _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 1, pairPart: pairPart ? pairPart : null })
+            );
+        }
+    }]);
+
+    return Preview;
+}(_react.Component);
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch)
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(Preview);
+
+/***/ }),
+/* 132 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(2);
+
+var _redux = __webpack_require__(4);
+
+var _PaletteElementCanvasRender = __webpack_require__(99);
+
+var _PaletteElementCanvasRender2 = _interopRequireDefault(_PaletteElementCanvasRender);
+
+var _selectedTexturesActions = __webpack_require__(37);
+
+var selectedTexturesActions = _interopRequireWildcard(_selectedTexturesActions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
+
+//Components
+
+//Actions
+
+
+var Palette = function (_Component) {
+    _inherits(Palette, _Component);
+
+    function Palette() {
+        _classCallCheck(this, Palette);
+
+        return _possibleConstructorReturn(this, (Palette.__proto__ || Object.getPrototypeOf(Palette)).apply(this, arguments));
+    }
+
+    _createClass(Palette, [{
+        key: 'simplifyPartName',
+        value: function simplifyPartName(partName) {
+            return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
+        }
+    }, {
+        key: 'showPaletteElement',
+        value: function showPaletteElement(textureName, simplifiedPartName) {
+            var partName = this.props.skin.selectedPart;
+            var layer = this.props.skin.armorLayer;
+            var isArmor = this.props.skin.armorLayer;
+            var selectedTextures = this.props.selectedTextures;
+            var selectLayerTexture = this.props.selectedTexturesActions.selectLayerTexture;
+
+            var texturePath = '' + (this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + (isArmor ? 'armor/' : 'main/') + (simplifiedPartName + '/' + textureName);
+
+            return _react2.default.createElement(
+                'div',
+                {
+                    key: textureName + simplifiedPartName,
+                    className: 'paletteElement',
+                    onClick: function onClick() {
+                        var partLayerToChange = selectedTextures[partName];
+                        partLayerToChange[Number(layer)] = texturePath;
+                        console.log(partName, partLayerToChange);
+                        selectLayerTexture(partName, partLayerToChange);
+                    }
+                },
+                _react2.default.createElement(_PaletteElementCanvasRender2.default, {
+                    className: 'paletteElement',
+                    key: textureName + "Preview",
+                    textureName: textureName,
+                    partName: partName,
+                    simplifiedPartName: simplifiedPartName,
+                    isArmor: isArmor
+                })
+            );
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var simplifiedPartName = this.simplifyPartName(this.props.skin.selectedPart);
+            var isArmor = this.props.skin.armorLayer;
+            var textures = this.props.textures;
+
+            if (simplifiedPartName !== "none") {
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'palette' },
+                    Array.isArray(textures[Number(isArmor)][simplifiedPartName]) ? textures[Number(isArmor)][simplifiedPartName].map(function (value) {
+                        return _this2.showPaletteElement(value, simplifiedPartName);
+                    }) : Object.keys(textures[Number(isArmor)][simplifiedPartName]).map(function (key) {
+                        return _this2.showPaletteElement(textures[Number(isArmor)][simplifiedPartName][key], simplifiedPartName);
+                    })
+                );
+            } else {
+                return _react2.default.createElement('div', { className: 'palette' });
+            }
+        }
+    }]);
+
+    return Palette;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        skin: state.skin,
+        textures: state.textures,
+        isDev: state.other.isDev,
+        selectedTextures: state.selectedTextures
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        selectedTexturesActions: (0, _redux.bindActionCreators)(selectedTexturesActions, dispatch)
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Palette);
+
+/***/ }),
+/* 133 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _redux = __webpack_require__(4);
+
+var _reactRedux = __webpack_require__(2);
+
+var _skinActions = __webpack_require__(16);
+
+var skinActions = _interopRequireWildcard(_skinActions);
+
+var _selectedTexturesActions = __webpack_require__(37);
+
+var selectedTexturesActions = _interopRequireWildcard(_selectedTexturesActions);
+
+var _ControlButton = __webpack_require__(129);
+
+var _ControlButton2 = _interopRequireDefault(_ControlButton);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
+
+//Actions
+
+//Button
+
+
+var TopControlButtons = function (_Component) {
+    _inherits(TopControlButtons, _Component);
+
+    function TopControlButtons() {
+        _classCallCheck(this, TopControlButtons);
+
+        return _possibleConstructorReturn(this, (TopControlButtons.__proto__ || Object.getPrototypeOf(TopControlButtons)).apply(this, arguments));
+    }
+
+    _createClass(TopControlButtons, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var _props$skin = this.props.skin,
+                selectedPart = _props$skin.selectedPart,
+                isNewFormat = _props$skin.isNewFormat,
+                armorLayer = _props$skin.armorLayer;
+            var _props$skinActions = this.props.skinActions,
+                changeSkinFormat = _props$skinActions.changeSkinFormat,
+                changeSkinLayer = _props$skinActions.changeSkinLayer,
+                selectSkinPart = _props$skinActions.selectSkinPart;
+            var removeLayerTexture = this.props.selectedTexturesActions.removeLayerTexture;
+
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'top-control-buttons' },
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u0421\u043B\u043E\u0439: \u041E\u0441\u043D\u043E\u0432\u043D\u043E\u0439',
+                    style: 'top-control-button',
+                    activeContent: '\u0421\u043B\u043E\u0439: \u0412\u0435\u0440\u0445\u043D\u0438\u0439',
+                    activeEvent: armorLayer,
+                    onClickAction: function onClickAction() {
+                        !isNewFormat ? selectSkinPart("head") : undefined;
+                        changeSkinLayer(armorLayer);
+                    }
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u0420\u0430\u0437\u043C\u0435\u0442\u043A\u0430: \u0421\u0442\u0430\u0440\u0430\u044F',
+                    style: 'top-control-button',
+                    activeContent: '\u0420\u0430\u0437\u043C\u0435\u0442\u043A\u0430: \u041D\u043E\u0432\u0430\u044F',
+                    activeEvent: isNewFormat,
+                    onClickAction: function onClickAction() {
+                        isNewFormat && armorLayer ? selectSkinPart("head") : undefined;
+                        isNewFormat && selectedPart === "left-hand" ? selectSkinPart("right-hand") : undefined;
+                        isNewFormat && selectedPart === "left-leg" ? selectSkinPart("right-leg") : undefined;
+                        changeSkinFormat(isNewFormat);
+                    }
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u0423\u0431\u0440\u0430\u0442\u044C \u0442\u0435\u043A\u0441\u0442\u0443\u0440\u0443',
+                    style: 'top-control-button delete-texture-button',
+                    onClickAction: function onClickAction() {
+                        var partLayerToRemove = _this2.props.selectedTextures[selectedPart];
+                        partLayerToRemove[Number(armorLayer)] = null;
+                        removeLayerTexture(selectedPart, partLayerToRemove);
+                    }
+                })
+            );
+        }
+    }]);
+
+    return TopControlButtons;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        skin: state.skin,
+        selectedTextures: state.selectedTextures
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        selectedTexturesActions: (0, _redux.bindActionCreators)(selectedTexturesActions, dispatch),
+        skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch)
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TopControlButtons);
+
+/***/ }),
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _redux = __webpack_require__(4);
+
+var _reactRedux = __webpack_require__(2);
+
+var _skinActions = __webpack_require__(16);
+
+var skinActions = _interopRequireWildcard(_skinActions);
+
+var _ControlButton = __webpack_require__(129);
+
+var _ControlButton2 = _interopRequireDefault(_ControlButton);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
+
+//Actions
+
+//Button
+
+
+var SkinPartSelectionButtons = function (_Component) {
+    _inherits(SkinPartSelectionButtons, _Component);
+
+    function SkinPartSelectionButtons() {
+        _classCallCheck(this, SkinPartSelectionButtons);
+
+        return _possibleConstructorReturn(this, (SkinPartSelectionButtons.__proto__ || Object.getPrototypeOf(SkinPartSelectionButtons)).apply(this, arguments));
+    }
+
+    _createClass(SkinPartSelectionButtons, [{
+        key: 'render',
+        value: function render() {
+            var selectSkinPart = this.props.skinActions.selectSkinPart;
+            var _props$skin = this.props.skin,
+                selectedPart = _props$skin.selectedPart,
+                isNewFormat = _props$skin.isNewFormat,
+                armorLayer = _props$skin.armorLayer;
+
+            var needToDisable = !isNewFormat && armorLayer;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'skin-part-selection-buttons' },
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u0413\u043E\u043B\u043E\u0432\u0430',
+                    style: 'skin-part-selection-button',
+                    activeEvent: selectedPart === "head",
+                    activeStyle: 'skin-part-selection-button-active',
+                    onClickAction: function onClickAction() {
+                        return selectSkinPart("head");
+                    }
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u0422\u043E\u0440\u0441',
+                    style: (needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button",
+                    activeEvent: selectedPart === "body",
+                    activeStyle: 'skin-part-selection-button-active',
+                    onClickAction: !needToDisable ? function () {
+                        return selectSkinPart("body");
+                    } : undefined
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: isNewFormat ? "Л.Рука" : "-",
+                    style: (!isNewFormat ? "control-button-disabled" : " ") + " skin-part-selection-button",
+                    activeEvent: selectedPart === "left-hand",
+                    activeStyle: 'skin-part-selection-button-active',
+                    onClickAction: isNewFormat ? function () {
+                        return selectSkinPart("left-hand");
+                    } : undefined
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: isNewFormat ? "П.Рука" : "Руки",
+                    style: (needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button",
+                    activeEvent: selectedPart === "right-hand",
+                    activeStyle: 'skin-part-selection-button-active',
+                    onClickAction: !needToDisable ? function () {
+                        return selectSkinPart("right-hand");
+                    } : undefined
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: isNewFormat ? "Л.Нога" : "-",
+                    style: (!isNewFormat ? "control-button-disabled" : " ") + " skin-part-selection-button",
+                    activeEvent: selectedPart === "left-leg",
+                    activeStyle: 'skin-part-selection-button-active',
+                    onClickAction: isNewFormat ? function () {
+                        return selectSkinPart("left-leg");
+                    } : undefined
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: isNewFormat ? "П.Нога" : "Ноги",
+                    style: (needToDisable ? "control-button-disabled" : " ") + " skin-part-selection-button",
+                    activeEvent: selectedPart === "right-leg",
+                    activeStyle: 'skin-part-selection-button-active',
+                    onClickAction: !needToDisable ? function () {
+                        return selectSkinPart("right-leg");
+                    } : undefined
+                })
+            );
+        }
+    }]);
+
+    return SkinPartSelectionButtons;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        skin: state.skin
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch)
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SkinPartSelectionButtons);
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _redux = __webpack_require__(4);
+
+var _reactRedux = __webpack_require__(2);
+
+var _exportActions = __webpack_require__(38);
+
+var exportActions = _interopRequireWildcard(_exportActions);
+
+var _otherActions = __webpack_require__(137);
+
+var otherActions = _interopRequireWildcard(_otherActions);
+
+var _ControlButton = __webpack_require__(129);
+
+var _ControlButton2 = _interopRequireDefault(_ControlButton);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
+
+//Actions
+
+//Button
+
+
+var BottomControlButtons = function (_Component) {
+    _inherits(BottomControlButtons, _Component);
+
+    function BottomControlButtons() {
+        _classCallCheck(this, BottomControlButtons);
+
+        return _possibleConstructorReturn(this, (BottomControlButtons.__proto__ || Object.getPrototypeOf(BottomControlButtons)).apply(this, arguments));
+    }
+
+    _createClass(BottomControlButtons, [{
+        key: 'render',
+        value: function render() {
+            var doSkinExport = this.props.exportActions.doSkinExport;
+            var switchDebugMode = this.props.otherActions.switchDebugMode;
+
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'bottom-control-buttons' },
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u042D\u043A\u0441\u043F\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C',
+                    style: 'bottom-control-button',
+                    onClickAction: function onClickAction() {
+                        return doSkinExport();
+                    }
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '???',
+                    style: 'bottom-control-button control-button-disabled',
+                    onClickAction: function onClickAction() {}
+                }),
+                _react2.default.createElement(_ControlButton2.default, {
+                    content: '\u041E\u0442\u043B\u0430\u0434\u043A\u0430 (\u041A\u0443\u0447\u0430 \u0442\u0435\u043A\u0441\u0442\u0430)',
+                    style: 'bottom-control-button',
+                    onClickAction: function onClickAction() {
+                        return switchDebugMode();
+                    }
+                })
+            );
+        }
+    }]);
+
+    return BottomControlButtons;
+}(_react.Component);
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        exportActions: (0, _redux.bindActionCreators)(exportActions, dispatch),
+        otherActions: (0, _redux.bindActionCreators)(otherActions, dispatch)
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(BottomControlButtons);
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(2);
+
+var _SkinExport = __webpack_require__(104);
+
+var _SkinExport2 = _interopRequireDefault(_SkinExport);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
+
+//Redux
+
+//Export
+
+
+var PartInfo = function PartInfo(partName, array) {
+    return _react2.default.createElement(
+        'span',
+        { key: partName, className: 'data' },
+        partName + ':',
+        _react2.default.createElement('br', null),
+        array[partName][0] ? array[partName][0] : "",
+        _react2.default.createElement('br', null),
+        array[partName][1] ? array[partName][1] : ""
+    );
+};
+
+var Info = function (_Component) {
+    _inherits(Info, _Component);
+
+    function Info() {
+        _classCallCheck(this, Info);
+
+        return _possibleConstructorReturn(this, (Info.__proto__ || Object.getPrototypeOf(Info)).apply(this, arguments));
+    }
+
+    _createClass(Info, [{
+        key: 'render',
+        value: function render() {
+            var _props$other = this.props.other,
+                version = _props$other.version,
+                isDev = _props$other.isDev,
+                debug = _props$other.debug;
+            var _props$skin = this.props.skin,
+                isNewFormat = _props$skin.isNewFormat,
+                selectedPart = _props$skin.selectedPart,
+                armorLayer = _props$skin.armorLayer;
+
+            var selectedTextures = this.props.selectedTextures;
+            console.log("Drew info component");
+
+            return _react2.default.createElement(
+                'div',
+                { className: "app-data" + (debug ? "" : " hidden") },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'column' },
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'data' },
+                            '\u0412\u0435\u0440\u0441\u0438\u044F: ',
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                version
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'data' },
+                            '\u0424\u043E\u0440\u043C\u0430\u0442: ',
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                (isDev ? 'DEV' : 'PROD') + " режим"
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'data' },
+                            '\u0412\u044B\u0431\u0440\u0430\u043D\u043D\u0430\u044F \u0447\u0430\u0441\u0442\u044C: ',
+                            _react2.default.createElement(
+                                'span',
+                                null,
+                                selectedPart
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'selected-textures' },
+                        '\u0412\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u0435 \u0442\u0435\u043A\u0441\u0442\u0443\u0440\u044B:',
+                        Object.keys(selectedTextures).map(function (key) {
+                            return PartInfo(key, selectedTextures);
+                        })
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'column' },
+                    _react2.default.createElement(_SkinExport2.default, null)
+                )
+            );
+        }
+    }]);
+
+    return Info;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        other: state.other,
+        skin: state.skin,
+        selectedTextures: state.selectedTextures
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Info);
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var switchDebugMode = exports.switchDebugMode = function switchDebugMode() {
+    return {
+        type: "SWITCH_DEBUG"
     };
 };
 
