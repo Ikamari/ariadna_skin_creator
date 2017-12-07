@@ -2,13 +2,11 @@
 import React from "react"
 //Coordinates
 import { coordinates } from "./PartCoordinates"
+//Helpers
+import simplifyPartName from '../../../helpers/simplifyPartName';
 
 export const drawNewLayout = (canvasElement, textures) => {
     let context = canvasElement.getContext('2d');
-
-    const simplifyPartName = (partName) => {
-        return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
-    };
 
     const drawTexture = (simplifiedPartName, texturePath, skinPart) => {
         console.log(simplifiedPartName, texturePath, skinPart);

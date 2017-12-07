@@ -17,8 +17,6 @@ class Preview extends Component {
         let partClassName = "preview-" + partName + " preview-part";
         partClassName += pairPart ? (pairPart === "right" ? " mirrored" : "" ) : "";
 
-        console.log("Made div for " + part + "." + side);
-
         return(
             <div className={partClassName} onClick={() => selectSkinPart(partName)}>
                 <RenderPart side = {side} partName = {partName} layer={0}/>

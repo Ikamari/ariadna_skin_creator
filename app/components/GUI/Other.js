@@ -18,7 +18,6 @@ class Info extends Component {
         const { version, isDev, debug } = this.props.other;
         const { isNewFormat, selectedPart, armorLayer } = this.props.skin;
         const selectedTextures = this.props.selectedTextures;
-        console.log("Drew info component");
 
         return(
             <div className={"app-data" + (debug ? "" : " hidden")}>

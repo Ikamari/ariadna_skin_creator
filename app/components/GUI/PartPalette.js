@@ -7,11 +7,11 @@ import { bindActionCreators } from 'redux';
 import RenderElement from '../canvas-render/PaletteElementCanvasRender';
 //Actions
 import * as selectedTexturesActions from '../../actions/selectedTexturesActions';
+//Helpers
+import simplifyPartName from '../../helpers/simplifyPartName';
+
 
 class Palette extends Component {
-    simplifyPartName(partName) {
-        return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
-    }
 
     showPaletteElement(textureName, simplifiedPartName) {
         const partName = this.props.skin.selectedPart;
@@ -45,11 +45,12 @@ class Palette extends Component {
     }
 
     render() {
-        const simplifiedPartName = this.simplifyPartName(this.props.skin.selectedPart);
+        const simplifiedPartName = simplifyPartName(this.props.skin.selectedPart);
         const isArmor = this.props.skin.armorLayer;
         const textures = this.props.textures;
 
         if (simplifiedPartName !== "none") {
+            console.log(textures, Number(isArmor), simplifiedPartName);
             return (
                 <div className="palette">
                     {Array.isArray(textures[Number(isArmor)][simplifiedPartName]) ?
@@ -66,7 +67,7 @@ class Palette extends Component {
 
 const mapStateToProps = (state) => ({
     skin: state.skin,
-    textures: state.textures,
+    textures: state.loadedTextures,
     isDev: state.other.isDev,
     selectedTextures: state.selectedTextures,
 });

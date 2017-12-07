@@ -25159,15 +25159,15 @@ var _react2 = _interopRequireDefault(_react);
 
 var _PartCoordinates = __webpack_require__(39);
 
+var _simplifyPartName = __webpack_require__(138);
+
+var _simplifyPartName2 = _interopRequireDefault(_simplifyPartName);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//React
+//Coordinates
 var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement, textures) {
     var context = canvasElement.getContext('2d');
-
-    var simplifyPartName = function simplifyPartName(partName) {
-        return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
-    };
 
     var drawTexture = function drawTexture(simplifiedPartName, texturePath, skinPart) {
         console.log(simplifiedPartName, texturePath, skinPart);
@@ -25183,11 +25183,12 @@ var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement
     context.imageSmoothingEnabled = false;
 
     Object.keys(textures).map(function (key) {
-        textures[key][0] ? drawTexture(simplifyPartName(key), textures[key][0], key) : undefined;
-        textures[key][1] ? drawTexture(simplifyPartName(key), textures[key][1], key + "-armor") : undefined;
+        textures[key][0] ? drawTexture((0, _simplifyPartName2.default)(key), textures[key][0], key) : undefined;
+        textures[key][1] ? drawTexture((0, _simplifyPartName2.default)(key), textures[key][1], key + "-armor") : undefined;
     });
 };
-//Coordinates
+//Helpers
+//React
 
 /***/ }),
 /* 107 */
@@ -26421,8 +26422,6 @@ var Preview = function (_Component) {
             var partClassName = "preview-" + partName + " preview-part";
             partClassName += pairPart ? pairPart === "right" ? " mirrored" : "" : "";
 
-            console.log("Made div for " + part + "." + side);
-
             return _react2.default.createElement(
                 'div',
                 { className: partClassName, onClick: function onClick() {
@@ -26474,6 +26473,10 @@ var _selectedTexturesActions = __webpack_require__(37);
 
 var selectedTexturesActions = _interopRequireWildcard(_selectedTexturesActions);
 
+var _simplifyPartName = __webpack_require__(138);
+
+var _simplifyPartName2 = _interopRequireDefault(_simplifyPartName);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -26490,6 +26493,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //Actions
 
+//Helpers
+
 
 var Palette = function (_Component) {
     _inherits(Palette, _Component);
@@ -26501,11 +26506,6 @@ var Palette = function (_Component) {
     }
 
     _createClass(Palette, [{
-        key: 'simplifyPartName',
-        value: function simplifyPartName(partName) {
-            return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
-        }
-    }, {
         key: 'showPaletteElement',
         value: function showPaletteElement(textureName, simplifiedPartName) {
             var partName = this.props.skin.selectedPart;
@@ -26543,11 +26543,12 @@ var Palette = function (_Component) {
         value: function render() {
             var _this2 = this;
 
-            var simplifiedPartName = this.simplifyPartName(this.props.skin.selectedPart);
+            var simplifiedPartName = (0, _simplifyPartName2.default)(this.props.skin.selectedPart);
             var isArmor = this.props.skin.armorLayer;
             var textures = this.props.textures;
 
             if (simplifiedPartName !== "none") {
+                console.log(textures, Number(isArmor), simplifiedPartName);
                 return _react2.default.createElement(
                     'div',
                     { className: 'palette' },
@@ -26569,7 +26570,7 @@ var Palette = function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
     return {
         skin: state.skin,
-        textures: state.textures,
+        textures: state.loadedTextures,
         isDev: state.other.isDev,
         selectedTextures: state.selectedTextures
     };
@@ -27033,7 +27034,6 @@ var Info = function (_Component) {
                 armorLayer = _props$skin.armorLayer;
 
             var selectedTextures = this.props.selectedTextures;
-            console.log("Drew info component");
 
             return _react2.default.createElement(
                 'div',
@@ -27121,6 +27121,28 @@ var switchDebugMode = exports.switchDebugMode = function switchDebugMode() {
         type: "SWITCH_DEBUG"
     };
 };
+
+/***/ }),
+/* 138 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var simplifyPartName = function simplifyPartName(partName) {
+    return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
+}; //React
+exports.default = simplifyPartName;
 
 /***/ })
 /******/ ]);
