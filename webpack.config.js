@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './app/index.js',
+    entry: ['babel-polyfill', './app/index.js'],
     watch: true,
     output: {
         path: __dirname + '/public/',
@@ -19,7 +19,7 @@ module.exports = {
                 exclude: /node_modules/,
                 query: {
                     cacheDirectory: true,
-                    presets: ['react', 'es2015', 'stage-2']
+                    presets: ['react', 'es2015', 'stage-0']
                 }
             }
         ]
