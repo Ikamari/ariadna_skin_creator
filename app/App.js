@@ -47,11 +47,11 @@ class App extends Component {
 
         return(
             <div className="app">
-                <Preview/>
+                <Preview changeState={() => this.changeStateForPalette()}/>
                 <div className="controls">
-                    <SkinSettings/>
+                    <SkinSettings changeState={() => this.changeStateForPalette()}/>
                     <div className="controls-middle">
-                        <PartSelection/>
+                        <PartSelection changeState={() => this.changeStateForPalette()}/>
                         <Palette isDev={isDev}/>
                         <ControlPanel/>
                     </div>

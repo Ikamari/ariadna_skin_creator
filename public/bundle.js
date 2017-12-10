@@ -33433,17 +33433,23 @@ var _overseer = __webpack_require__(461);
 
 var _overseer2 = _interopRequireDefault(_overseer);
 
+var _partData = __webpack_require__(463);
+
+var _partData2 = _interopRequireDefault(_partData);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//Reducers
+//Redux
 exports.default = (0, _redux.combineReducers)({
     skin: _skin2.default,
     other: _other2.default,
     selectedTextures: _selectedTextures2.default,
     loadedTextures: _loadedTextures2.default,
     skinExport: _skinExport2.default,
-    overseer: _overseer2.default
-}); //Redux
+    overseer: _overseer2.default,
+    partData: _partData2.default
+});
+//Reducers
 
 /***/ }),
 /* 416 */
@@ -33747,21 +33753,29 @@ var App = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             var isDev = this.props.isDev;
             (0, _TextureLoader.loadTextures)(this.props.textureActions, isDev);
 
             return _react2.default.createElement(
                 'div',
                 { className: 'app' },
-                _react2.default.createElement(_SkinPreview2.default, null),
+                _react2.default.createElement(_SkinPreview2.default, { changeState: function changeState() {
+                        return _this2.changeStateForPalette();
+                    } }),
                 _react2.default.createElement(
                     'div',
                     { className: 'controls' },
-                    _react2.default.createElement(_SkinSettings2.default, null),
+                    _react2.default.createElement(_SkinSettings2.default, { changeState: function changeState() {
+                            return _this2.changeStateForPalette();
+                        } }),
                     _react2.default.createElement(
                         'div',
                         { className: 'controls-middle' },
-                        _react2.default.createElement(_PartSelection2.default, null),
+                        _react2.default.createElement(_PartSelection2.default, { changeState: function changeState() {
+                                return _this2.changeStateForPalette();
+                            } }),
                         _react2.default.createElement(_PartPalette2.default, { isDev: isDev }),
                         _react2.default.createElement(_ControlPanel2.default, null)
                     )
@@ -34430,17 +34444,21 @@ var _redux = __webpack_require__(31);
 
 var _reactRedux = __webpack_require__(20);
 
+var _ControlButton = __webpack_require__(107);
+
+var _ControlButton2 = _interopRequireDefault(_ControlButton);
+
 var _skinActions = __webpack_require__(106);
 
 var skinActions = _interopRequireWildcard(_skinActions);
 
+var _overseerActions = __webpack_require__(460);
+
+var overseerActions = _interopRequireWildcard(_overseerActions);
+
 var _selectedTexturesActions = __webpack_require__(161);
 
 var selectedTexturesActions = _interopRequireWildcard(_selectedTexturesActions);
-
-var _ControlButton = __webpack_require__(107);
-
-var _ControlButton2 = _interopRequireDefault(_ControlButton);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -34453,8 +34471,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //React
 
 //Redux
-
-//Actions
 
 //Button
 
@@ -34482,6 +34498,7 @@ var TopControlButtons = function (_Component) {
                 changeSkinLayer = _props$skinActions.changeSkinLayer,
                 selectSkinPart = _props$skinActions.selectSkinPart;
             var removeLayerTexture = this.props.selectedTexturesActions.removeLayerTexture;
+            var checkData = this.props.overseerActions.checkData;
 
 
             return _react2.default.createElement(
@@ -34493,6 +34510,7 @@ var TopControlButtons = function (_Component) {
                     activeContent: '\u0421\u043B\u043E\u0439: \u0412\u0435\u0440\u0445\u043D\u0438\u0439',
                     activeEvent: armorLayer,
                     onClickAction: function onClickAction() {
+                        checkData();
                         !isNewFormat ? selectSkinPart("head") : undefined;
                         changeSkinLayer(armorLayer);
                     }
@@ -34525,17 +34543,21 @@ var TopControlButtons = function (_Component) {
     return TopControlButtons;
 }(_react.Component);
 
-var mapStateToProps = function mapStateToProps(state) {
-    return {
-        skin: state.skin,
-        selectedTextures: state.selectedTextures
-    };
-};
+//Actions
+
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         selectedTexturesActions: (0, _redux.bindActionCreators)(selectedTexturesActions, dispatch),
+        overseerActions: (0, _redux.bindActionCreators)(overseerActions, dispatch),
         skinActions: (0, _redux.bindActionCreators)(skinActions, dispatch)
+    };
+};
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        skin: state.skin,
+        selectedTextures: state.selectedTextures
     };
 };
 
@@ -34898,11 +34920,11 @@ var Info = function (_Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'data' },
-                            '\u0424\u043E\u0440\u043C\u0430\u0442: ',
+                            '\u0420\u0435\u0436\u0438\u043C: ',
                             _react2.default.createElement(
                                 'span',
                                 null,
-                                (isDev ? 'DEV' : 'PROD') + " режим"
+                                isDev ? 'DEV' : 'PROD'
                             )
                         ),
                         _react2.default.createElement(
@@ -36190,6 +36212,10 @@ var _simplifyPartName = __webpack_require__(162);
 
 var _simplifyPartName2 = _interopRequireDefault(_simplifyPartName);
 
+var _getTextureScale = __webpack_require__(464);
+
+var _getTextureScale2 = _interopRequireDefault(_getTextureScale);
+
 var _overseerActions = __webpack_require__(460);
 
 var overseerActions = _interopRequireWildcard(_overseerActions);
@@ -36212,54 +36238,97 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Overseer = function (_Component) {
     _inherits(Overseer, _Component);
 
-    function Overseer() {
+    function Overseer(props) {
         _classCallCheck(this, Overseer);
 
-        return _possibleConstructorReturn(this, (Overseer.__proto__ || Object.getPrototypeOf(Overseer)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Overseer.__proto__ || Object.getPrototypeOf(Overseer)).call(this, props));
+
+        _this.partTextures = [];
+        _this.partName = "";
+        _this.isArmor = false;
+        return _this;
     }
 
     _createClass(Overseer, [{
-        key: 'getPartTexturesSize',
-        value: function getPartTexturesSize() {}
+        key: 'getDimensions',
+        value: function getDimensions(name) {
+            var _this2 = this;
+
+            return new Promise(function (resolve, reject) {
+                var imageBlock = _this2.refs.dimensionCheck;
+                var path = '' + (_this2.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + (_this2.isArmor ? 'armor/' : 'main/') + (_this2.partName + '/' + name);
+                imageBlock.onload = function (e) {
+                    resolve({ height: imageBlock.naturalHeight, width: imageBlock.naturalWidth });
+                };
+                imageBlock.src = path;
+            });
+        }
+    }, {
+        key: 'getPartTexturesDimensions',
+        value: function getPartTexturesDimensions() {
+            var _this3 = this;
+
+            var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+            var dimensions = this.getDimensions(this.partTextures[index].name);
+            dimensions.then(function (result) {
+                Object.assign(_this3.partTextures[index], result);
+                index < _this3.partTextures.length - 1 ? _this3.getPartTexturesDimensions(index + 1) : _this3.getPartTexturesScale();
+            });
+        }
     }, {
         key: 'getPartTexturesScale',
-        value: function getPartTexturesScale() {}
+        value: function getPartTexturesScale() {
+            var _this4 = this;
+
+            this.partTextures.map(function (value, index) {
+                var height = _this4.partTextures[index].height;
+                var width = _this4.partTextures[index].width;
+                Object.assign(_this4.partTextures[index], { scale: (0, _getTextureScale2.default)(height, width, false) });
+            });
+            console.log(this.partTextures);
+        }
     }, {
         key: 'getPartInfo',
         value: function getPartInfo(simplifiedPartName, isArmor) {
-            var loadedTextures = this.state.loadedTextures[Number(isArmor)][simplifiedPartName];
-            var partTextures = [];
+            var _this5 = this;
+
+            var loadedTextures = this.props.loadedTextures[Number(isArmor)][simplifiedPartName];
+            this.partTextures = [];
+            this.partName = simplifiedPartName;
+            this.isArmor = isArmor;
 
             Array.isArray(loadedTextures) ? loadedTextures.map(function (value) {
-                return { link: value };
+                return _this5.partTextures.push({ name: value });
             }) : Object.keys(loadedTextures).map(function (key) {
-                return { link: value };
+                return _this5.partTextures.push({ name: loadedTextures[key] });
             });
+
+            this.getPartTexturesDimensions();
         }
     }, {
         key: 'checkPartTexturesData',
         value: function checkPartTexturesData(partName) {
             var partData = this.props.partData;
-
-            return partData[partName] === [];
+            return partData[partName].length === 0;
         }
     }, {
         key: 'render',
         value: function render() {
             //Check if there is needed to check data
             var needToCheckData = this.props.checkDataSwitch;
-            if (!needToCheckData) return null;
+            if (needToCheckData) {
+                var _props$skinSettings = this.props.skinSettings,
+                    selectedPart = _props$skinSettings.selectedPart,
+                    armorLayer = _props$skinSettings.armorLayer;
 
-            var _props$skin = this.props.skin,
-                selectedPart = _props$skin.selectedPart,
-                isArmor = _props$skin.isArmor;
+                var simplifiedPartName = (0, _simplifyPartName2.default)(selectedPart);
 
-            var simplifiedPartName = (0, _simplifyPartName2.default)(selectedPart);
+                //If part textures are already checked, then there is no need to do that again
+                if (this.checkPartTexturesData(simplifiedPartName + (armorLayer ? "Armor" : "")) && simplifiedPartName !== "none") this.getPartInfo(simplifiedPartName, armorLayer);
+            }
 
-            //If part textures are already checked, then there is no need to do that again
-            if (this.checkPartTexturesData(simplifiedPartName + (isArmor ? "Armor" : ""))) this.getPartInfo(simplifiedPartName, isArmor);
-
-            return null;
+            return _react2.default.createElement('img', { ref: 'dimensionCheck', className: 'hidden' });
         }
     }]);
 
@@ -36280,11 +36349,130 @@ var mapStateToProps = function mapStateToProps(state) {
         checkDataSwitch: state.overseer.checkDataSwitch,
         loadedTextures: state.loadedTextures,
         partData: state.partData,
-        skinSettings: state.skin
+        skinSettings: state.skin,
+        isDev: state.other.isDev
     };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Overseer);
+
+/***/ }),
+/* 463 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var initialState = {
+    head: [],
+    headArmor: [],
+    body: [],
+    bodyArmor: [],
+    hand: [],
+    handArmor: [],
+    leg: [],
+    legArmor: []
+};
+
+var partData = function partData() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+    var action = arguments[1];
+
+    switch (action.type) {
+        default:
+            return state;
+    }
+};
+
+exports.default = partData;
+
+// case "head": {
+//
+//     break;
+// }
+// case "headArmor": {
+//     break;
+// }
+// case "body": {
+//     break;
+// }
+// case "bodyArmor": {
+//     break;
+// }
+// case "hand": {
+//     break;
+// }
+// case "handArmor": {
+//     break;
+// }
+// case "leg": {
+//     break;
+// }
+// case "legArmor": {
+//     break;
+// }
+
+/***/ }),
+/* 464 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var defaultPartSizes = {
+    head: [16, 32],
+    body: [16, 14],
+    limb: [16, 16]
+}; //React
+
+
+var defaultSkinSizes = {
+    new: [64, 64],
+    old: [32, 64]
+};
+
+/**
+ * Will return skin/part scale (64*32 = 1, 128*64 = 2, ...) or false, if the size is wrong
+ */
+var getScale = function getScale(textureHeight, textureWidth) {
+    var isSkin = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+    var type = null;
+    var scale = null;
+
+    var countScale = function countScale(sizes) {
+        for (var i = 0, keys = Object.keys(sizes); i < keys.length; i++) {
+            if (textureHeight / sizes[keys[i]][0] !== textureWidth / sizes[keys[i]][1]) continue;
+            if (textureHeight % sizes[keys[i]][0] === 0 && textureWidth % sizes[keys[i]][1] === 0) {
+                scale = 0;
+                type = keys[i];
+
+                while (textureHeight !== sizes[keys[i]][0] * Math.pow(2, scale)) {
+                    scale++;
+                }break;
+            }
+        }
+    };
+
+    isSkin ? countScale(defaultSkinSizes) : countScale(defaultPartSizes);
+
+    return scale;
+};
+
+exports.default = getScale;
 
 /***/ })
 /******/ ]);

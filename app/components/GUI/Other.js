@@ -24,7 +24,7 @@ class Info extends Component {
                 <div className="column">
                     <div>
                         <div className="data">Версия: <span>{version}</span></div>
-                        <div className="data">Формат: <span>{(isDev ? 'DEV' : 'PROD') + " режим"}</span></div>
+                        <div className="data">Режим: <span>{(isDev ? 'DEV' : 'PROD')}</span></div>
                         <div className="data">Выбранная часть: <span>{selectedPart}</span></div>
                     </div>
                     <div className="selected-textures">

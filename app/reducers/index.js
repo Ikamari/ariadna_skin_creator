@@ -7,6 +7,7 @@ import selectedTextures from './selectedTextures'
 import loadedTextures from './loadedTextures'
 import skinExport from './skinExport'
 import overseer from './overseer'
+import partData from './partData'
 
 export default combineReducers({
     skin,
@@ -14,5 +15,6 @@ export default combineReducers({
     selectedTextures,
     loadedTextures,
     skinExport,
-    overseer
+    overseer,
+    partData
 })

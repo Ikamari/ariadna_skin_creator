@@ -3,9 +3,6 @@ import React, { Component } from 'react';
 //Redux
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-//Actions
-import * as skinActions from '../../../actions/skinActions';
-import * as selectedTexturesActions from '../../../actions/selectedTexturesActions';
 //Button
 import ControlButton from "./ControlButton";
 
@@ -15,6 +12,8 @@ class TopControlButtons extends Component {
         const { changeSkinFormat, changeSkinLayer, selectSkinPart } = this.props.skinActions;
         const { removeLayerTexture } = this.props.selectedTexturesActions;
 
+        const {checkData} = this.props.overseerActions;
+
         return(
             <div className = "top-control-buttons">
                 <ControlButton
@@ -23,6 +22,7 @@ class TopControlButtons extends Component {
                     activeContent = "Слой: Верхний"
                     activeEvent = {armorLayer}
                     onClickAction = {() => {
+                        checkData();
                         !isNewFormat ? selectSkinPart("head") : undefined;
                         changeSkinLayer(armorLayer);
                     }}
@@ -53,14 +53,20 @@ class TopControlButtons extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    skin: state.skin,
-    selectedTextures: state.selectedTextures
-});
+//Actions
+import * as skinActions from '../../../actions/skinActions';
+import * as overseerActions from '../../../actions/overseerActions';
+import * as selectedTexturesActions from '../../../actions/selectedTexturesActions';
 
 const mapDispatchToProps = (dispatch) => ({
     selectedTexturesActions: bindActionCreators(selectedTexturesActions, dispatch),
+    overseerActions: bindActionCreators(overseerActions, dispatch),
     skinActions: bindActionCreators(skinActions, dispatch)
+});
+
+const mapStateToProps = (state) => ({
+    skin: state.skin,
+    selectedTextures: state.selectedTextures
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopControlButtons)

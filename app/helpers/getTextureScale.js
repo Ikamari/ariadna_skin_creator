@@ -16,7 +16,6 @@ const defaultSkinSizes = {
  * Will return skin/part scale (64*32 = 1, 128*64 = 2, ...) or false, if the size is wrong
  */
 const getScale = (textureHeight, textureWidth, isSkin = true) => {
-    console.log(textureHeight, textureWidth, isSkin);
     let type = null;
     let scale = null;
 
@@ -31,7 +30,6 @@ const getScale = (textureHeight, textureWidth, isSkin = true) => {
                 while(textureHeight !== sizes[keys[i]][0] * Math.pow(2, scale))
                     scale++;
 
-                console.log(`Got ${isSkin ? type + " skin" : type} with scale ${scale}`);
                 break;
             }
         }
