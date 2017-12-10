@@ -224,10 +224,11 @@
     align-items: center;
     justify-content: center;
     height: 80px;
-    width: 80px;
+    width: 78px;
     margin: 10px;
     border: 1px solid rebeccapurple;
     box-shadow: 0 0 12px rebeccapurple;
+    cursor: pointer;
 }
 
 /*** Canvas ***/

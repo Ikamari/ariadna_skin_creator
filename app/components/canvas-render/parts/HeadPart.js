@@ -6,8 +6,8 @@ export const headPart = (side, isPaletteElement = false, isArmor = false) => ({
     posY: 8,
     sWidth: 8,
     sHeight: 8,
-    sliceX: isArmor ? 5 : 0,
-    sliceY: isArmor ? 15 : 0,
+    sliceX: 0,
+    sliceY: 0,
     dWidth: isPaletteElement ? 40 : 80,
     dHeight: isPaletteElement ? 40 : 80,
 });

@@ -19,7 +19,10 @@ class Preview extends Component {
         return(
             <div className={partClassName} onClick={() => changeState("part", partName)}>
                 <RenderPart side = {side} partName = {partName} layer={0}/>
-                {this.props.isOld ? null : <RenderPart side = {side} partName = {partName} layer={1} pairPart={pairPart ? pairPart : null}/>}
+                {!this.props.isOld ?
+                    <RenderPart side = {side} partName = {partName} layer={1} pairPart={pairPart ? pairPart : null}/> :
+                    null
+                }
             </div>
         )
     }

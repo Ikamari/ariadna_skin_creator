@@ -29,7 +29,7 @@ class Palette extends Component {
                 onClick={() => {
                     let partLayerToChange = selectedTextures[partName];
                     partLayerToChange[Number(isArmor)] = index;
-                    console.log(partName, partLayerToChange);
+
                     selectLayerTexture(partName, partLayerToChange);
                 }}
             >

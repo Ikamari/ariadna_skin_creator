@@ -6,8 +6,8 @@ export const handPart = (side, isPaletteElement = false, isArmor = false) => ({
     posY: 4,
     sWidth: 4,
     sHeight: 12,
-    sliceX: isArmor ? 10 : 0,
-    sliceY: isArmor ? 6 : 0,
+    sliceX: 0,
+    sliceY: 0,
     dWidth: isPaletteElement ? 20 : 40,
     dHeight: isPaletteElement ? 70 : 140,
 });

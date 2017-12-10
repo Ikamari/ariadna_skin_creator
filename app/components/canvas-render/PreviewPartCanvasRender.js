@@ -7,72 +7,79 @@ import { headPart } from './parts/HeadPart'
 import { bodyPart } from './parts/BodyPart'
 import { handPart } from './parts/HandPart'
 import { legPart } from './parts/LegPart'
+//Helpers
+import simplifyPartName from '../../helpers/simplifyPartName';
 
 class CanvasRender extends Component {
-    getFolderName(partName) {
-       return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
-    }
 
-    getCanvasProps(folderName, side, layer) {
-        switch(folderName) {
-            case "head":
-                return headPart(side, false, layer);
-            case "body":
-                return bodyPart(side, false, layer);
-            case "hand":
-                return handPart(side, false, layer);
-            case "leg":
-                return legPart(side, false, layer);
-            default:
-                console.log("Woops! You're broke canvas render!")
+    getCanvasProps(simplifiedPartName, side, layer) {
+        switch(simplifiedPartName) {
+            case "head": return headPart(side, false, layer);
+            case "body": return bodyPart(side, false, layer);
+            case "hand": return handPart(side, false, layer);
+            case "leg": return legPart(side, false, layer);
+            default: console.log("Woops! You're broke canvas render!")
         }
     }
 
-    drawTexture(context, canvasProps, layer, folderName, partName) {
+    drawTexture(layer, side, partName) {
         const selectedTextures = this.props.selectedTextures;
+        const simplifiedPartName = simplifyPartName(partName);
+        const textures = this.props.textures;
+
+        const index = selectedTextures[partName][layer];
+        const {path, scale} = textures[simplifiedPartName + (layer ? "Armor" : "")][index];
+
+        const canvasProps = this.getCanvasProps(simplifiedPartName, side, layer);
+
+        let canvasElement = this.refs.renderedPart;
+        canvasElement.width  = canvasProps.dWidth + (layer ? 20 : 0);
+        canvasElement.height = canvasProps.dHeight + (layer ? 20 : 0);
+
+        let context = canvasElement.getContext('2d');
+        context.scale(1 / Math.pow(2, scale), 1 / Math.pow(2, scale));
+        context.shadowBlur = 6;
+        context.shadowColor = "black";
+        context.imageSmoothingEnabled = false;
 
         let partTexture = new Image();
         partTexture.onload = () => {
             context.drawImage(
                 partTexture,
-                canvasProps.posX,
-                canvasProps.posY,
-                canvasProps.sWidth,
-                canvasProps.sHeight,
+                canvasProps.posX * Math.pow(2, scale),
+                canvasProps.posY * Math.pow(2, scale),
+                canvasProps.sWidth * Math.pow(2, scale),
+                canvasProps.sHeight * Math.pow(2, scale),
                 canvasProps.sliceX,
                 canvasProps.sliceY,
-                canvasProps.dWidth + (layer ? 20 : 0),
-                canvasProps.dHeight + (layer ? 20 : 0)
+                (canvasProps.dWidth + (layer ? 20 : 0)) * Math.pow(2, scale),
+                (canvasProps.dHeight + (layer ? 20 : 0)) * Math.pow(2, scale)
             );
         };
-        partTexture.src = selectedTextures[partName][layer];
+        partTexture.src = path;
     }
 
-    eraseTexture(context) {
+    eraseTexture() {
+        let canvasElement = this.refs.renderedPart;
+        canvasElement.height = 1;
+        canvasElement.width = 1;
+        let context = canvasElement.getContext('2d');
+
         context.clearRect(
             0,
             0,
-            context.canvas.width,
-            context.canvas.height
+            9999,
+            9999
         );
     }
 
     renderCanvas() {
         const { partName, layer, side } = this.props;
-        const folderName = this.getFolderName(partName);
         const selectedTextures = this.props.selectedTextures;
-        const canvasProps = this.getCanvasProps(folderName, side, layer);
-
-        let canvasElement = this.refs.renderedPart;
-        let context = canvasElement.getContext('2d');
-        context.canvas.width  = canvasProps.dWidth + (layer ? 30 : 0);
-        context.canvas.height = canvasProps.dHeight + (layer ? 30 : 0);
-        context.shadowBlur = 6;
-        context.shadowColor = "black";
-        context.imageSmoothingEnabled = false;
 
         selectedTextures[partName][layer] !== null ?
-            this.drawTexture(context, canvasProps, layer, folderName, partName) : this.eraseTexture(context);
+            this.drawTexture(layer, side, partName) :
+            this.eraseTexture();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -92,7 +99,8 @@ class CanvasRender extends Component {
 }
 
 const mapStateToProps = state => ({
-    selectedTextures: state.selectedTextures
+    selectedTextures: state.selectedTextures,
+    textures: state.partData
 });
 
 export default connect(mapStateToProps)(CanvasRender)

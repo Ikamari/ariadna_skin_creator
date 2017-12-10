@@ -6120,8 +6120,8 @@ var headPart = exports.headPart = function headPart(side) {
         posY: 8,
         sWidth: 8,
         sHeight: 8,
-        sliceX: isArmor ? 5 : 0,
-        sliceY: isArmor ? 15 : 0,
+        sliceX: 0,
+        sliceY: 0,
         dWidth: isPaletteElement ? 40 : 80,
         dHeight: isPaletteElement ? 40 : 80
     };
@@ -6154,8 +6154,8 @@ var bodyPart = exports.bodyPart = function bodyPart(side) {
         posY: 4,
         sWidth: 8,
         sHeight: 12,
-        sliceX: isArmor ? 5 : 0,
-        sliceY: isArmor ? -7 : 0,
+        sliceX: 0,
+        sliceY: 0,
         dWidth: isPaletteElement ? 40 : 80,
         dHeight: isPaletteElement ? 70 : 140
     };
@@ -6187,8 +6187,8 @@ var handPart = exports.handPart = function handPart(side) {
         posY: 4,
         sWidth: 4,
         sHeight: 12,
-        sliceX: isArmor ? 10 : 0,
-        sliceY: isArmor ? 6 : 0,
+        sliceX: 0,
+        sliceY: 0,
         dWidth: isPaletteElement ? 20 : 40,
         dHeight: isPaletteElement ? 70 : 140
     };
@@ -6220,8 +6220,8 @@ var legPart = exports.legPart = function legPart(side) {
         posY: 4,
         sWidth: 4,
         sHeight: 12,
-        sliceX: isArmor ? side === "front" ? 2 : 8 : 0,
-        sliceY: isArmor ? 10 : 0,
+        sliceX: 0,
+        sliceY: 0,
         dWidth: isPaletteElement ? 20 : 40,
         dHeight: isPaletteElement ? 70 : 140
     };
@@ -33500,7 +33500,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
-    version: "0.7 - dev 0.3",
+    version: "0.7 - dev 0.4",
     isDev: true,
     debug: true
 };
@@ -34025,7 +34025,7 @@ var Preview = function (_Component) {
                         return changeState("part", partName);
                     } },
                 _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 0 }),
-                this.props.isOld ? null : _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 1, pairPart: pairPart ? pairPart : null })
+                !this.props.isOld ? _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 1, pairPart: pairPart ? pairPart : null }) : null
             );
         }
     }]);
@@ -34068,6 +34068,10 @@ var _HandPart = __webpack_require__(159);
 
 var _LegPart = __webpack_require__(160);
 
+var _simplifyPartName = __webpack_require__(162);
+
+var _simplifyPartName2 = _interopRequireDefault(_simplifyPartName);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -34080,6 +34084,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //Skin parts
 
+//Helpers
+
 
 var CanvasRender = function (_Component) {
     _inherits(CanvasRender, _Component);
@@ -34091,14 +34097,9 @@ var CanvasRender = function (_Component) {
     }
 
     _createClass(CanvasRender, [{
-        key: 'getFolderName',
-        value: function getFolderName(partName) {
-            return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
-        }
-    }, {
         key: 'getCanvasProps',
-        value: function getCanvasProps(folderName, side, layer) {
-            switch (folderName) {
+        value: function getCanvasProps(simplifiedPartName, side, layer) {
+            switch (simplifiedPartName) {
                 case "head":
                     return (0, _HeadPart.headPart)(side, false, layer);
                 case "body":
@@ -34113,19 +34114,44 @@ var CanvasRender = function (_Component) {
         }
     }, {
         key: 'drawTexture',
-        value: function drawTexture(context, canvasProps, layer, folderName, partName) {
+        value: function drawTexture(layer, side, partName) {
             var selectedTextures = this.props.selectedTextures;
+            var simplifiedPartName = (0, _simplifyPartName2.default)(partName);
+            var textures = this.props.textures;
+
+            var index = selectedTextures[partName][layer];
+            var _textures$index = textures[simplifiedPartName + (layer ? "Armor" : "")][index],
+                path = _textures$index.path,
+                scale = _textures$index.scale;
+
+
+            var canvasProps = this.getCanvasProps(simplifiedPartName, side, layer);
+
+            var canvasElement = this.refs.renderedPart;
+            canvasElement.width = canvasProps.dWidth + (layer ? 20 : 0);
+            canvasElement.height = canvasProps.dHeight + (layer ? 20 : 0);
+
+            var context = canvasElement.getContext('2d');
+            context.scale(1 / Math.pow(2, scale), 1 / Math.pow(2, scale));
+            context.shadowBlur = 6;
+            context.shadowColor = "black";
+            context.imageSmoothingEnabled = false;
 
             var partTexture = new Image();
             partTexture.onload = function () {
-                context.drawImage(partTexture, canvasProps.posX, canvasProps.posY, canvasProps.sWidth, canvasProps.sHeight, canvasProps.sliceX, canvasProps.sliceY, canvasProps.dWidth + (layer ? 20 : 0), canvasProps.dHeight + (layer ? 20 : 0));
+                context.drawImage(partTexture, canvasProps.posX * Math.pow(2, scale), canvasProps.posY * Math.pow(2, scale), canvasProps.sWidth * Math.pow(2, scale), canvasProps.sHeight * Math.pow(2, scale), canvasProps.sliceX, canvasProps.sliceY, (canvasProps.dWidth + (layer ? 20 : 0)) * Math.pow(2, scale), (canvasProps.dHeight + (layer ? 20 : 0)) * Math.pow(2, scale));
             };
-            partTexture.src = selectedTextures[partName][layer];
+            partTexture.src = path;
         }
     }, {
         key: 'eraseTexture',
-        value: function eraseTexture(context) {
-            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        value: function eraseTexture() {
+            var canvasElement = this.refs.renderedPart;
+            canvasElement.height = 1;
+            canvasElement.width = 1;
+            var context = canvasElement.getContext('2d');
+
+            context.clearRect(0, 0, 9999, 9999);
         }
     }, {
         key: 'renderCanvas',
@@ -34135,19 +34161,9 @@ var CanvasRender = function (_Component) {
                 layer = _props.layer,
                 side = _props.side;
 
-            var folderName = this.getFolderName(partName);
             var selectedTextures = this.props.selectedTextures;
-            var canvasProps = this.getCanvasProps(folderName, side, layer);
 
-            var canvasElement = this.refs.renderedPart;
-            var context = canvasElement.getContext('2d');
-            context.canvas.width = canvasProps.dWidth + (layer ? 30 : 0);
-            context.canvas.height = canvasProps.dHeight + (layer ? 30 : 0);
-            context.shadowBlur = 6;
-            context.shadowColor = "black";
-            context.imageSmoothingEnabled = false;
-
-            selectedTextures[partName][layer] !== null ? this.drawTexture(context, canvasProps, layer, folderName, partName) : this.eraseTexture(context);
+            selectedTextures[partName][layer] !== null ? this.drawTexture(layer, side, partName) : this.eraseTexture();
         }
     }, {
         key: 'componentDidUpdate',
@@ -34177,7 +34193,8 @@ var CanvasRender = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        selectedTextures: state.selectedTextures
+        selectedTextures: state.selectedTextures,
+        textures: state.partData
     };
 };
 
@@ -34266,7 +34283,7 @@ var Palette = function (_Component) {
                     onClick: function onClick() {
                         var partLayerToChange = selectedTextures[partName];
                         partLayerToChange[Number(isArmor)] = index;
-                        console.log(partName, partLayerToChange);
+
                         selectLayerTexture(partName, partLayerToChange);
                     }
                 },
