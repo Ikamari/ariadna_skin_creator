@@ -18,10 +18,9 @@ class Overseer extends Component {
         this.isArmor = false;
     }
 
-    getDimensions(name) {
+    getDimensions(path) {
         return new Promise((resolve, reject) => {
             let imageBlock = this.refs.dimensionCheck;
-            const path = `${this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/"}${this.isArmor? 'armor/' : 'main/'}${this.partName + '/' + name}`;
             imageBlock.onload = (e) => {
                 resolve({height: imageBlock.naturalHeight, width: imageBlock.naturalWidth})
             };
@@ -30,7 +29,7 @@ class Overseer extends Component {
     }
 
     getPartTexturesDimensions(index = 0) {
-        let dimensions = this.getDimensions(this.partTextures[index].name);
+        let dimensions = this.getDimensions(this.partTextures[index].path);
         dimensions.then(
             result => {
                 Object.assign(this.partTextures[index], result);
@@ -61,8 +60,14 @@ class Overseer extends Component {
         this.isArmor = isArmor;
 
         Array.isArray(loadedTextures) ?
-            loadedTextures.map((value) => this.partTextures.push({name: value})) :
-            Object.keys(loadedTextures).map((key) => this.partTextures.push({name: loadedTextures[key]}));
+            loadedTextures.map((value) => {
+                const path = `${this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/"}${this.isArmor? 'armor/' : 'main/'}${this.partName + '/' + value}`;
+                this.partTextures.push({path: path})
+            }) :
+            Object.keys(loadedTextures).map((key) => {
+                const path = `${this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/"}${this.isArmor? 'armor/' : 'main/'}${this.partName + '/' + loadedTextures[key]}`;
+                this.partTextures.push({path: path})
+            });
 
         this.getPartTexturesDimensions();
     }

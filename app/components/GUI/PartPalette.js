@@ -13,33 +13,35 @@ import simplifyPartName from '../../helpers/simplifyPartName';
 
 class Palette extends Component {
 
-    showPaletteElement(textureName, simplifiedPartName) {
+    showPaletteElement(partTextureData, index, simplifiedPartName) {
         const partName = this.props.skin.selectedPart;
-        const layer = this.props.skin.armorLayer;
         const isArmor = this.props.skin.armorLayer;
         const { selectedTextures } = this.props;
         const { selectLayerTexture } = this.props.selectedTexturesActions;
-        const texturePath = `${this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/"}${isArmor? 'armor/' : 'main/'}${simplifiedPartName + '/' + textureName}`;
+
+        const {path, scale, height, width} = partTextureData;
 
         return(
             <div
-                key = {textureName + simplifiedPartName}
                 className="paletteElement"
+                key = {path + simplifiedPartName}
+
                 onClick={() => {
                     let partLayerToChange = selectedTextures[partName];
-                    partLayerToChange[Number(layer)] = texturePath;
+                    partLayerToChange[Number(isArmor)] = index;
                     console.log(partName, partLayerToChange);
                     selectLayerTexture(partName, partLayerToChange);
                 }}
             >
-            <RenderElement
-                className="paletteElement"
-                key={textureName + "Preview"}
-                textureName={textureName}
-                partName={partName}
-                simplifiedPartName={simplifiedPartName}
-                isArmor={isArmor}
-            />
+                <RenderElement
+                    className="paletteElement"
+                    key={path + "Preview"}
+
+                    texturePath={path}
+                    scale={scale}
+                    simplifiedPartName={simplifiedPartName}
+                />
+                <div className="palette-element-data">{width}*{height}</div>
             </div>
         );
     }
@@ -49,25 +51,18 @@ class Palette extends Component {
         const isArmor = this.props.skin.armorLayer;
         const textures = this.props.textures;
 
-        if (simplifiedPartName !== "none") {
-            console.log(textures, Number(isArmor), simplifiedPartName);
-            return (
-                <div className="palette">
-                    {Array.isArray(textures[Number(isArmor)][simplifiedPartName]) ?
-                        textures[Number(isArmor)][simplifiedPartName].map((value) => this.showPaletteElement(value, simplifiedPartName)) :
-                        Object.keys(textures[Number(isArmor)][simplifiedPartName]).map((key) => this.showPaletteElement(textures[Number(isArmor)][simplifiedPartName][key], simplifiedPartName))
-                    }
-                </div>
-            )
-        } else {
-            return <div className="palette"/>
-        }
+        const partName = simplifiedPartName + (isArmor ? "Armor" : "");
+
+        return simplifiedPartName !== "none" ?
+            <div className="palette">
+                {textures[partName].map((value, index) => this.showPaletteElement(value, index, simplifiedPartName))}
+            </div> : <div className="palette"/>
     }
 }
 
 const mapStateToProps = (state) => ({
     skin: state.skin,
-    textures: state.loadedTextures,
+    textures: state.partData,
     isDev: state.other.isDev,
     selectedTextures: state.selectedTextures,
 });

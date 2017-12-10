@@ -219,6 +219,7 @@
 
 .paletteElement {
     display: flex;
+    position: relative;
     vertical-align: middle;
     align-items: center;
     justify-content: center;
@@ -275,3 +276,14 @@
     display: none;
 }
 
+.palette-element-data {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 10px;
+    color: white;
+    background-color: rebeccapurple;
+    line-height: 10px;
+    font-family: "Courier New", Courier, monospace;
+}

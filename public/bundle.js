@@ -33500,7 +33500,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
-    version: "0.7 - dev 0.2",
+    version: "0.7 - dev 0.3",
     isDev: true,
     debug: true
 };
@@ -34246,35 +34246,45 @@ var Palette = function (_Component) {
 
     _createClass(Palette, [{
         key: 'showPaletteElement',
-        value: function showPaletteElement(textureName, simplifiedPartName) {
+        value: function showPaletteElement(partTextureData, index, simplifiedPartName) {
             var partName = this.props.skin.selectedPart;
-            var layer = this.props.skin.armorLayer;
             var isArmor = this.props.skin.armorLayer;
             var selectedTextures = this.props.selectedTextures;
             var selectLayerTexture = this.props.selectedTexturesActions.selectLayerTexture;
+            var path = partTextureData.path,
+                scale = partTextureData.scale,
+                height = partTextureData.height,
+                width = partTextureData.width;
 
-            var texturePath = '' + (this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + (isArmor ? 'armor/' : 'main/') + (simplifiedPartName + '/' + textureName);
 
             return _react2.default.createElement(
                 'div',
                 {
-                    key: textureName + simplifiedPartName,
                     className: 'paletteElement',
+                    key: path + simplifiedPartName,
+
                     onClick: function onClick() {
                         var partLayerToChange = selectedTextures[partName];
-                        partLayerToChange[Number(layer)] = texturePath;
+                        partLayerToChange[Number(isArmor)] = index;
                         console.log(partName, partLayerToChange);
                         selectLayerTexture(partName, partLayerToChange);
                     }
                 },
                 _react2.default.createElement(_PaletteElementCanvasRender2.default, {
                     className: 'paletteElement',
-                    key: textureName + "Preview",
-                    textureName: textureName,
-                    partName: partName,
-                    simplifiedPartName: simplifiedPartName,
-                    isArmor: isArmor
-                })
+                    key: path + "Preview",
+
+                    texturePath: path,
+                    scale: scale,
+                    simplifiedPartName: simplifiedPartName
+                }),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'palette-element-data' },
+                    width,
+                    '*',
+                    height
+                )
             );
         }
     }, {
@@ -34286,20 +34296,15 @@ var Palette = function (_Component) {
             var isArmor = this.props.skin.armorLayer;
             var textures = this.props.textures;
 
-            if (simplifiedPartName !== "none") {
-                console.log(textures, Number(isArmor), simplifiedPartName);
-                return _react2.default.createElement(
-                    'div',
-                    { className: 'palette' },
-                    Array.isArray(textures[Number(isArmor)][simplifiedPartName]) ? textures[Number(isArmor)][simplifiedPartName].map(function (value) {
-                        return _this2.showPaletteElement(value, simplifiedPartName);
-                    }) : Object.keys(textures[Number(isArmor)][simplifiedPartName]).map(function (key) {
-                        return _this2.showPaletteElement(textures[Number(isArmor)][simplifiedPartName][key], simplifiedPartName);
-                    })
-                );
-            } else {
-                return _react2.default.createElement('div', { className: 'palette' });
-            }
+            var partName = simplifiedPartName + (isArmor ? "Armor" : "");
+
+            return simplifiedPartName !== "none" ? _react2.default.createElement(
+                'div',
+                { className: 'palette' },
+                textures[partName].map(function (value, index) {
+                    return _this2.showPaletteElement(value, index, simplifiedPartName);
+                })
+            ) : _react2.default.createElement('div', { className: 'palette' });
         }
     }]);
 
@@ -34309,7 +34314,7 @@ var Palette = function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
     return {
         skin: state.skin,
-        textures: state.loadedTextures,
+        textures: state.partData,
         isDev: state.other.isDev,
         selectedTextures: state.selectedTextures
     };
@@ -34390,36 +34395,36 @@ var CanvasRender = function (_Component) {
         }
     }, {
         key: 'drawTexture',
-        value: function drawTexture(context, canvasProps, simplifiedPartName, textureName) {
+        value: function drawTexture(texturePath, scale, simplifiedPartName) {
+            var canvasProps = this.getCanvasProps(simplifiedPartName);
+
+            var canvasElement = this.refs.renderedElement;
+            canvasElement.width = canvasProps.dWidth;
+            canvasElement.height = canvasProps.dHeight;
+
+            var context = canvasElement.getContext('2d');
+            context.scale(1 / Math.pow(2, scale), 1 / Math.pow(2, scale));
+            context.imageSmoothingEnabled = false;
+
             var partTexture = new Image();
             partTexture.onload = function () {
-                context.drawImage(partTexture, canvasProps.posX, canvasProps.posY, canvasProps.sWidth, canvasProps.sHeight, canvasProps.sliceX, canvasProps.sliceY, canvasProps.dWidth, canvasProps.dHeight);
+                context.drawImage(partTexture, canvasProps.posX * Math.pow(2, scale), canvasProps.posY * Math.pow(2, scale), canvasProps.sWidth * Math.pow(2, scale), canvasProps.sHeight * Math.pow(2, scale), canvasProps.sliceX, canvasProps.sliceY, canvasProps.dWidth * Math.pow(2, scale), canvasProps.dHeight * Math.pow(2, scale));
             };
-
-            partTexture.src = (this.props.isDev ? './img/' : 'http://ariadna-rp.ru/skin-creator/img/') + (this.props.isArmor ? "armor/" : "main/") + simplifiedPartName + '/' + textureName;
+            partTexture.src = texturePath;
         }
     }, {
         key: 'renderCanvas',
         value: function renderCanvas() {
             var _props = this.props,
-                partName = _props.partName,
-                textureName = _props.textureName,
+                texturePath = _props.texturePath,
+                scale = _props.scale,
                 simplifiedPartName = _props.simplifiedPartName;
 
-            var canvasProps = this.getCanvasProps(simplifiedPartName);
-
-            var canvasElement = this.refs.renderedElement;
-            var context = canvasElement.getContext('2d');
-
-            context.canvas.width = canvasProps.dWidth;
-            context.canvas.height = canvasProps.dHeight;
-            context.imageSmoothingEnabled = false;
-
-            this.drawTexture(context, canvasProps, simplifiedPartName, textureName);
+            this.drawTexture(texturePath, scale, simplifiedPartName);
         }
     }, {
         key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
+        value: function componentDidUpdate() {
             this.renderCanvas();
         }
     }, {
@@ -36275,12 +36280,11 @@ var Overseer = function (_Component) {
 
     _createClass(Overseer, [{
         key: 'getDimensions',
-        value: function getDimensions(name) {
+        value: function getDimensions(path) {
             var _this2 = this;
 
             return new Promise(function (resolve, reject) {
                 var imageBlock = _this2.refs.dimensionCheck;
-                var path = '' + (_this2.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + (_this2.isArmor ? 'armor/' : 'main/') + (_this2.partName + '/' + name);
                 imageBlock.onload = function (e) {
                     resolve({ height: imageBlock.naturalHeight, width: imageBlock.naturalWidth });
                 };
@@ -36294,7 +36298,7 @@ var Overseer = function (_Component) {
 
             var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
 
-            var dimensions = this.getDimensions(this.partTextures[index].name);
+            var dimensions = this.getDimensions(this.partTextures[index].path);
             dimensions.then(function (result) {
                 Object.assign(_this3.partTextures[index], result);
                 index < _this3.partTextures.length - 1 ? _this3.getPartTexturesDimensions(index + 1) : _this3.getPartTexturesScale();
@@ -36328,9 +36332,11 @@ var Overseer = function (_Component) {
             this.isArmor = isArmor;
 
             Array.isArray(loadedTextures) ? loadedTextures.map(function (value) {
-                return _this5.partTextures.push({ name: value });
+                var path = '' + (_this5.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + (_this5.isArmor ? 'armor/' : 'main/') + (_this5.partName + '/' + value);
+                _this5.partTextures.push({ path: path });
             }) : Object.keys(loadedTextures).map(function (key) {
-                return _this5.partTextures.push({ name: loadedTextures[key] });
+                var path = '' + (_this5.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + (_this5.isArmor ? 'armor/' : 'main/') + (_this5.partName + '/' + loadedTextures[key]);
+                _this5.partTextures.push({ path: path });
             });
 
             this.getPartTexturesDimensions();

@@ -19,41 +19,41 @@ class CanvasRender extends Component {
         }
     }
 
-    drawTexture(context, canvasProps, simplifiedPartName, textureName) {
+    drawTexture(texturePath, scale, simplifiedPartName) {
+        const canvasProps = this.getCanvasProps(simplifiedPartName);
+
+        let canvasElement = this.refs.renderedElement;
+        canvasElement.width  = canvasProps.dWidth;
+        canvasElement.height = canvasProps.dHeight;
+
+        let context = canvasElement.getContext('2d');
+        context.scale(1 / Math.pow(2, scale), 1 / Math.pow(2, scale));
+        context.imageSmoothingEnabled = false;
+
         let partTexture = new Image();
         partTexture.onload = () => {
             context.drawImage(
                 partTexture,
-                canvasProps.posX,
-                canvasProps.posY,
-                canvasProps.sWidth,
-                canvasProps.sHeight,
+                canvasProps.posX * Math.pow(2, scale),
+                canvasProps.posY * Math.pow(2, scale),
+                canvasProps.sWidth * Math.pow(2, scale),
+                canvasProps.sHeight * Math.pow(2, scale),
                 canvasProps.sliceX,
                 canvasProps.sliceY,
-                canvasProps.dWidth,
-                canvasProps.dHeight
+                canvasProps.dWidth * Math.pow(2, scale),
+                canvasProps.dHeight * Math.pow(2, scale)
             );
         };
-
-        partTexture.src = (this.props.isDev ? './img/' : 'http://ariadna-rp.ru/skin-creator/img/') + (this.props.isArmor ? "armor/" : "main/") + simplifiedPartName + '/' + textureName;
+        partTexture.src = texturePath;
     }
 
 
     renderCanvas() {
-        const { partName, textureName, simplifiedPartName } = this.props;
-        const canvasProps = this.getCanvasProps(simplifiedPartName);
-        
-        let canvasElement = this.refs.renderedElement;
-        let context = canvasElement.getContext('2d');
-
-        context.canvas.width  = canvasProps.dWidth;
-        context.canvas.height = canvasProps.dHeight;
-        context.imageSmoothingEnabled = false;
-
-        this.drawTexture(context, canvasProps, simplifiedPartName, textureName);
+        const { texturePath, scale, simplifiedPartName } = this.props;
+        this.drawTexture(texturePath, scale, simplifiedPartName);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate() {
         this.renderCanvas();
     }
 
