@@ -8,8 +8,8 @@ import ControlButton from "./ControlButton";
 
 class TopControlButtons extends Component {
     render() {
+        const changeState = this.props.changeState;
         const { selectedPart, isNewFormat, armorLayer } = this.props.skin;
-        const { changeSkinFormat, changeSkinLayer, selectSkinPart } = this.props.skinActions;
         const { removeLayerTexture } = this.props.selectedTexturesActions;
 
         const {checkData} = this.props.overseerActions;
@@ -23,8 +23,8 @@ class TopControlButtons extends Component {
                     activeEvent = {armorLayer}
                     onClickAction = {() => {
                         checkData();
-                        !isNewFormat ? selectSkinPart("head") : undefined;
-                        changeSkinLayer(armorLayer);
+                        !isNewFormat ? changeState("part", "head") : undefined;
+                        changeState("layer")
                     }}
                 />
                 <ControlButton
@@ -33,10 +33,10 @@ class TopControlButtons extends Component {
                     activeContent = "Разметка: Новая"
                     activeEvent = {isNewFormat}
                     onClickAction = {() => {
-                        isNewFormat && armorLayer ? selectSkinPart("head") : undefined;
-                        isNewFormat &&  selectedPart === "left-hand" ? selectSkinPart("right-hand") : undefined;
-                        isNewFormat &&  selectedPart === "left-leg" ? selectSkinPart("right-leg") : undefined;
-                        changeSkinFormat(isNewFormat);
+                        isNewFormat && armorLayer ? changeState("part", "head") : undefined;
+                        isNewFormat &&  selectedPart === "left-hand" ? changeState("part", "right-hand") : undefined;
+                        isNewFormat &&  selectedPart === "left-leg" ?changeState("part", "right-leg") : undefined;
+                        changeState("version")
                     }}
                 />
                 <ControlButton

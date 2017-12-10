@@ -7,38 +7,40 @@ import SkinPart from './SkinPart';
 
 class Preview extends Component {
     newFormatSkin(side) {
+        const changeState = this.props.changeState;
         return(
             <div className="side-preview">
                 <div className="preview-top-part">
-                    <SkinPart part="head" side={side} partName="head"/>
+                    <SkinPart part="head" side={side} partName="head" changeState={(stateName, value) => changeState(stateName, value)}/>
                 </div>
                 <div className="preview-middle-part">
-                    <SkinPart pair={side === "front" ? "left" : "right"} part="hand" side={side} partName={side === "front" ? "left-hand" : "right-hand"}/>
-                    <SkinPart part="body" side={side} partName="body"/>
-                    <SkinPart pair={side === "front" ? "right" : "left"} part="hand" side={side} partName={side === "front" ? "right-hand" : "left-hand"}/>
+                    <SkinPart pair={side === "front" ? "left" : "right"} part="hand" side={side} partName={side === "front" ? "left-hand" : "right-hand"} changeState={(stateName, value) => changeState(stateName, value)}/>
+                    <SkinPart part="body" side={side} partName="body" changeState={(stateName, value) => changeState(stateName, value)}/>
+                    <SkinPart pair={side === "front" ? "right" : "left"} part="hand" side={side} partName={side === "front" ? "right-hand" : "left-hand"} changeState={(stateName, value) => changeState(stateName, value)}/>
                 </div>
                 <div className="preview-bottom-part">
-                    <SkinPart pair={side === "front" ? "left" : "right"} part="leg" side={side}  partName={side === "front" ? "left-leg" : "right-leg"}/>
-                    <SkinPart pair={side === "front" ? "right" : "left"} part="leg" side={side} partName={side === "front" ? "right-leg" : "left-leg"}/>
+                    <SkinPart pair={side === "front" ? "left" : "right"} part="leg" side={side}  partName={side === "front" ? "left-leg" : "right-leg" } changeState={(stateName, value) => changeState(stateName, value)}/>
+                    <SkinPart pair={side === "front" ? "right" : "left"} part="leg" side={side} partName={side === "front" ? "right-leg" : "left-leg"} changeState={(stateName, value) => changeState(stateName, value)}/>
                 </div>
             </div>
         )
     };
 
     oldFormatSkin(side) {
+        const changeState = this.props.changeState;
         return(
             <div className="side-preview">
                 <div className="preview-top-part">
-                    <SkinPart part="head" side={side} partName="head"/>
+                    <SkinPart part="head" side={side} partName="head" changeState={(stateName, value) => changeState(stateName, value)}/>
                 </div>
                 <div className="preview-middle-part">
-                    <SkinPart pair={side === "front" ? "left" : "right"} isOld={true} part="hand" side={side} partName="right-hand"/>
-                    <SkinPart part="body" side={side} isOld={true} partName="body"/>
-                    <SkinPart pair={side === "front" ? "right" : "left"} isOld={true} part="hand" side={side} partName="right-hand"/>
+                    <SkinPart pair={side === "front" ? "left" : "right"} isOld={true} part="hand" side={side} partName="right-hand" changeState={(stateName, value) => changeState(stateName, value)}/>
+                    <SkinPart part="body" side={side} isOld={true} partName="body" changeState={(stateName, value) => changeState(stateName, value)}/>
+                    <SkinPart pair={side === "front" ? "right" : "left"} isOld={true} part="hand" side={side} partName="right-hand" changeState={(stateName, value) => changeState(stateName, value)}/>
                 </div>
                 <div className="preview-bottom-part">
-                    <SkinPart pair={side === "front" ? "left" : "right"} isOld={true} part="leg" side={side}  partName="right-leg"/>
-                    <SkinPart pair={side === "front" ? "right" : "left"} isOld={true} part="leg" side={side} partName="right-leg"/>
+                    <SkinPart pair={side === "front" ? "left" : "right"} isOld={true} part="leg" side={side}  partName="right-leg" changeState={(stateName, value) => changeState(stateName, value)}/>
+                    <SkinPart pair={side === "front" ? "right" : "left"} isOld={true} part="leg" side={side} partName="right-leg" changeState={(stateName, value) => changeState(stateName, value)}/>
                 </div>
             </div>
         )

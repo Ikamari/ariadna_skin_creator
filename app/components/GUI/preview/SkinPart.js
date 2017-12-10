@@ -11,14 +11,13 @@ import * as skinActions from '../../../actions/skinActions';
 class Preview extends Component {
     render() {
         const { part, side, partName }  = this.props;
-        const { selectSkinPart } = this.props.skinActions;
         const pairPart = this.props.pair;
-
+        const changeState = this.props.changeState;
         let partClassName = "preview-" + partName + " preview-part";
         partClassName += pairPart ? (pairPart === "right" ? " mirrored" : "" ) : "";
 
         return(
-            <div className={partClassName} onClick={() => selectSkinPart(partName)}>
+            <div className={partClassName} onClick={() => changeState("part", partName)}>
                 <RenderPart side = {side} partName = {partName} layer={0}/>
                 {this.props.isOld ? null : <RenderPart side = {side} partName = {partName} layer={1} pairPart={pairPart ? pairPart : null}/>}
             </div>

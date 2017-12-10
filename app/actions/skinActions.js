@@ -1,11 +1,9 @@
-export const changeSkinFormat = (format) => ({
-    type: "CHANGE_FORMAT",
-    payload: !format
+export const changeSkinFormat = () => ({
+    type: "CHANGE_FORMAT"
 });
 
-export const changeSkinLayer = (layer) => ({
-    type: "CHANGE_LAYER",
-    payload: !layer
+export const changeSkinLayer = () => ({
+    type: "CHANGE_LAYER"
 });
 
 export const selectSkinPart = (part) => ({

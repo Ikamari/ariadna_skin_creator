@@ -3894,17 +3894,15 @@ function isPlainObject(value) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var changeSkinFormat = exports.changeSkinFormat = function changeSkinFormat(format) {
+var changeSkinFormat = exports.changeSkinFormat = function changeSkinFormat() {
     return {
-        type: "CHANGE_FORMAT",
-        payload: !format
+        type: "CHANGE_FORMAT"
     };
 };
 
-var changeSkinLayer = exports.changeSkinLayer = function changeSkinLayer(layer) {
+var changeSkinLayer = exports.changeSkinLayer = function changeSkinLayer() {
     return {
-        type: "CHANGE_LAYER",
-        payload: !layer
+        type: "CHANGE_LAYER"
     };
 };
 
@@ -33476,9 +33474,9 @@ var skin = function skin() {
 
     switch (action.type) {
         case "CHANGE_FORMAT":
-            return _extends({}, state, { isNewFormat: action.payload });
+            return _extends({}, state, { isNewFormat: !state.isNewFormat });
         case "CHANGE_LAYER":
-            return _extends({}, state, { armorLayer: action.payload });
+            return _extends({}, state, { armorLayer: !state.armorLayer });
         case "SELECT_PART":
             return _extends({}, state, { selectedPart: action.payload });
         default:
@@ -33502,7 +33500,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
-    version: "0.7",
+    version: "0.7 - dev 0.2",
     isDev: true,
     debug: true
 };
@@ -33743,7 +33741,6 @@ var App = function (_Component) {
                 case "version":
                     {
                         changeSkinFormat();
-                        checkData();
                         break;
                     }
                 default:
@@ -33761,20 +33758,20 @@ var App = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'app' },
-                _react2.default.createElement(_SkinPreview2.default, { changeState: function changeState() {
-                        return _this2.changeStateForPalette();
+                _react2.default.createElement(_SkinPreview2.default, { changeState: function changeState(stateName, value) {
+                        return _this2.changeStateForPalette(stateName, value);
                     } }),
                 _react2.default.createElement(
                     'div',
                     { className: 'controls' },
-                    _react2.default.createElement(_SkinSettings2.default, { changeState: function changeState() {
-                            return _this2.changeStateForPalette();
+                    _react2.default.createElement(_SkinSettings2.default, { changeState: function changeState(stateName, value) {
+                            return _this2.changeStateForPalette(stateName, value);
                         } }),
                     _react2.default.createElement(
                         'div',
                         { className: 'controls-middle' },
-                        _react2.default.createElement(_PartSelection2.default, { changeState: function changeState() {
-                                return _this2.changeStateForPalette();
+                        _react2.default.createElement(_PartSelection2.default, { changeState: function changeState(stateName, value) {
+                                return _this2.changeStateForPalette(stateName, value);
                             } }),
                         _react2.default.createElement(_PartPalette2.default, { isDev: isDev }),
                         _react2.default.createElement(_ControlPanel2.default, null)
@@ -33856,52 +33853,78 @@ var Preview = function (_Component) {
     _createClass(Preview, [{
         key: 'newFormatSkin',
         value: function newFormatSkin(side) {
+            var _changeState = this.props.changeState;
             return _react2.default.createElement(
                 'div',
                 { className: 'side-preview' },
                 _react2.default.createElement(
                     'div',
                     { className: 'preview-top-part' },
-                    _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side, partName: 'head' })
+                    _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side, partName: 'head', changeState: function changeState(stateName, value) {
+                            return _changeState(stateName, value);
+                        } })
                 ),
                 _react2.default.createElement(
                     'div',
                     { className: 'preview-middle-part' },
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", part: 'hand', side: side, partName: side === "front" ? "left-hand" : "right-hand" }),
-                    _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side, partName: 'body' }),
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", part: 'hand', side: side, partName: side === "front" ? "right-hand" : "left-hand" })
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", part: 'hand', side: side, partName: side === "front" ? "left-hand" : "right-hand", changeState: function changeState(stateName, value) {
+                            return _changeState(stateName, value);
+                        } }),
+                    _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side, partName: 'body', changeState: function changeState(stateName, value) {
+                            return _changeState(stateName, value);
+                        } }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", part: 'hand', side: side, partName: side === "front" ? "right-hand" : "left-hand", changeState: function changeState(stateName, value) {
+                            return _changeState(stateName, value);
+                        } })
                 ),
                 _react2.default.createElement(
                     'div',
                     { className: 'preview-bottom-part' },
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", part: 'leg', side: side, partName: side === "front" ? "left-leg" : "right-leg" }),
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", part: 'leg', side: side, partName: side === "front" ? "right-leg" : "left-leg" })
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", part: 'leg', side: side, partName: side === "front" ? "left-leg" : "right-leg", changeState: function changeState(stateName, value) {
+                            return _changeState(stateName, value);
+                        } }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", part: 'leg', side: side, partName: side === "front" ? "right-leg" : "left-leg", changeState: function changeState(stateName, value) {
+                            return _changeState(stateName, value);
+                        } })
                 )
             );
         }
     }, {
         key: 'oldFormatSkin',
         value: function oldFormatSkin(side) {
+            var _changeState2 = this.props.changeState;
             return _react2.default.createElement(
                 'div',
                 { className: 'side-preview' },
                 _react2.default.createElement(
                     'div',
                     { className: 'preview-top-part' },
-                    _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side, partName: 'head' })
+                    _react2.default.createElement(_SkinPart2.default, { part: 'head', side: side, partName: 'head', changeState: function changeState(stateName, value) {
+                            return _changeState2(stateName, value);
+                        } })
                 ),
                 _react2.default.createElement(
                     'div',
                     { className: 'preview-middle-part' },
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'hand', side: side, partName: 'right-hand' }),
-                    _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side, isOld: true, partName: 'body' }),
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'hand', side: side, partName: 'right-hand' })
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'hand', side: side, partName: 'right-hand', changeState: function changeState(stateName, value) {
+                            return _changeState2(stateName, value);
+                        } }),
+                    _react2.default.createElement(_SkinPart2.default, { part: 'body', side: side, isOld: true, partName: 'body', changeState: function changeState(stateName, value) {
+                            return _changeState2(stateName, value);
+                        } }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'hand', side: side, partName: 'right-hand', changeState: function changeState(stateName, value) {
+                            return _changeState2(stateName, value);
+                        } })
                 ),
                 _react2.default.createElement(
                     'div',
                     { className: 'preview-bottom-part' },
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'leg', side: side, partName: 'right-leg' }),
-                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'leg', side: side, partName: 'right-leg' })
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "left" : "right", isOld: true, part: 'leg', side: side, partName: 'right-leg', changeState: function changeState(stateName, value) {
+                            return _changeState2(stateName, value);
+                        } }),
+                    _react2.default.createElement(_SkinPart2.default, { pair: side === "front" ? "right" : "left", isOld: true, part: 'leg', side: side, partName: 'right-leg', changeState: function changeState(stateName, value) {
+                            return _changeState2(stateName, value);
+                        } })
                 )
             );
         }
@@ -33990,17 +34013,16 @@ var Preview = function (_Component) {
                 part = _props.part,
                 side = _props.side,
                 partName = _props.partName;
-            var selectSkinPart = this.props.skinActions.selectSkinPart;
 
             var pairPart = this.props.pair;
-
+            var changeState = this.props.changeState;
             var partClassName = "preview-" + partName + " preview-part";
             partClassName += pairPart ? pairPart === "right" ? " mirrored" : "" : "";
 
             return _react2.default.createElement(
                 'div',
                 { className: partClassName, onClick: function onClick() {
-                        return selectSkinPart(partName);
+                        return changeState("part", partName);
                     } },
                 _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 0 }),
                 this.props.isOld ? null : _react2.default.createElement(_PreviewPartCanvasRender2.default, { side: side, partName: partName, layer: 1, pairPart: pairPart ? pairPart : null })
@@ -34489,14 +34511,11 @@ var TopControlButtons = function (_Component) {
         value: function render() {
             var _this2 = this;
 
+            var changeState = this.props.changeState;
             var _props$skin = this.props.skin,
                 selectedPart = _props$skin.selectedPart,
                 isNewFormat = _props$skin.isNewFormat,
                 armorLayer = _props$skin.armorLayer;
-            var _props$skinActions = this.props.skinActions,
-                changeSkinFormat = _props$skinActions.changeSkinFormat,
-                changeSkinLayer = _props$skinActions.changeSkinLayer,
-                selectSkinPart = _props$skinActions.selectSkinPart;
             var removeLayerTexture = this.props.selectedTexturesActions.removeLayerTexture;
             var checkData = this.props.overseerActions.checkData;
 
@@ -34511,8 +34530,8 @@ var TopControlButtons = function (_Component) {
                     activeEvent: armorLayer,
                     onClickAction: function onClickAction() {
                         checkData();
-                        !isNewFormat ? selectSkinPart("head") : undefined;
-                        changeSkinLayer(armorLayer);
+                        !isNewFormat ? changeState("part", "head") : undefined;
+                        changeState("layer");
                     }
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
@@ -34521,10 +34540,10 @@ var TopControlButtons = function (_Component) {
                     activeContent: '\u0420\u0430\u0437\u043C\u0435\u0442\u043A\u0430: \u041D\u043E\u0432\u0430\u044F',
                     activeEvent: isNewFormat,
                     onClickAction: function onClickAction() {
-                        isNewFormat && armorLayer ? selectSkinPart("head") : undefined;
-                        isNewFormat && selectedPart === "left-hand" ? selectSkinPart("right-hand") : undefined;
-                        isNewFormat && selectedPart === "left-leg" ? selectSkinPart("right-leg") : undefined;
-                        changeSkinFormat(isNewFormat);
+                        isNewFormat && armorLayer ? changeState("part", "head") : undefined;
+                        isNewFormat && selectedPart === "left-hand" ? changeState("part", "right-hand") : undefined;
+                        isNewFormat && selectedPart === "left-leg" ? changeState("part", "right-leg") : undefined;
+                        changeState("version");
                     }
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
@@ -34621,7 +34640,7 @@ var SkinPartSelectionButtons = function (_Component) {
     _createClass(SkinPartSelectionButtons, [{
         key: 'render',
         value: function render() {
-            var selectSkinPart = this.props.skinActions.selectSkinPart;
+            var changeState = this.props.changeState;
             var _props$skin = this.props.skin,
                 selectedPart = _props$skin.selectedPart,
                 isNewFormat = _props$skin.isNewFormat,
@@ -34638,7 +34657,7 @@ var SkinPartSelectionButtons = function (_Component) {
                     activeEvent: selectedPart === "head",
                     activeStyle: 'skin-part-selection-button-active',
                     onClickAction: function onClickAction() {
-                        return selectSkinPart("head");
+                        return changeState("part", "head");
                     }
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
@@ -34647,7 +34666,7 @@ var SkinPartSelectionButtons = function (_Component) {
                     activeEvent: selectedPart === "body",
                     activeStyle: 'skin-part-selection-button-active',
                     onClickAction: !needToDisable ? function () {
-                        return selectSkinPart("body");
+                        return changeState("part", "body");
                     } : undefined
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
@@ -34656,7 +34675,7 @@ var SkinPartSelectionButtons = function (_Component) {
                     activeEvent: selectedPart === "left-hand",
                     activeStyle: 'skin-part-selection-button-active',
                     onClickAction: isNewFormat ? function () {
-                        return selectSkinPart("left-hand");
+                        return changeState("part", "left-hand");
                     } : undefined
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
@@ -34665,7 +34684,7 @@ var SkinPartSelectionButtons = function (_Component) {
                     activeEvent: selectedPart === "right-hand",
                     activeStyle: 'skin-part-selection-button-active',
                     onClickAction: !needToDisable ? function () {
-                        return selectSkinPart("right-hand");
+                        return changeState("part", "right-hand");
                     } : undefined
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
@@ -34674,7 +34693,7 @@ var SkinPartSelectionButtons = function (_Component) {
                     activeEvent: selectedPart === "left-leg",
                     activeStyle: 'skin-part-selection-button-active',
                     onClickAction: isNewFormat ? function () {
-                        return selectSkinPart("left-leg");
+                        return changeState("part", "left-leg");
                     } : undefined
                 }),
                 _react2.default.createElement(_ControlButton2.default, {
@@ -34683,7 +34702,7 @@ var SkinPartSelectionButtons = function (_Component) {
                     activeEvent: selectedPart === "right-leg",
                     activeStyle: 'skin-part-selection-button-active',
                     onClickAction: !needToDisable ? function () {
-                        return selectSkinPart("right-leg");
+                        return changeState("part", "right-leg");
                     } : undefined
                 })
             );
@@ -36220,6 +36239,10 @@ var _overseerActions = __webpack_require__(460);
 
 var overseerActions = _interopRequireWildcard(_overseerActions);
 
+var _partDataActions = __webpack_require__(465);
+
+var partDataActions = _interopRequireWildcard(_partDataActions);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -36245,6 +36268,7 @@ var Overseer = function (_Component) {
 
         _this.partTextures = [];
         _this.partName = "";
+        _this.fullPartName = "";
         _this.isArmor = false;
         return _this;
     }
@@ -36281,12 +36305,16 @@ var Overseer = function (_Component) {
         value: function getPartTexturesScale() {
             var _this4 = this;
 
+            var writePartData = this.props.partDataActions.writePartData;
+
+
             this.partTextures.map(function (value, index) {
                 var height = _this4.partTextures[index].height;
                 var width = _this4.partTextures[index].width;
                 Object.assign(_this4.partTextures[index], { scale: (0, _getTextureScale2.default)(height, width, false) });
             });
-            console.log(this.partTextures);
+
+            writePartData(this.partTextures, this.fullPartName);
         }
     }, {
         key: 'getPartInfo',
@@ -36296,6 +36324,7 @@ var Overseer = function (_Component) {
             var loadedTextures = this.props.loadedTextures[Number(isArmor)][simplifiedPartName];
             this.partTextures = [];
             this.partName = simplifiedPartName;
+            this.fullPartName = simplifiedPartName + (isArmor ? "Armor" : "");
             this.isArmor = isArmor;
 
             Array.isArray(loadedTextures) ? loadedTextures.map(function (value) {
@@ -36309,25 +36338,36 @@ var Overseer = function (_Component) {
     }, {
         key: 'checkPartTexturesData',
         value: function checkPartTexturesData(partName) {
+            //If array is not empty, then there is no need to check it
             var partData = this.props.partData;
-            return partData[partName].length === 0;
+            console.log(partData);
+            return partData[partName] ? partData[partName].length === 0 : false;
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            //Check if there is needed to check data
+            var checkData = this.props.overseerActions.checkData;
+
+            var needToCheckData = this.props.checkDataSwitch;
+            // console.log(needToCheckData);
+            // if(needToCheckData) {
+            var _props$skinSettings = this.props.skinSettings,
+                selectedPart = _props$skinSettings.selectedPart,
+                armorLayer = _props$skinSettings.armorLayer;
+
+            var simplifiedPartName = (0, _simplifyPartName2.default)(selectedPart);
+
+            //If part textures are already checked, then there is no need to do that again
+            if (this.checkPartTexturesData(simplifiedPartName + (armorLayer ? "Armor" : "")) && simplifiedPartName !== "none") this.getPartInfo(simplifiedPartName, armorLayer);
+            //     else
+            //         checkData();
+            // }
         }
     }, {
         key: 'render',
         value: function render() {
-            //Check if there is needed to check data
-            var needToCheckData = this.props.checkDataSwitch;
-            if (needToCheckData) {
-                var _props$skinSettings = this.props.skinSettings,
-                    selectedPart = _props$skinSettings.selectedPart,
-                    armorLayer = _props$skinSettings.armorLayer;
-
-                var simplifiedPartName = (0, _simplifyPartName2.default)(selectedPart);
-
-                //If part textures are already checked, then there is no need to do that again
-                if (this.checkPartTexturesData(simplifiedPartName + (armorLayer ? "Armor" : "")) && simplifiedPartName !== "none") this.getPartInfo(simplifiedPartName, armorLayer);
-            }
-
+            //Return hidden img that will be used to get dimensions of textures
             return _react2.default.createElement('img', { ref: 'dimensionCheck', className: 'hidden' });
         }
     }]);
@@ -36340,7 +36380,8 @@ var Overseer = function (_Component) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
-        overseerActions: (0, _redux.bindActionCreators)(overseerActions, dispatch)
+        overseerActions: (0, _redux.bindActionCreators)(overseerActions, dispatch),
+        partDataActions: (0, _redux.bindActionCreators)(partDataActions, dispatch)
     };
 };
 
@@ -36366,6 +36407,9 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var initialState = {
     head: [],
     headArmor: [],
@@ -36382,38 +36426,53 @@ var partData = function partData() {
     var action = arguments[1];
 
     switch (action.type) {
+        case "WRITE_PART_DATA":
+            {
+                switch (action.payload.part) {
+                    case "head":
+                        {
+                            return _extends({}, state, { head: action.payload.data });
+                        }
+                    case "headArmor":
+                        {
+                            return _extends({}, state, { headArmor: action.payload.data });
+                        }
+                    case "body":
+                        {
+                            return _extends({}, state, { body: action.payload.data });
+                        }
+                    case "bodyArmor":
+                        {
+                            return _extends({}, state, { bodyArmor: action.payload.data });
+                        }
+                    case "hand":
+                        {
+                            return _extends({}, state, { hand: action.payload.data });
+                        }
+                    case "handArmor":
+                        {
+                            return _extends({}, state, { handArmor: action.payload.data });
+                        }
+                    case "leg":
+                        {
+                            return _extends({}, state, { leg: action.payload.data });
+                        }
+                    case "legArmor":
+                        {
+                            return _extends({}, state, { legArmor: action.payload.data });
+                        }
+                    default:
+                        {
+                            console.log("Got wrong part name while writing part data");break;
+                        }
+                }break;
+            }
         default:
             return state;
     }
 };
 
 exports.default = partData;
-
-// case "head": {
-//
-//     break;
-// }
-// case "headArmor": {
-//     break;
-// }
-// case "body": {
-//     break;
-// }
-// case "bodyArmor": {
-//     break;
-// }
-// case "hand": {
-//     break;
-// }
-// case "handArmor": {
-//     break;
-// }
-// case "leg": {
-//     break;
-// }
-// case "legArmor": {
-//     break;
-// }
 
 /***/ }),
 /* 464 */
@@ -36434,7 +36493,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var defaultPartSizes = {
     head: [16, 32],
-    body: [16, 14],
+    body: [16, 24],
     limb: [16, 16]
 }; //React
 
@@ -36473,6 +36532,26 @@ var getScale = function getScale(textureHeight, textureWidth) {
 };
 
 exports.default = getScale;
+
+/***/ }),
+/* 465 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var writePartData = exports.writePartData = function writePartData(data, part) {
+    return {
+        type: "WRITE_PART_DATA",
+        payload: {
+            data: data,
+            part: part
+        }
+    };
+};
 
 /***/ })
 /******/ ]);

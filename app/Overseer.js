@@ -14,6 +14,7 @@ class Overseer extends Component {
 
         this.partTextures = [];
         this.partName = "";
+        this.fullPartName = "";
         this.isArmor = false;
     }
 
@@ -41,18 +42,22 @@ class Overseer extends Component {
     }
 
     getPartTexturesScale() {
+        const { writePartData } = this.props.partDataActions;
+
         this.partTextures.map((value, index) => {
             const height = this.partTextures[index].height;
             const width = this.partTextures[index].width;
             Object.assign(this.partTextures[index], {scale: getScale(height, width, false)});
         });
-        console.log(this.partTextures)
+
+        writePartData(this.partTextures, this.fullPartName);
     }
 
     getPartInfo(simplifiedPartName, isArmor) {
         const loadedTextures = this.props.loadedTextures[Number(isArmor)][simplifiedPartName];
         this.partTextures = [];
         this.partName = simplifiedPartName;
+        this.fullPartName = simplifiedPartName + (isArmor ? "Armor" : "");
         this.isArmor = isArmor;
 
         Array.isArray(loadedTextures) ?
@@ -63,33 +68,43 @@ class Overseer extends Component {
     }
 
     checkPartTexturesData(partName) {
+        //If array is not empty, then there is no need to check it
         let partData = this.props.partData;
-        return partData[partName].length === 0;
+        console.log(partData);
+        return partData[partName] ?
+            partData[partName].length === 0 : false;
     }
 
-    render() {
+    componentDidUpdate() {
         //Check if there is needed to check data
+        const { checkData } = this.props.overseerActions;
         const needToCheckData = this.props.checkDataSwitch;
-        if(needToCheckData) {
+        // console.log(needToCheckData);
+        // if(needToCheckData) {
             const {selectedPart, armorLayer} = this.props.skinSettings;
             const simplifiedPartName = simplifyPartName(selectedPart);
 
             //If part textures are already checked, then there is no need to do that again
             if (this.checkPartTexturesData(simplifiedPartName + (armorLayer ? "Armor" : "")) && simplifiedPartName !== "none")
                 this.getPartInfo(simplifiedPartName, armorLayer);
-        }
+        //     else
+        //         checkData();
+        // }
+    }
 
-        return (
-            <img ref="dimensionCheck" className="hidden"/>
-        )
+    render() {
+        //Return hidden img that will be used to get dimensions of textures
+        return (<img ref="dimensionCheck" className="hidden"/>)
     }
 }
 
 //Actions
 import * as overseerActions from './actions/overseerActions';
+import * as partDataActions from './actions/partDataActions';
 
 const mapDispatchToProps = (dispatch) => ({
-    overseerActions: bindActionCreators(overseerActions, dispatch)
+    overseerActions: bindActionCreators(overseerActions, dispatch),
+    partDataActions: bindActionCreators(partDataActions, dispatch)
 });
 
 const mapStateToProps = state => ({

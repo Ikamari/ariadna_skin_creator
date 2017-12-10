@@ -7,9 +7,9 @@ const initialState = {
 const skin = (state = initialState, action) => {
     switch(action.type) {
         case "CHANGE_FORMAT":
-            return {...state, isNewFormat: action.payload};
+            return {...state, isNewFormat: !state.isNewFormat};
         case "CHANGE_LAYER":
-            return {...state, armorLayer: action.payload};
+            return {...state, armorLayer: !state.armorLayer};
         case "SELECT_PART":
             return {...state, selectedPart: action.payload};
         default:

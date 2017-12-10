@@ -34,7 +34,6 @@ class App extends Component {
             }
             case "version": {
                 changeSkinFormat();
-                checkData();
                 break;
             }
             default: console.log("Wrong state name in changeStateForPalette")
@@ -47,11 +46,11 @@ class App extends Component {
 
         return(
             <div className="app">
-                <Preview changeState={() => this.changeStateForPalette()}/>
+                <Preview changeState={(stateName, value) => this.changeStateForPalette(stateName, value)}/>
                 <div className="controls">
-                    <SkinSettings changeState={() => this.changeStateForPalette()}/>
+                    <SkinSettings changeState={(stateName, value) => this.changeStateForPalette(stateName, value)}/>
                     <div className="controls-middle">
-                        <PartSelection changeState={() => this.changeStateForPalette()}/>
+                        <PartSelection changeState={(stateName, value) => this.changeStateForPalette(stateName, value)}/>
                         <Palette isDev={isDev}/>
                         <ControlPanel/>
                     </div>
