@@ -6,16 +6,16 @@ import { connect } from "react-redux";
 //Layouts
 import { drawOldLayout } from "./layout/OldLayout";
 import { drawNewLayout } from "./layout/NewLayout";
-//Actions
-import * as exportActions from "../../actions/exportActions";
+//Helpers
+import getMaxScale from "../../helpers/getMaxScale"
 
 class SkinExport extends Component {
     drawSkinLayout() {
         const { isNewFormat } = this.props.skin;
-        const textures = this.props.selectedTextures;
+        const { selectedTextures, textures } = this.props;
         const canvasElement = this.refs.layout;
-
-        isNewFormat ? drawNewLayout(canvasElement, textures) : drawOldLayout(canvasElement, textures);
+        const maxScale = getMaxScale(textures, selectedTextures);
+        isNewFormat ? drawNewLayout(canvasElement, selectedTextures, textures, maxScale) : drawOldLayout(canvasElement, selectedTextures, textures, maxScale);
     }
 
     exportSkinLayout() {
@@ -51,14 +51,18 @@ class SkinExport extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    skin: state.skin,
-    skinExport: state.skinExport,
-    selectedTextures: state.selectedTextures
-});
+//Actions
+import * as exportActions from "../../actions/exportActions";
 
 const mapDispatchToProps = (dispatch) => ({
     exportActions: bindActionCreators(exportActions, dispatch)
+});
+
+const mapStateToProps = (state) => ({
+    skin: state.skin,
+    skinExport: state.skinExport,
+    selectedTextures: state.selectedTextures,
+    textures: state.partData
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SkinExport)

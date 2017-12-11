@@ -288,3 +288,14 @@
     line-height: 10px;
     font-family: "Courier New", Courier, monospace;
 }
+
+.skin-layout canvas {
+    height: inherit;
+    width: inherit;
+}
+
+.skin-layout {
+    height: 100%;
+    width: 100%;
+    display: block;
+}

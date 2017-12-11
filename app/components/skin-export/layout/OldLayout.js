@@ -2,44 +2,44 @@
 import React from "react"
 //Coordinates
 import { coordinates } from "./PartCoordinates"
+//Helpers
+import simplifyPartName from '../../../helpers/simplifyPartName';
 
-export const drawOldLayout = (canvasElement, textures) => {
+export const drawOldLayout = (canvasElement, selectedTextures, textures, maxScale) => {
     let context = canvasElement.getContext('2d');
 
-    const simplifyPartName = (partName) => {
-        return partName.includes("left-") ? partName.slice(5) : partName.includes("right-") ? partName.slice(6) : partName;
-    };
-
-    const drawTexture = (simplifiedPartName, texturePath, skinPart) => {
-        console.log(simplifiedPartName, texturePath, skinPart);
+    const drawTexture = (simplifiedPartName, texture, skinPart) => {
+        console.log(simplifiedPartName, texture, skinPart);
         let partTexture = new Image();
         partTexture.onload = () => {
             context.drawImage(
                 partTexture,
-                coordinates[skinPart][0],
-                coordinates[skinPart][1]
+                coordinates[skinPart][0] * Math.pow(2, maxScale),
+                coordinates[skinPart][1] * Math.pow(2, maxScale),
+                texture.width * Math.pow(2, maxScale - texture.scale),
+                texture.height * Math.pow(2, maxScale - texture.scale)
             );
         };
-        partTexture.src = texturePath;
+        partTexture.src = texture.path;
     };
 
-    context.canvas.width  = 64;
-    context.canvas.height = 32;
+    context.canvas.width  = 64 * Math.pow(2, maxScale);
+    context.canvas.height = 32 * Math.pow(2, maxScale);
     context.imageSmoothingEnabled = false;
 
-    Object.keys(textures).map((key) => {
-        textures[key][0] ?
+    Object.keys(selectedTextures).map((key) => {
+        selectedTextures[key][0] !== null ?
             drawTexture(
                 simplifyPartName(key),
-                textures[key][0],
+                textures[simplifyPartName(key)][selectedTextures[key][0]],
                 key
             ) : undefined;
     });
 
-    textures["head"][1] ?
+    selectedTextures["head"][1] !== null ?
         drawTexture(
             "head",
-            textures["head"][1],
+            textures["head"][selectedTextures["head"][1]],
             "head-armor"
         ) : undefined;
 };
