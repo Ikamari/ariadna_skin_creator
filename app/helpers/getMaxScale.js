@@ -14,8 +14,8 @@ const getMaxScale = (textureData, selectedTextures) => {
         }
 
         if(partTextures[1] !== null) {
-            maxScale = textureData[simplifyPartName(value)][partTextures[1]].scale > maxScale ?
-                textureData[simplifyPartName(value)][partTextures[1]].scale : maxScale
+            maxScale = textureData[simplifyPartName(value) + "Armor"][partTextures[1]].scale > maxScale ?
+                textureData[simplifyPartName(value) + "Armor"][partTextures[1]].scale : maxScale
         }
     });
 

@@ -15,7 +15,7 @@ export const loadTextures = (props, isDev) => {
             console.log("Can't load texture names from server");
             console.log(error);
             getTexturesFromServer(
-                [{"head":[],"body":[],"hand":[],"leg":[]},{"head":[],"body":[],"hand":[],"leg":[]}]
+                [{"head":{},"body":{},"hand":{},"leg":{}},{"head":{},"body":{},"hand":{},"leg":{}}]
             );
         })
 };

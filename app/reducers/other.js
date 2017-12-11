@@ -1,7 +1,7 @@
 const initialState = {
-    version: "0.7 - dev 0.8",
-    isDev: true,
-    debug: true
+    version: "0.7 - dev 0.9",
+    isDev: false,
+    debug: false
 };
 
 const other = (state = initialState, action) => {

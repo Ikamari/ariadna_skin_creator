@@ -33516,9 +33516,9 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
-    version: "0.7 - dev 0.8",
-    isDev: true,
-    debug: true
+    version: "0.7 - dev 0.9",
+    isDev: false,
+    debug: false
 };
 
 var other = function other() {
@@ -34064,7 +34064,7 @@ var Overseer = function (_Component) {
         value: function checkPartTexturesData(partName) {
             //If array is not empty, then there is no need to check it
             var partData = this.props.partData;
-            console.log(partData);
+            //console.log(partData);
             return partData[partName] ? partData[partName].length === 0 : false;
         }
     }, {
@@ -35573,7 +35573,7 @@ var drawOldLayout = exports.drawOldLayout = function drawOldLayout(canvasElement
     var context = canvasElement.getContext('2d');
 
     var drawTexture = function drawTexture(simplifiedPartName, texture, skinPart) {
-        console.log(simplifiedPartName, texture, skinPart);
+
         var partTexture = new Image();
         partTexture.onload = function () {
             context.drawImage(partTexture, _PartCoordinates.coordinates[skinPart][0] * Math.pow(2, maxScale), _PartCoordinates.coordinates[skinPart][1] * Math.pow(2, maxScale), texture.width * Math.pow(2, maxScale - texture.scale), texture.height * Math.pow(2, maxScale - texture.scale));
@@ -35628,7 +35628,6 @@ var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement
     var context = canvasElement.getContext('2d');
 
     var drawTexture = function drawTexture(simplifiedPartName, texture, skinPart) {
-        console.log(simplifiedPartName, texture, skinPart);
 
         var drawConverted = function drawConverted(converter) {
             context.drawImage(converter, _PartCoordinates.coordinates[skinPart][0] * Math.pow(2, maxScale), _PartCoordinates.coordinates[skinPart][1] * Math.pow(2, maxScale), texture.width * Math.pow(2, maxScale - texture.scale), texture.height * Math.pow(2, maxScale - texture.scale));
@@ -35645,7 +35644,7 @@ var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement
                 {
                     (0, _TextureConversion2.default)(texture, converters[1], function () {
                         return drawConverted(converters[1]);
-                    });return;
+                    }, true);return;
                 }
             case "left-leg":
                 {
@@ -35657,7 +35656,7 @@ var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement
                 {
                     (0, _TextureConversion2.default)(texture, converters[3], function () {
                         return drawConverted(converters[3]);
-                    });return;
+                    }, true);return;
                 }
         }
 
@@ -35714,7 +35713,7 @@ var loadTextures = exports.loadTextures = function loadTextures(props, isDev) {
     }).catch(function (error) {
         console.log("Can't load texture names from server");
         console.log(error);
-        getTexturesFromServer([{ "head": [], "body": [], "hand": [], "leg": [] }, { "head": [], "body": [], "hand": [], "leg": [] }]);
+        getTexturesFromServer([{ "head": {}, "body": {}, "hand": {}, "leg": {} }, { "head": {}, "body": {}, "hand": {}, "leg": {} }]);
     });
 };
 //Axios
@@ -36658,7 +36657,7 @@ var getMaxScale = function getMaxScale(textureData, selectedTextures) {
         }
 
         if (partTextures[1] !== null) {
-            maxScale = textureData[(0, _simplifyPartName2.default)(value)][partTextures[1]].scale > maxScale ? textureData[(0, _simplifyPartName2.default)(value)][partTextures[1]].scale : maxScale;
+            maxScale = textureData[(0, _simplifyPartName2.default)(value) + "Armor"][partTextures[1]].scale > maxScale ? textureData[(0, _simplifyPartName2.default)(value) + "Armor"][partTextures[1]].scale : maxScale;
         }
     });
 
@@ -36695,12 +36694,14 @@ var coordinates = exports.coordinates = {
 
 
 var convertTexture = function convertTexture(texture, canvasElement, renderOnLayout) {
+    var isArmor = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
 
     var drawTexture = function drawTexture(topLeft, bottomRight, to) {
         var next = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {};
         var last = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
-        console.log(texture.path);
+
         var context = canvasElement.getContext('2d');
         context.imageSmoothingEnabled = false;
 
@@ -36716,7 +36717,7 @@ var convertTexture = function convertTexture(texture, canvasElement, renderOnLay
     canvasElement.width = 16 * Math.pow(2, texture.scale);
     canvasElement.height = 16 * Math.pow(2, texture.scale);
 
-    drawTexture(coordinates["top"][0], coordinates["top"][1], coordinates["top"][0], drawTexture(coordinates["front"][0], coordinates["front"][1], coordinates["front"][0], drawTexture(coordinates["back"][0], coordinates["back"][1], coordinates["back"][0], drawTexture(coordinates["inside"][0], coordinates["inside"][1], coordinates["outside"][0], drawTexture(coordinates["outside"][0], coordinates["outside"][1], coordinates["inside"][0])))), true);
+    drawTexture(coordinates["top"][0], coordinates["top"][1], coordinates["top"][0], drawTexture(coordinates["front"][0], coordinates["front"][1], coordinates["back"][0], drawTexture(coordinates["back"][0], coordinates["back"][1], coordinates["front"][0], drawTexture(coordinates["inside"][0], coordinates["inside"][1], coordinates["outside"][0], drawTexture(coordinates["outside"][0], coordinates["outside"][1], coordinates["inside"][0])))), true);
 };
 
 exports.default = convertTexture;

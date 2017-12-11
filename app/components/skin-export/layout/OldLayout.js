@@ -9,7 +9,7 @@ export const drawOldLayout = (canvasElement, selectedTextures, textures, maxScal
     let context = canvasElement.getContext('2d');
 
     const drawTexture = (simplifiedPartName, texture, skinPart) => {
-        console.log(simplifiedPartName, texture, skinPart);
+
         let partTexture = new Image();
         partTexture.onload = () => {
             context.drawImage(

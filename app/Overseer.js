@@ -75,7 +75,7 @@ class Overseer extends Component {
     checkPartTexturesData(partName) {
         //If array is not empty, then there is no need to check it
         let partData = this.props.partData;
-        console.log(partData);
+        //console.log(partData);
         return partData[partName] ?
             partData[partName].length === 0 : false;
     }
