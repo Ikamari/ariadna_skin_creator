@@ -14,11 +14,10 @@ class SkinExport extends Component {
         const { isNewFormat } = this.props.skin;
         const { selectedTextures, textures } = this.props;
         const canvasElement = this.refs.layout;
-        const converter1 = this.refs.converter1;
-        const converter2 = this.refs.converter2;
+        const converters = [this.refs.converter1, this.refs.converter2, this.refs.converter3, this.refs.converter4];
         const maxScale = getMaxScale(textures, selectedTextures);
         isNewFormat ?
-            drawNewLayout(canvasElement, selectedTextures, textures, maxScale, converter1, converter2) :
+            drawNewLayout(canvasElement, selectedTextures, textures, maxScale, converters) :
             drawOldLayout(canvasElement, selectedTextures, textures, maxScale);
     }
 
@@ -51,6 +50,8 @@ class SkinExport extends Component {
                 <canvas ref="layout"/>
                 <canvas ref="converter1"/>
                 <canvas ref="converter2"/>
+                <canvas ref="converter3"/>
+                <canvas ref="converter4"/>
                 <a ref="link"/>
             </div>
         )

@@ -1,5 +1,5 @@
 const initialState = {
-    version: "0.7 - dev 0.7",
+    version: "0.7 - dev 0.8",
     isDev: true,
     debug: true
 };

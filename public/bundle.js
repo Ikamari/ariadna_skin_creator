@@ -33516,7 +33516,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
-    version: "0.7 - dev 0.7",
+    version: "0.7 - dev 0.8",
     isDev: true,
     debug: true
 };
@@ -35473,10 +35473,9 @@ var SkinExport = function (_Component) {
                 textures = _props.textures;
 
             var canvasElement = this.refs.layout;
-            var converter1 = this.refs.converter1;
-            var converter2 = this.refs.converter2;
+            var converters = [this.refs.converter1, this.refs.converter2, this.refs.converter3, this.refs.converter4];
             var maxScale = (0, _getMaxScale2.default)(textures, selectedTextures);
-            isNewFormat ? (0, _NewLayout.drawNewLayout)(canvasElement, selectedTextures, textures, maxScale, converter1, converter2) : (0, _OldLayout.drawOldLayout)(canvasElement, selectedTextures, textures, maxScale);
+            isNewFormat ? (0, _NewLayout.drawNewLayout)(canvasElement, selectedTextures, textures, maxScale, converters) : (0, _OldLayout.drawOldLayout)(canvasElement, selectedTextures, textures, maxScale);
         }
     }, {
         key: "exportSkinLayout",
@@ -35515,6 +35514,8 @@ var SkinExport = function (_Component) {
                 _react2.default.createElement("canvas", { ref: "layout" }),
                 _react2.default.createElement("canvas", { ref: "converter1" }),
                 _react2.default.createElement("canvas", { ref: "converter2" }),
+                _react2.default.createElement("canvas", { ref: "converter3" }),
+                _react2.default.createElement("canvas", { ref: "converter4" }),
                 _react2.default.createElement("a", { ref: "link" })
             );
         }
@@ -35623,22 +35624,41 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //Conversion
 //React
-var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement, selectedTextures, textures, maxScale, converter1, converter2) {
+var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement, selectedTextures, textures, maxScale, converters) {
     var context = canvasElement.getContext('2d');
 
     var drawTexture = function drawTexture(simplifiedPartName, texture, skinPart) {
         console.log(simplifiedPartName, texture, skinPart);
 
-        if (skinPart === "left-hand") {
-            (0, _TextureConversion2.default)(texture, converter1, function () {
-                context.drawImage(converter1, _PartCoordinates.coordinates[skinPart][0] * Math.pow(2, maxScale), _PartCoordinates.coordinates[skinPart][1] * Math.pow(2, maxScale), texture.width * Math.pow(2, maxScale - texture.scale), texture.height * Math.pow(2, maxScale - texture.scale));
-            });
-            return;
-        } else if (skinPart === "left-leg") {
-            (0, _TextureConversion2.default)(texture, converter2, function () {
-                context.drawImage(converter2, _PartCoordinates.coordinates[skinPart][0] * Math.pow(2, maxScale), _PartCoordinates.coordinates[skinPart][1] * Math.pow(2, maxScale), texture.width * Math.pow(2, maxScale - texture.scale), texture.height * Math.pow(2, maxScale - texture.scale));
-            });
-            return;
+        var drawConverted = function drawConverted(converter) {
+            context.drawImage(converter, _PartCoordinates.coordinates[skinPart][0] * Math.pow(2, maxScale), _PartCoordinates.coordinates[skinPart][1] * Math.pow(2, maxScale), texture.width * Math.pow(2, maxScale - texture.scale), texture.height * Math.pow(2, maxScale - texture.scale));
+        };
+
+        switch (skinPart) {
+            case "left-hand":
+                {
+                    (0, _TextureConversion2.default)(texture, converters[0], function () {
+                        return drawConverted(converters[0]);
+                    });return;
+                }
+            case "left-hand-armor":
+                {
+                    (0, _TextureConversion2.default)(texture, converters[1], function () {
+                        return drawConverted(converters[1]);
+                    });return;
+                }
+            case "left-leg":
+                {
+                    (0, _TextureConversion2.default)(texture, converters[2], function () {
+                        return drawConverted(converters[2]);
+                    });return;
+                }
+            case "left-leg-armor":
+                {
+                    (0, _TextureConversion2.default)(texture, converters[3], function () {
+                        return drawConverted(converters[3]);
+                    });return;
+                }
         }
 
         var partTexture = new Image();

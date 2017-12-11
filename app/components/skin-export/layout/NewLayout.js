@@ -7,35 +7,31 @@ import convert from "../TextureConversion"
 //Helpers
 import simplifyPartName from '../../../helpers/simplifyPartName';
 
-export const drawNewLayout = (canvasElement, selectedTextures, textures, maxScale, converter1, converter2) => {
+export const drawNewLayout = (canvasElement, selectedTextures, textures, maxScale, converters) => {
     let context = canvasElement.getContext('2d');
 
     const drawTexture = (simplifiedPartName, texture, skinPart) => {
         console.log(simplifiedPartName, texture, skinPart);
 
-        if(skinPart === "left-hand") {
-            convert(texture, converter1, () => {
-                context.drawImage(
-                    converter1,
-                    coordinates[skinPart][0] * Math.pow(2, maxScale),
-                    coordinates[skinPart][1] * Math.pow(2, maxScale),
-                    texture.width * Math.pow(2, maxScale - texture.scale),
-                    texture.height * Math.pow(2, maxScale - texture.scale)
-                );
-            });
-            return;
-        }
-        else if(skinPart === "left-leg") {
-            convert(texture, converter2, () => {
-                context.drawImage(
-                    converter2,
-                    coordinates[skinPart][0] * Math.pow(2, maxScale),
-                    coordinates[skinPart][1] * Math.pow(2, maxScale),
-                    texture.width * Math.pow(2, maxScale - texture.scale),
-                    texture.height * Math.pow(2, maxScale - texture.scale)
-                );
-            });
-            return;
+        const drawConverted = (converter) => {
+            context.drawImage(
+                converter,
+                coordinates[skinPart][0] * Math.pow(2, maxScale),
+                coordinates[skinPart][1] * Math.pow(2, maxScale),
+                texture.width * Math.pow(2, maxScale - texture.scale),
+                texture.height * Math.pow(2, maxScale - texture.scale)
+            );
+        };
+
+        switch(skinPart) {
+            case "left-hand":
+                {convert(texture, converters[0], () => drawConverted(converters[0])); return}
+            case "left-hand-armor":
+                {convert(texture, converters[1], () => drawConverted(converters[1])); return}
+            case "left-leg":
+                {convert(texture, converters[2], () => drawConverted(converters[2])); return}
+            case "left-leg-armor":
+                {convert(texture, converters[3], () => drawConverted(converters[3])); return}
         }
 
         let partTexture = new Image();
