@@ -33516,7 +33516,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
-    version: "0.7 - dev 0.5",
+    version: "0.7 - dev 0.6",
     isDev: true,
     debug: true
 };
@@ -35473,8 +35473,10 @@ var SkinExport = function (_Component) {
                 textures = _props.textures;
 
             var canvasElement = this.refs.layout;
+            var converter1 = this.refs.converter1;
+            var converter2 = this.refs.converter2;
             var maxScale = (0, _getMaxScale2.default)(textures, selectedTextures);
-            isNewFormat ? (0, _NewLayout.drawNewLayout)(canvasElement, selectedTextures, textures, maxScale) : (0, _OldLayout.drawOldLayout)(canvasElement, selectedTextures, textures, maxScale);
+            isNewFormat ? (0, _NewLayout.drawNewLayout)(canvasElement, selectedTextures, textures, maxScale, converter1, converter2) : (0, _OldLayout.drawOldLayout)(canvasElement, selectedTextures, textures, maxScale);
         }
     }, {
         key: "exportSkinLayout",
@@ -35511,6 +35513,8 @@ var SkinExport = function (_Component) {
                 "div",
                 { className: "skin-layout" },
                 _react2.default.createElement("canvas", { ref: "layout" }),
+                _react2.default.createElement("canvas", { ref: "converter1" }),
+                _react2.default.createElement("canvas", { ref: "converter2" }),
                 _react2.default.createElement("a", { ref: "link" })
             );
         }
@@ -35607,18 +35611,26 @@ var _react2 = _interopRequireDefault(_react);
 
 var _PartCoordinates = __webpack_require__(164);
 
+var _TextureConversion = __webpack_require__(463);
+
+var _TextureConversion2 = _interopRequireDefault(_TextureConversion);
+
 var _simplifyPartName = __webpack_require__(74);
 
 var _simplifyPartName2 = _interopRequireDefault(_simplifyPartName);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//Coordinates
-var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement, selectedTextures, textures, maxScale) {
+//Conversion
+//React
+var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement, selectedTextures, textures, maxScale, converter1, converter2) {
     var context = canvasElement.getContext('2d');
 
     var drawTexture = function drawTexture(simplifiedPartName, texture, skinPart) {
         console.log(simplifiedPartName, texture, skinPart);
+
+        if (skinPart === "left-hand") (0, _TextureConversion2.default)(texture, converter1);else if (skinPart === "left-leg") (0, _TextureConversion2.default)(texture, converter2);
+
         var partTexture = new Image();
         partTexture.onload = function () {
             context.drawImage(partTexture, _PartCoordinates.coordinates[skinPart][0] * Math.pow(2, maxScale), _PartCoordinates.coordinates[skinPart][1] * Math.pow(2, maxScale), texture.width * Math.pow(2, maxScale - texture.scale), texture.height * Math.pow(2, maxScale - texture.scale));
@@ -35636,7 +35648,8 @@ var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement
     });
 };
 //Helpers
-//React
+
+//Coordinates
 
 /***/ }),
 /* 441 */
@@ -36623,6 +36636,59 @@ var getMaxScale = function getMaxScale(textureData, selectedTextures) {
 };
 //Helpers
 exports.default = getMaxScale;
+
+/***/ }),
+/* 463 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.coordinates = undefined;
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var coordinates = exports.coordinates = {
+    "top": [[4, 0], [12, 4]], // x and y on canvas (and skin too)
+    "inside": [[0, 4], [4, 16]],
+    "outside": [[8, 4], [12, 16]],
+    "front": [[4, 4], [8, 16]],
+    "back": [[12, 4], [16, 16]]
+}; //React
+
+
+var convertTexture = function convertTexture(texture, canvasElement) {
+
+    var drawTexture = function drawTexture(topLeft, bottomRight, to) {
+        console.log(texture.path);
+        var context = canvasElement.getContext('2d');
+        context.imageSmoothingEnabled = false;
+
+        var partTexture = new Image();
+        partTexture.onload = function () {
+            context.drawImage(partTexture, topLeft[0] * Math.pow(2, texture.scale), topLeft[1] * Math.pow(2, texture.scale), (bottomRight[0] - topLeft[0]) * Math.pow(2, texture.scale), (bottomRight[1] - topLeft[1]) * Math.pow(2, texture.scale), to[0] * Math.pow(2, texture.scale), to[1] * Math.pow(2, texture.scale), (bottomRight[0] - topLeft[0]) * Math.pow(2, texture.scale), (bottomRight[1] - topLeft[1]) * Math.pow(2, texture.scale));
+        };
+        partTexture.src = texture.path;
+    };
+
+    canvasElement.width = 16 * Math.pow(2, texture.scale);
+    canvasElement.height = 16 * Math.pow(2, texture.scale);
+
+    drawTexture(coordinates["top"][0], coordinates["top"][1], coordinates["top"][0]);
+    drawTexture(coordinates["front"][0], coordinates["front"][1], coordinates["front"][0]);
+    drawTexture(coordinates["back"][0], coordinates["back"][1], coordinates["back"][0]);
+    drawTexture(coordinates["inside"][0], coordinates["inside"][1], coordinates["outside"][0]);
+    drawTexture(coordinates["outside"][0], coordinates["outside"][1], coordinates["inside"][0]);
+};
+
+exports.default = convertTexture;
 
 /***/ })
 /******/ ]);

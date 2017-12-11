@@ -2,14 +2,22 @@
 import React from "react"
 //Coordinates
 import { coordinates } from "./PartCoordinates"
+//Conversion
+import convert from "../TextureConversion"
 //Helpers
 import simplifyPartName from '../../../helpers/simplifyPartName';
 
-export const drawNewLayout = (canvasElement, selectedTextures, textures, maxScale) => {
+export const drawNewLayout = (canvasElement, selectedTextures, textures, maxScale, converter1, converter2) => {
     let context = canvasElement.getContext('2d');
 
     const drawTexture = (simplifiedPartName, texture, skinPart) => {
         console.log(simplifiedPartName, texture, skinPart);
+
+        if(skinPart === "left-hand")
+            convert(texture, converter1);
+        else if(skinPart === "left-leg")
+            convert(texture, converter2);
+
         let partTexture = new Image();
         partTexture.onload = () => {
             context.drawImage(
