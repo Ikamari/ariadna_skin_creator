@@ -39,7 +39,7 @@ export const drawOldLayout = (canvasElement, selectedTextures, textures, maxScal
     selectedTextures["head"][1] !== null ?
         drawTexture(
             "head",
-            textures["head"][selectedTextures["head"][1]],
+            textures["headArmor"][selectedTextures["head"][1]],
             "head-armor"
         ) : undefined;
 };

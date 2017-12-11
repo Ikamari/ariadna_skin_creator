@@ -35584,7 +35584,7 @@ var drawOldLayout = exports.drawOldLayout = function drawOldLayout(canvasElement
         selectedTextures[key][0] !== null ? drawTexture((0, _simplifyPartName2.default)(key), textures[(0, _simplifyPartName2.default)(key)][selectedTextures[key][0]], key) : undefined;
     });
 
-    selectedTextures["head"][1] !== null ? drawTexture("head", textures["head"][selectedTextures["head"][1]], "head-armor") : undefined;
+    selectedTextures["head"][1] !== null ? drawTexture("head", textures["headArmor"][selectedTextures["head"][1]], "head-armor") : undefined;
 };
 //Helpers
 //React
@@ -35632,7 +35632,7 @@ var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement
 
     Object.keys(selectedTextures).map(function (key) {
         selectedTextures[key][0] !== null ? drawTexture((0, _simplifyPartName2.default)(key), textures[(0, _simplifyPartName2.default)(key)][selectedTextures[key][0]], key) : undefined;
-        selectedTextures[key][1] !== null ? drawTexture((0, _simplifyPartName2.default)(key), textures[(0, _simplifyPartName2.default)(key)][selectedTextures[key][1]], key + "-armor") : undefined;
+        selectedTextures[key][1] !== null ? drawTexture((0, _simplifyPartName2.default)(key), textures[(0, _simplifyPartName2.default)(key) + "Armor"][selectedTextures[key][1]], key + "-armor") : undefined;
     });
 };
 //Helpers

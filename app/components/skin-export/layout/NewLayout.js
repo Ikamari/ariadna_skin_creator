@@ -37,7 +37,7 @@ export const drawNewLayout = (canvasElement, selectedTextures, textures, maxScal
         selectedTextures[key][1] !== null ?
         drawTexture(
             simplifyPartName(key),
-            textures[simplifyPartName(key)][selectedTextures[key][1]],
+            textures[simplifyPartName(key) + "Armor"][selectedTextures[key][1]],
             key + "-armor"
         ) : undefined;
     })
