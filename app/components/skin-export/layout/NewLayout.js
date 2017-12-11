@@ -13,10 +13,30 @@ export const drawNewLayout = (canvasElement, selectedTextures, textures, maxScal
     const drawTexture = (simplifiedPartName, texture, skinPart) => {
         console.log(simplifiedPartName, texture, skinPart);
 
-        if(skinPart === "left-hand")
-            convert(texture, converter1);
-        else if(skinPart === "left-leg")
-            convert(texture, converter2);
+        if(skinPart === "left-hand") {
+            convert(texture, converter1, () => {
+                context.drawImage(
+                    converter1,
+                    coordinates[skinPart][0] * Math.pow(2, maxScale),
+                    coordinates[skinPart][1] * Math.pow(2, maxScale),
+                    texture.width * Math.pow(2, maxScale - texture.scale),
+                    texture.height * Math.pow(2, maxScale - texture.scale)
+                );
+            });
+            return;
+        }
+        else if(skinPart === "left-leg") {
+            convert(texture, converter2, () => {
+                context.drawImage(
+                    converter2,
+                    coordinates[skinPart][0] * Math.pow(2, maxScale),
+                    coordinates[skinPart][1] * Math.pow(2, maxScale),
+                    texture.width * Math.pow(2, maxScale - texture.scale),
+                    texture.height * Math.pow(2, maxScale - texture.scale)
+                );
+            });
+            return;
+        }
 
         let partTexture = new Image();
         partTexture.onload = () => {

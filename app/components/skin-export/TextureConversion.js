@@ -9,9 +9,9 @@ export const coordinates = {
     "back":            [ [12, 4], [16, 16 ] ]
 };
 
-const convertTexture = (texture, canvasElement) => {
+const convertTexture = (texture, canvasElement, renderOnLayout) => {
 
-    const drawTexture = (topLeft, bottomRight, to) => {
+    const drawTexture = (topLeft, bottomRight, to, next = () => {}, last = false) => {
         console.log(texture.path);
         let context = canvasElement.getContext('2d');
         context.imageSmoothingEnabled = false;
@@ -29,6 +29,9 @@ const convertTexture = (texture, canvasElement) => {
                 (bottomRight[0] - topLeft[0]) * Math.pow(2, texture.scale),
                 (bottomRight[1] - topLeft[1]) * Math.pow(2, texture.scale)
             );
+
+            last ?
+                renderOnLayout() : next()
         };
         partTexture.src = texture.path;
     };
@@ -36,11 +39,13 @@ const convertTexture = (texture, canvasElement) => {
     canvasElement.width  = 16 * Math.pow(2, texture.scale);
     canvasElement.height = 16 * Math.pow(2, texture.scale);
 
-    drawTexture(coordinates["top"][0], coordinates["top"][1], coordinates["top"][0]);
-    drawTexture(coordinates["front"][0], coordinates["front"][1], coordinates["front"][0]);
-    drawTexture(coordinates["back"][0], coordinates["back"][1], coordinates["back"][0]);
-    drawTexture(coordinates["inside"][0], coordinates["inside"][1], coordinates["outside"][0]);
-    drawTexture(coordinates["outside"][0], coordinates["outside"][1], coordinates["inside"][0]);
+    drawTexture(coordinates["top"][0], coordinates["top"][1], coordinates["top"][0],
+        drawTexture(coordinates["front"][0], coordinates["front"][1], coordinates["front"][0],
+            drawTexture(coordinates["back"][0], coordinates["back"][1], coordinates["back"][0],
+                drawTexture(coordinates["inside"][0], coordinates["inside"][1], coordinates["outside"][0],
+                    drawTexture(coordinates["outside"][0], coordinates["outside"][1], coordinates["inside"][0]))))
+    , true);
+
 };
 
 export default convertTexture

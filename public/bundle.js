@@ -33516,7 +33516,7 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
-    version: "0.7 - dev 0.6",
+    version: "0.7 - dev 0.7",
     isDev: true,
     debug: true
 };
@@ -35629,7 +35629,17 @@ var drawNewLayout = exports.drawNewLayout = function drawNewLayout(canvasElement
     var drawTexture = function drawTexture(simplifiedPartName, texture, skinPart) {
         console.log(simplifiedPartName, texture, skinPart);
 
-        if (skinPart === "left-hand") (0, _TextureConversion2.default)(texture, converter1);else if (skinPart === "left-leg") (0, _TextureConversion2.default)(texture, converter2);
+        if (skinPart === "left-hand") {
+            (0, _TextureConversion2.default)(texture, converter1, function () {
+                context.drawImage(converter1, _PartCoordinates.coordinates[skinPart][0] * Math.pow(2, maxScale), _PartCoordinates.coordinates[skinPart][1] * Math.pow(2, maxScale), texture.width * Math.pow(2, maxScale - texture.scale), texture.height * Math.pow(2, maxScale - texture.scale));
+            });
+            return;
+        } else if (skinPart === "left-leg") {
+            (0, _TextureConversion2.default)(texture, converter2, function () {
+                context.drawImage(converter2, _PartCoordinates.coordinates[skinPart][0] * Math.pow(2, maxScale), _PartCoordinates.coordinates[skinPart][1] * Math.pow(2, maxScale), texture.width * Math.pow(2, maxScale - texture.scale), texture.height * Math.pow(2, maxScale - texture.scale));
+            });
+            return;
+        }
 
         var partTexture = new Image();
         partTexture.onload = function () {
@@ -36664,9 +36674,12 @@ var coordinates = exports.coordinates = {
 }; //React
 
 
-var convertTexture = function convertTexture(texture, canvasElement) {
+var convertTexture = function convertTexture(texture, canvasElement, renderOnLayout) {
 
     var drawTexture = function drawTexture(topLeft, bottomRight, to) {
+        var next = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {};
+        var last = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
         console.log(texture.path);
         var context = canvasElement.getContext('2d');
         context.imageSmoothingEnabled = false;
@@ -36674,6 +36687,8 @@ var convertTexture = function convertTexture(texture, canvasElement) {
         var partTexture = new Image();
         partTexture.onload = function () {
             context.drawImage(partTexture, topLeft[0] * Math.pow(2, texture.scale), topLeft[1] * Math.pow(2, texture.scale), (bottomRight[0] - topLeft[0]) * Math.pow(2, texture.scale), (bottomRight[1] - topLeft[1]) * Math.pow(2, texture.scale), to[0] * Math.pow(2, texture.scale), to[1] * Math.pow(2, texture.scale), (bottomRight[0] - topLeft[0]) * Math.pow(2, texture.scale), (bottomRight[1] - topLeft[1]) * Math.pow(2, texture.scale));
+
+            last ? renderOnLayout() : next();
         };
         partTexture.src = texture.path;
     };
@@ -36681,11 +36696,7 @@ var convertTexture = function convertTexture(texture, canvasElement) {
     canvasElement.width = 16 * Math.pow(2, texture.scale);
     canvasElement.height = 16 * Math.pow(2, texture.scale);
 
-    drawTexture(coordinates["top"][0], coordinates["top"][1], coordinates["top"][0]);
-    drawTexture(coordinates["front"][0], coordinates["front"][1], coordinates["front"][0]);
-    drawTexture(coordinates["back"][0], coordinates["back"][1], coordinates["back"][0]);
-    drawTexture(coordinates["inside"][0], coordinates["inside"][1], coordinates["outside"][0]);
-    drawTexture(coordinates["outside"][0], coordinates["outside"][1], coordinates["inside"][0]);
+    drawTexture(coordinates["top"][0], coordinates["top"][1], coordinates["top"][0], drawTexture(coordinates["front"][0], coordinates["front"][1], coordinates["front"][0], drawTexture(coordinates["back"][0], coordinates["back"][1], coordinates["back"][0], drawTexture(coordinates["inside"][0], coordinates["inside"][1], coordinates["outside"][0], drawTexture(coordinates["outside"][0], coordinates["outside"][1], coordinates["inside"][0])))), true);
 };
 
 exports.default = convertTexture;
