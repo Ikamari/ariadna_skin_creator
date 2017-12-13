@@ -81,20 +81,24 @@ class Overseer extends Component {
     }
 
     componentDidUpdate() {
-        //Check if there is needed to check data
-        const { checkData } = this.props.overseerActions;
-        const needToCheckData = this.props.checkDataSwitch;
-        // console.log(needToCheckData);
-        // if(needToCheckData) {
+        try {
+            //Check if there is needed to check data
+            const {checkData} = this.props.overseerActions;
+            const needToCheckData = this.props.checkDataSwitch;
+            // console.log(needToCheckData);
+            // if(needToCheckData) {
             const {selectedPart, armorLayer} = this.props.skinSettings;
             const simplifiedPartName = simplifyPartName(selectedPart);
 
             //If part textures are already checked, then there is no need to do that again
             if (this.checkPartTexturesData(simplifiedPartName + (armorLayer ? "Armor" : "")) && simplifiedPartName !== "none")
                 this.getPartInfo(simplifiedPartName, armorLayer);
-        //     else
-        //         checkData();
-        // }
+            //     else
+            //         checkData();
+            // }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     render() {

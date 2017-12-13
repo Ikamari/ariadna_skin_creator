@@ -14,6 +14,9 @@ export const loadTextures = (props, isDev) => {
         .catch((error) => {
             console.log("Can't load texture names from server");
             console.log(error);
+            alert("Список текстур не был получен от сервера. Стоит перезагрузить страницу или попробовать" +
+                " собрать скин немного позже. Если вновь появилось это сообщение, тогда сервер не отвечает" +
+                " или ловит ошибки при выполнении скрипта.");
             getTexturesFromServer(
                 [{"head":{},"body":{},"hand":{},"leg":{}},{"head":{},"body":{},"hand":{},"leg":{}}]
             );
