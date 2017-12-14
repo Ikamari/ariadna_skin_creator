@@ -63,7 +63,7 @@ class Palette extends Component {
                 { !isLoadingData ?
                     textures[partName].map((value, index) => this.showPaletteElement(value, index, simplifiedPartName)) :
                     <div className="part-loading-status">
-                        <img src="./img/loading.gif"/>
+                        <img src={(this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + "loading.gif"}/>
                         <div className="status" >{loadedTextures}/{needToLoad}</div>
                     </div>
                 }

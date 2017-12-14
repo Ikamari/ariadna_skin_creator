@@ -33536,7 +33536,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var initialState = {
     version: "0.7.1",
-    isDev: true,
+    isDev: false,
     debug: false
 };
 
@@ -34764,7 +34764,7 @@ var Palette = function (_Component) {
                 }) : _react2.default.createElement(
                     'div',
                     { className: 'part-loading-status' },
-                    _react2.default.createElement('img', { src: './img/loading.gif' }),
+                    _react2.default.createElement('img', { src: (this.props.isDev ? "./img/" : "http://ariadna-rp.ru/skin-creator/img/") + "loading.gif" }),
                     _react2.default.createElement(
                         'div',
                         { className: 'status' },
