@@ -29,10 +29,12 @@ class Overseer extends Component {
     }
 
     getPartTexturesDimensions(index = 0) {
+        const { loadedTexture } = this.props.overseerActions;
         let dimensions = this.getDimensions(this.partTextures[index].path);
         dimensions.then(
             result => {
                 Object.assign(this.partTextures[index], result);
+                loadedTexture();
                 index < this.partTextures.length - 1 ?
                     this.getPartTexturesDimensions(index + 1) :
                     this.getPartTexturesScale()
@@ -41,6 +43,7 @@ class Overseer extends Component {
     }
 
     getPartTexturesScale() {
+        const { loadingData } = this.props.overseerActions;
         const { writePartData } = this.props.partDataActions;
 
         this.partTextures.map((value, index) => {
@@ -49,11 +52,17 @@ class Overseer extends Component {
             Object.assign(this.partTextures[index], {scale: getScale(height, width, false)});
         });
 
+        loadingData();
         writePartData(this.partTextures, this.fullPartName);
     }
 
     getPartInfo(simplifiedPartName, isArmor) {
         const loadedTextures = this.props.loadedTextures[Number(isArmor)][simplifiedPartName];
+        const {loadingData, setHowMuchNeedToLoad} = this.props.overseerActions;
+
+        loadingData();
+        setHowMuchNeedToLoad(Object.keys(loadedTextures).length);
+
         this.partTextures = [];
         this.partName = simplifiedPartName;
         this.fullPartName = simplifiedPartName + (isArmor ? "Armor" : "");
@@ -83,19 +92,15 @@ class Overseer extends Component {
     componentDidUpdate() {
         try {
             //Check if there is needed to check data
-            const {checkData} = this.props.overseerActions;
             const needToCheckData = this.props.checkDataSwitch;
-            // console.log(needToCheckData);
-            // if(needToCheckData) {
+
             const {selectedPart, armorLayer} = this.props.skinSettings;
             const simplifiedPartName = simplifyPartName(selectedPart);
 
             //If part textures are already checked, then there is no need to do that again
             if (this.checkPartTexturesData(simplifiedPartName + (armorLayer ? "Armor" : "")) && simplifiedPartName !== "none")
                 this.getPartInfo(simplifiedPartName, armorLayer);
-            //     else
-            //         checkData();
-            // }
+
         } catch (error) {
             console.log(error);
         }

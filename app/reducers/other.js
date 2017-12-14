@@ -1,6 +1,6 @@
 const initialState = {
-    version: "0.7 - release",
-    isDev: false,
+    version: "0.7.1",
+    isDev: true,
     debug: false
 };
 

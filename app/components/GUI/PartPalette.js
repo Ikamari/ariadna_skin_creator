@@ -12,6 +12,10 @@ import simplifyPartName from '../../helpers/simplifyPartName';
 
 
 class Palette extends Component {
+    constructor(props) {
+        super(props);
+        this.loadedParts = 0;
+    }
 
     showPaletteElement(partTextureData, index, simplifiedPartName) {
         const partName = this.props.skin.selectedPart;
@@ -47,6 +51,7 @@ class Palette extends Component {
     }
 
     render() {
+        let { isLoadingData, loadedTextures, needToLoad } = this.props.overseer;
         const simplifiedPartName = simplifyPartName(this.props.skin.selectedPart);
         const isArmor = this.props.skin.armorLayer;
         const textures = this.props.textures;
@@ -55,7 +60,13 @@ class Palette extends Component {
 
         return simplifiedPartName !== "none" ?
             <div className="palette">
-                {textures[partName].map((value, index) => this.showPaletteElement(value, index, simplifiedPartName))}
+                { !isLoadingData ?
+                    textures[partName].map((value, index) => this.showPaletteElement(value, index, simplifiedPartName)) :
+                    <div className="part-loading-status">
+                        <img src="./img/loading.gif"/>
+                        <div className="status" >{loadedTextures}/{needToLoad}</div>
+                    </div>
+                }
             </div> : <div className="palette"/>
     }
 }
@@ -65,6 +76,7 @@ const mapStateToProps = (state) => ({
     textures: state.partData,
     isDev: state.other.isDev,
     selectedTextures: state.selectedTextures,
+    overseer: state.overseer
 });
 
 const mapDispatchToProps = (dispatch) => ({

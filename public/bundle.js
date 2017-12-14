@@ -3951,6 +3951,25 @@ var checkData = exports.checkData = function checkData() {
     };
 };
 
+var loadingData = exports.loadingData = function loadingData() {
+    return {
+        type: "LOADING_DATA_SWITCH"
+    };
+};
+
+var setHowMuchNeedToLoad = exports.setHowMuchNeedToLoad = function setHowMuchNeedToLoad(value) {
+    return {
+        type: "SET_HOW_MUCH_NEED_TO_LOAD",
+        payload: value
+    };
+};
+
+var loadedTexture = exports.loadedTexture = function loadedTexture() {
+    return {
+        type: "LOADED_TEXTURE"
+    };
+};
+
 /***/ }),
 /* 109 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -33516,8 +33535,8 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
-    version: "0.7 - release",
-    isDev: false,
+    version: "0.7.1",
+    isDev: true,
     debug: false
 };
 
@@ -33651,6 +33670,9 @@ Object.defineProperty(exports, "__esModule", {
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var initialState = {
+    isLoadingData: false,
+    loadedTextures: 0,
+    needToLoad: 0,
     checkDataSwitch: false
 };
 
@@ -33659,6 +33681,12 @@ var overseer = function overseer() {
     var action = arguments[1];
 
     switch (action.type) {
+        case "LOADED_TEXTURE":
+            return _extends({}, state, { loadedTextures: state.loadedTextures + 1 });
+        case "SET_HOW_MUCH_NEED_TO_LOAD":
+            return _extends({}, state, { needToLoad: action.payload, loadedTextures: 0 });
+        case "LOADING_DATA_SWITCH":
+            return _extends({}, state, { isLoadingData: !state.isLoadingData });
         case "CHECK_DATA_SWITCH":
             return _extends({}, state, { checkDataSwitch: !state.checkDataSwitch });
         default:
@@ -34015,10 +34043,12 @@ var Overseer = function (_Component) {
             var _this3 = this;
 
             var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+            var loadedTexture = this.props.overseerActions.loadedTexture;
 
             var dimensions = this.getDimensions(this.partTextures[index].path);
             dimensions.then(function (result) {
                 Object.assign(_this3.partTextures[index], result);
+                loadedTexture();
                 index < _this3.partTextures.length - 1 ? _this3.getPartTexturesDimensions(index + 1) : _this3.getPartTexturesScale();
             });
         }
@@ -34027,6 +34057,7 @@ var Overseer = function (_Component) {
         value: function getPartTexturesScale() {
             var _this4 = this;
 
+            var loadingData = this.props.overseerActions.loadingData;
             var writePartData = this.props.partDataActions.writePartData;
 
 
@@ -34036,6 +34067,7 @@ var Overseer = function (_Component) {
                 Object.assign(_this4.partTextures[index], { scale: (0, _getTextureScale2.default)(height, width, false) });
             });
 
+            loadingData();
             writePartData(this.partTextures, this.fullPartName);
         }
     }, {
@@ -34044,6 +34076,14 @@ var Overseer = function (_Component) {
             var _this5 = this;
 
             var loadedTextures = this.props.loadedTextures[Number(isArmor)][simplifiedPartName];
+            var _props$overseerAction = this.props.overseerActions,
+                loadingData = _props$overseerAction.loadingData,
+                setHowMuchNeedToLoad = _props$overseerAction.setHowMuchNeedToLoad;
+
+
+            loadingData();
+            setHowMuchNeedToLoad(Object.keys(loadedTextures).length);
+
             this.partTextures = [];
             this.partName = simplifiedPartName;
             this.fullPartName = simplifiedPartName + (isArmor ? "Armor" : "");
@@ -34072,11 +34112,8 @@ var Overseer = function (_Component) {
         value: function componentDidUpdate() {
             try {
                 //Check if there is needed to check data
-                var checkData = this.props.overseerActions.checkData;
-
                 var needToCheckData = this.props.checkDataSwitch;
-                // console.log(needToCheckData);
-                // if(needToCheckData) {
+
                 var _props$skinSettings = this.props.skinSettings,
                     selectedPart = _props$skinSettings.selectedPart,
                     armorLayer = _props$skinSettings.armorLayer;
@@ -34085,9 +34122,6 @@ var Overseer = function (_Component) {
 
                 //If part textures are already checked, then there is no need to do that again
                 if (this.checkPartTexturesData(simplifiedPartName + (armorLayer ? "Armor" : "")) && simplifiedPartName !== "none") this.getPartInfo(simplifiedPartName, armorLayer);
-                //     else
-                //         checkData();
-                // }
             } catch (error) {
                 console.log(error);
             }
@@ -34654,10 +34688,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Palette = function (_Component) {
     _inherits(Palette, _Component);
 
-    function Palette() {
+    function Palette(props) {
         _classCallCheck(this, Palette);
 
-        return _possibleConstructorReturn(this, (Palette.__proto__ || Object.getPrototypeOf(Palette)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Palette.__proto__ || Object.getPrototypeOf(Palette)).call(this, props));
+
+        _this.loadedParts = 0;
+        return _this;
     }
 
     _createClass(Palette, [{
@@ -34708,6 +34745,11 @@ var Palette = function (_Component) {
         value: function render() {
             var _this2 = this;
 
+            var _props$overseer = this.props.overseer,
+                isLoadingData = _props$overseer.isLoadingData,
+                loadedTextures = _props$overseer.loadedTextures,
+                needToLoad = _props$overseer.needToLoad;
+
             var simplifiedPartName = (0, _simplifyPartName2.default)(this.props.skin.selectedPart);
             var isArmor = this.props.skin.armorLayer;
             var textures = this.props.textures;
@@ -34717,9 +34759,20 @@ var Palette = function (_Component) {
             return simplifiedPartName !== "none" ? _react2.default.createElement(
                 'div',
                 { className: 'palette' },
-                textures[partName].map(function (value, index) {
+                !isLoadingData ? textures[partName].map(function (value, index) {
                     return _this2.showPaletteElement(value, index, simplifiedPartName);
-                })
+                }) : _react2.default.createElement(
+                    'div',
+                    { className: 'part-loading-status' },
+                    _react2.default.createElement('img', { src: './img/loading.gif' }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'status' },
+                        loadedTextures,
+                        '/',
+                        needToLoad
+                    )
+                )
             ) : _react2.default.createElement('div', { className: 'palette' });
         }
     }]);
@@ -34732,7 +34785,8 @@ var mapStateToProps = function mapStateToProps(state) {
         skin: state.skin,
         textures: state.partData,
         isDev: state.other.isDev,
-        selectedTextures: state.selectedTextures
+        selectedTextures: state.selectedTextures,
+        overseer: state.overseer
     };
 };
 
