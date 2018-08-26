@@ -1,5 +1,5 @@
 //React
-import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react'
 //Redux
 import { connect } from 'react-redux';
 //Components

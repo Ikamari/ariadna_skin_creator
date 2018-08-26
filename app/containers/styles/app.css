@@ -1,0 +1,40 @@
+.app, .top-part, .top-left-part, .top-right-part, .bottom-part {
+    display: flex;
+    border: 2px dashed;
+    margin: 2px;
+}
+
+.app {
+    flex-direction: column;
+    height: 800px;
+    width: 1000px;
+    max-width: 100%;
+    padding: 1px;
+    border-color: gray;
+}
+
+.top-part {
+    flex-direction: row;
+    height: 500px;
+    width: auto;
+    border-color: darkgrey;
+}
+
+.top-left-part {
+    height: auto;
+    min-width: 200px;
+    border-color: lightgray;
+}
+
+.top-right-part {
+    height: auto;
+    width: 80%;
+    border-color: lightgray;
+}
+
+.bottom-part {
+    flex-direction: column;
+    height: 300px;
+    width: auto;
+    border: none;
+}

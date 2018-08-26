@@ -6,9 +6,13 @@
 
 ❌ Refactor code, get rid of all copy-paste;
 
+❌ Text to icons;
+
 ❌ Multilayer support (select multiple textures for one skin part);
 
 ❌ Improve speed of skin parts download from server;
+
+❌ Tooltips;
 
 ❌ Upload skin parts to server;
 
@@ -16,7 +20,9 @@
 
 ❓ Undo/Redo;
 
-❓ 3D skin rendering.
+❓ 3D skin rendering;
+
+❓ Usage statistics.
 
 # Backend TODO's:
 

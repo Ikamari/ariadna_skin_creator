@@ -1,0 +1,8 @@
+.explorer {
+    display: inline-flex;
+    flex-wrap: wrap;
+    height: 100%;
+    border: 2px solid;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
