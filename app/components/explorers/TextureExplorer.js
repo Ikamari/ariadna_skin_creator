@@ -17,11 +17,11 @@ class TextureExplorer extends Explorer {
     }
 }
 
-Explorer.defaultProps = {
+TextureExplorer.defaultProps = {
     styles: styles
 }
 
-Explorer.propTypes = {
+TextureExplorer.propTypes = {
     textures: PropTypes.array.isRequired,
 }
 

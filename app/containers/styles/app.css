@@ -17,13 +17,13 @@
     flex-direction: row;
     height: 500px;
     width: auto;
-    border-color: darkgrey;
+    border: none;
 }
 
 .top-left-part {
     height: auto;
     min-width: 200px;
-    border-color: lightgray;
+    border: none;
 }
 
 .top-right-part {

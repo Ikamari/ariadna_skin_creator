@@ -20,3 +20,6 @@
     * Выбранный слой скина (Тело/броня) - Boolean;
     * Формат скина (Pre 1.8\Post 1.8\Ariadna + Ortega) - Int;
     * Режим 3D (?) - Boolean.
+    
+Use this:
+* -webkit-filter: drop-shadow(0 0 3px rgba(0,0,0,0.9));

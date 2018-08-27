@@ -1,0 +1,10 @@
+.explorer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 105px;
+    border: 2px solid;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
