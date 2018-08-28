@@ -1,48 +1,58 @@
 // React
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+// Components
+import Button from '../inputs/Button'
 // Styles
 import styles from './styles/texture-block.css'
+// Resources
+import * as icons from '../../resources/ui'
 
 class TextureBlock extends Component {
     constructor(props) {
         super(props)
     }
 
-    renderTextureSize() {
-        const { texture } = this.props
-        return (
-            <div className={styles["texture-size"]} />
-        )
-    }
-
     renderArrows() {
         const { onUpArrowClick, onDownArrowClick } = this.props
         return (
-            <div className={styles["arrows"]}>
-                <div className={styles["up-arrow"]}   onClick={onUpArrowClick()} />
-                <div className={styles["down-arrow"]} onClick={onDownArrowClick()} />
+            <div className={styles['arrows']}>
+                <Button buttonStyles={styles['arrow']} contentStyles={styles['arrow-icon']} iconUrl={icons.up_arrow}   onClick={onUpArrowClick()}   transparentBackground />
+                <Button buttonStyles={styles['arrow']} contentStyles={styles['arrow-icon']} iconUrl={icons.down_arrow} onClick={onDownArrowClick()} transparentBackground />
             </div>
         )
     }
 
     renderCross() {
+        const { onCrossClick } = this.props
+        return (
+            <Button buttonStyles={styles['cross']} iconUrl={icons.cross} onClick={onCrossClick()} transparentBackground />
+        )
+    }
 
+    renderTextureSize() {
+        const { texture } = this.props
+        return (
+            <div className={styles['texture-size']}>
+                {`${texture.width}*${texture.height}`}
+            </div>
+        )
     }
 
     renderTexture() {
         const { texture } = this.props
         return (
-            <div className={styles["texture"]}/>
+            <img className={styles['texture']} src={texture.url}/>
         )
     }
 
     render() {
-        const { onClick, showTextureSize, showArrows } = this.props
+        const { onClick, showTextureSize, showArrows, showCross } = this.props
         return (
-            <div className={styles["texture-block"]} onClick={onClick()}>
+            <div className={styles['texture-block']} onClick={onClick()}>
                 { this.renderTexture() }
                 { showTextureSize ? this.renderTextureSize() : null }
+                { showCross       ? this.renderCross()       : null }
                 { showArrows      ? this.renderArrows()      : null }
             </div>
         )

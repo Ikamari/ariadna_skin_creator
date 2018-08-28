@@ -1,9 +1,6 @@
 .explorer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
     height: 100%;
-    width: 105px;
+    width: 115px;
     border: 2px solid;
     overflow-x: hidden;
     overflow-y: scroll;

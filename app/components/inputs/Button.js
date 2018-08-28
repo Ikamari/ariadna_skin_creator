@@ -6,33 +6,31 @@ import defaultStyles from './styles/button.css'
 
 class Button extends Component {
     render() {
-        const { label, iconUrl, styles, onClick, transparentBackground } = this.props
+        const { label, iconUrl, buttonStyles, contentStyles, onClick, transparentBackground } = this.props
         return (
-            <button type='button' className={`${styles['button']} ${transparentBackground ? defaultStyles['transparent'] : ''}`} onClick={onClick}>
-                {iconUrl ? <img className={styles['icon']} src={iconUrl} /> : label}
+            <button type='button' className={`${buttonStyles} ${transparentBackground ? defaultStyles['transparent'] : ''}`} onClick={onClick}>
+                {iconUrl ? <img className={contentStyles} src={iconUrl} /> : label}
             </button>
         )
     }
 }
 
 Button.defaultProps = {
-    label:    '',
-    iconUrl:  null,
-    styles:   defaultStyles,
-
-    onClick:  () => {},
-
-    transparentBackground: false
+    transparentBackground: false,
+    label:                 '',
+    iconUrl:               null,
+    buttonStyles:          defaultStyles['button'],
+    contentStyles:         defaultStyles['content'],
+    onClick:               () => {}
 }
 
 Button.propTypes = {
-    label:    PropTypes.string,
-    iconUrl:  PropTypes.string,
-    styles:   PropTypes.string,
-
-    onClick:  PropTypes.func,
-
-    transparentBackground: PropTypes.bool
+    transparentBackground: PropTypes.bool,
+    label:                 PropTypes.string,
+    iconUrl:               PropTypes.string,
+    buttonStyles:          PropTypes.string,
+    contentStyles:         PropTypes.string,
+    onClick:               PropTypes.func
 }
 
 export default Button
