@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 //Redux
 import { connect } from 'react-redux';
 //Export
-import SkinExport from  '../skin-export/SkinExport';
+import SkinExport from '../../skin-export/SkinExport';
 //Helpers
-import simplifyPartName from '../../helpers/simplifyPartName';
+import simplifyPartName from '../../../helpers/simplifyPartName';
 
 const PartInfo = (partName, partTextureCode, partData) => (
     <span key={partName} className="data">

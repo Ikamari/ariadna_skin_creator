@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //Actions
-import * as exportActions from "../../../actions/exportActions";
-import * as otherActions from "../../../actions/otherActions";
+import * as exportActions from "../../../../actions/exportActions";
+import * as otherActions from "../../../../actions/otherActions";
 //Button
 import ControlButton from "./ControlButton";
 

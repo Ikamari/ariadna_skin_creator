@@ -4,11 +4,11 @@ import React, {Component, PropTypes} from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 //Components
-import RenderElement from '../canvas-render/PaletteElementCanvasRender';
+import RenderElement from '../../canvas-render/PaletteElementCanvasRender';
 //Actions
-import * as selectedTexturesActions from '../../actions/selectedTexturesActions';
+import * as selectedTexturesActions from '../../../actions/selectedTexturesActions';
 //Helpers
-import simplifyPartName from '../../helpers/simplifyPartName';
+import simplifyPartName from '../../../helpers/simplifyPartName';
 
 
 class Palette extends Component {

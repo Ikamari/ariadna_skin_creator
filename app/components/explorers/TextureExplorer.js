@@ -11,7 +11,7 @@ class TextureExplorer extends Explorer {
     // TODO: add function for onClick
     renderTextureBlock(texture, index) {
         return <TextureBlock
-            key={`texture-explorer_texture-${index}`}
+            key={`texture_explorer-texture-${index}`}
             texture={texture}
         />
     }

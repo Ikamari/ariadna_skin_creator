@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 // Components
-import Button from '../inputs/Button'
+import Button from '../common/Button'
 // Styles
 import styles from './styles/texture-block.css'
 // Resources

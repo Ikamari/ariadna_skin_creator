@@ -54,9 +54,9 @@ class TopControlButtons extends Component {
 }
 
 //Actions
-import * as skinActions from '../../../actions/skinActions';
-import * as overseerActions from '../../../actions/overseerActions';
-import * as selectedTexturesActions from '../../../actions/selectedTexturesActions';
+import * as skinActions from '../../../../actions/skinActions';
+import * as overseerActions from '../../../../actions/overseerActions';
+import * as selectedTexturesActions from '../../../../actions/selectedTexturesActions';
 
 const mapDispatchToProps = (dispatch) => ({
     selectedTexturesActions: bindActionCreators(selectedTexturesActions, dispatch),

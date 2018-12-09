@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //Skin parts
-import RenderPart from '../../canvas-render/PreviewPartCanvasRender';
+import RenderPart from '../../../canvas-render/PreviewPartCanvasRender';
 //Actions
-import * as skinActions from '../../../actions/skinActions';
+import * as skinActions from '../../../../actions/skinActions';
 
 class Preview extends Component {
     render() {
